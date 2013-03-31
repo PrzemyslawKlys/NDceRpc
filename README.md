@@ -7,26 +7,6 @@ Like WCF with flexible interface and hooks with no public process wide methods.
 Like Dce/Rpc compatible with native code and fast.
 In the end should work on Mono/Linux.
 
-### TODO:
-Use Mono WCF tests
-Use Mono WCF code
-Add WCF tests, pull back to mono
-Add callback and async IDL generated structs in C#
-Add IDL parser (use one of DceRpc implementatios yacc lexx files)
-Make behave like WCF with different encodings, serilizers and marshalers (NRD, BinaryDataContract)
-Support SyncrhonizationContext of callback, "ref" params, Task/event based asycn, TCP transport
-Add some other Binary serializer compatible with C++
-Improve start perfomance
-Improve runtime prefromace
-
-### History
-Extends and Embrace:
-http://code.google.com/p/csharptest-net/
-http://code.google.com/p/protobuf-csharp-rpc/
-
-Uses approaches from:
-https://github.com/mono/mono/tree/master/mcs/class/System.ServiceModel
-
 ## How tos
 
 ### How to migrate WCF `ServiceOperation` with `DataContract`s
@@ -67,7 +47,20 @@ Define memory allocation and dealocation RPC routines in C as done for pure nati
 Return interfaces specification structures to managed code(NativeServer and NativeClient) which do the hosting.
 
 
+### TODO:
+Use Mono WCF tests
+Use Mono WCF code
+Add WCF tests, pull back to mono
+Add callback and async IDL generated structs in C#
+Add IDL parser (use one of DceRpc implementatios yacc lexx files)
+Make behave like WCF with different encodings, serilizers and marshalers (NRD, BinaryDataContract)
+Support SyncrhonizationContext of callback, "ref" params, Task/event based asycn, TCP transport
+Add some other Binary serializer compatible with C++
+Improve start perfomance
+Improve runtime prefromace
 
-
-
-
+### Related
+http://code.google.com/p/csharptest-net/
+http://code.google.com/p/protobuf-csharp-rpc/
+https://github.com/mono/mono/tree/master/mcs/class/System.ServiceModel
+https://github.com/asd-and-Rizzo/ipc-win

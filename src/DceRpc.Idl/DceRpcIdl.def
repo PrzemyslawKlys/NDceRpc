@@ -1,0 +1,4 @@
+LIBRARY DceRpcIdl
+EXPORTS
+  GetDummyServer 
+  GetExplicitWithCallbacksServer 

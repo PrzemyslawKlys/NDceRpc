@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E2CB913-5E64-436A-ADDD-6E3028F797F1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NDceRpc.ServiceModel</RootNamespace>
+    <AssemblyName>NDceRpc.ServiceModel</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\NDceRpc.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\build\Debug\NDceRpc.ServiceModel.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\build\Release\</OutputPath>
+    <DefineConstants>TRACE;NET35</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\build\Release\NDceRpc.ServiceModel.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\packages\protobuf-net.2.0.0.621\lib\net35\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsyncOperationDispatch.cs" />
+    <Compile Include="Custom\PipeServer.cs" />
+    <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="LocalBinding.cs" />
+    <Compile Include="OperationDispatchBase.cs" />
+    <Compile Include="DispatchFactory.cs" />
+    <Compile Include="EndpointMapper.cs" />
+    <Compile Include="BinaryObjectSerializer.cs" />
+    <Compile Include="GuidUtility.cs" />
+    <Compile Include="IErrorHander.cs" />
+    <Compile Include="RpcTrace.cs" />
+    <Compile Include="Tasks.cs" />
+    <Compile Include="TestClasses.cs" />
+    <Compile Include="TransportFactory.cs" />
+    <Compile Include="RpcErrorData.cs" />
+    <Compile Include="RpcServiceDefaults.cs" />
+    <Compile Include="ErrorHandler.cs" />
+    <Compile Include="OperationDispatch.cs" />
+    <Compile Include="ProtobufObjectSerializer.cs" />
+    <Compile Include="ProxyEmit.cs" />
+    <Compile Include="Binding.cs" />
+    <Compile Include="RpcCallbackChannelFactory.cs" />
+    <Compile Include="CallbackServiceHost.cs" />
+    <Compile Include="ChannelFactory.cs" />
+    <Compile Include="DuplexChannelFactory.cs" />
+    <Compile Include="EndpointAddress.cs" />
+    <Compile Include="InstanceContext.cs" />
+    <Compile Include="NetNamedPipeBinding.cs" />
+    <Compile Include="RpcOperationContext.cs" />
+    <Compile Include="ServiceEndpoint.cs" />
+    <Compile Include="ServiceHost.cs" />
+    <Compile Include="MessageResponse.cs" />
+    <Compile Include="RpcParamData.cs" />
+    <Compile Include="ParameterDispatch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RpcServerStub.cs" />
+    <Compile Include="MessageRequest.cs" />
+    <Compile Include="RpcProxy.cs" />
+    <Compile Include="ServiceHostBase.cs" />
+    <Compile Include="RpcStub.cs" />
+    <Compile Include="Transports.cs" />
+    <Compile Include="TypeExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NDceRpc\NDceRpc.csproj">
+      <Project>{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}</Project>
+      <Name>NDceRpc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\NDceRpc.snk">
+      <Link>NDceRpc.snk</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

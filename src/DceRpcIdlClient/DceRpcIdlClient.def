@@ -1,0 +1,7 @@
+LIBRARY DceRpcIdlClient
+EXPORTS
+  GetDummyClient
+  CallDummyServer 
+  CallExplicitWithCallbacksServer
+
+

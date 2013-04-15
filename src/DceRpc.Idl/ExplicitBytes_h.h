@@ -6,7 +6,7 @@
  /* File created by MIDL compiler version 7.00.0555 */
 /* at Fri Apr 05 12:05:16 2013
  */
-/* Compiler settings for ExplicitWithCallbacks.idl:
+/* Compiler settings for ExplicitBytes.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -32,8 +32,8 @@
 #endif // __RPCNDR_H_VERSION__
 
 
-#ifndef __ExplicitWithCallbacks_h_h__
-#define __ExplicitWithCallbacks_h_h__
+#ifndef __ExplicitBytes_h_h__
+#define __ExplicitBytes_h_h__
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
 #pragma once
@@ -46,28 +46,24 @@ extern "C"{
 #endif 
 
 
-#ifndef __ExplicitWithCallbacks_INTERFACE_DEFINED__
-#define __ExplicitWithCallbacks_INTERFACE_DEFINED__
+#ifndef __ExplicitBytes_INTERFACE_DEFINED__
+#define __ExplicitBytes_INTERFACE_DEFINED__
 
-/* interface ExplicitWithCallbacks */
-/* [explicit_handle][version][uuid] */ 
+/* interface ExplicitBytes */
+/* [version][uuid] */ 
 
-void AsyncAttach( 
-    /* [in] */ handle_t hBinding,
-    /* [string][in] */ wchar_t *szOutput);
-
-void Request( 
-    /* [in] */ handle_t hBinding,
-    /* [string][in] */ wchar_t *szOutput);
-
-/* [callback] */ void CallClient( 
-    /* [string][in] */ wchar_t *szOutput);
+void ExplicitBytesExecute( 
+    /* [in] */ handle_t clientHandle,
+    /* [in] */ long szInput,
+    /* [size_is][in] */ const byte input[  ],
+    /* [out] */ long *szOutput,
+    /* [size_is][size_is][out] */ byte **output);
 
 
 
-extern RPC_IF_HANDLE ExplicitWithCallbacks_v0_1_c_ifspec;
-extern RPC_IF_HANDLE ExplicitWithCallbacks_v0_1_s_ifspec;
-#endif /* __ExplicitWithCallbacks_INTERFACE_DEFINED__ */
+extern RPC_IF_HANDLE ExplicitBytes_v1_0_c_ifspec;
+extern RPC_IF_HANDLE ExplicitBytes_v1_0_s_ifspec;
+#endif /* __ExplicitBytes_INTERFACE_DEFINED__ */
 
 /* Additional Prototypes for ALL interfaces */
 

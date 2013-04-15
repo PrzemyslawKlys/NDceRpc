@@ -21,6 +21,9 @@
     <Midl Include="ExplicitWithCallbacks.idl">
       <Filter>Source Files</Filter>
     </Midl>
+    <Midl Include="ExplicitBytes.idl">
+      <Filter>Source Files</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <None Include="DceRpcIdl.def">

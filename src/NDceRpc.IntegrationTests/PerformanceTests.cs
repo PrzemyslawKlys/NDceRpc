@@ -105,57 +105,59 @@ namespace NDceRpc.Test
         }
 
         [Test]
+        public void PerformanceOnLocalRpcWithSmallPayloads()
+        {
+            var protoseq = RpcProtseq.ncalrpc;
+            var endpointName = MethodBase.GetCurrentMethod().Name;
+
+            TestPerformanceInternal(protoseq, endpointName, 77);
+        }
+
+        [Test]
+        public void PerformanceOnNamedPipeWithSmallPayloads()
+        {
+            var protoseq = RpcProtseq.ncacn_np;
+            var endpointName = @"\pipe\" + MethodBase.GetCurrentMethod().Name;
+            TestPerformanceInternal(protoseq, endpointName, 77);
+        }
+
+        [Test]
         public void TestPerformanceOnLocalRpc()
         {
-            Guid iid = Guid.NewGuid();
-            using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
-            {
-                server.AddProtocol(RpcProtseq.ncalrpc, "lrpctest", 5);
-                server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_WINNT);
-                server.StartListening();
-                server.OnExecute +=
-                    delegate(IRpcCallInfo client, byte[] arg)
-                    { return arg; };
+            var protoseq = RpcProtseq.ncalrpc;
+            var endpointName = MethodBase.GetCurrentMethod().Name;
 
-                using (ExplicitBytesClient client = new ExplicitBytesClient(iid, new EndpointBindingInfo(RpcProtseq.ncalrpc, null, "lrpctest")))
-                {
-                    client.AuthenticateAs(null, ExplicitBytesClient.Self, RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY, RpcAuthentication.RPC_C_AUTHN_WINNT);
-                    client.Execute(new byte[0]);
-
-                    byte[] bytes = new byte[512];
-                    new Random().NextBytes(bytes);
-
-                    Stopwatch timer = new Stopwatch();
-                    timer.Start();
-
-                    for (int i = 0; i < 10000; i++)
-                        client.Execute(bytes);
-
-                    timer.Stop();
-                    Trace.WriteLine(timer.ElapsedMilliseconds.ToString(), "TestPerformanceOnLocalRpc");
-                }
-            }
+            TestPerformanceInternal(protoseq, endpointName,512);
         }
 
         [Test]
         public void TestPerformanceOnNamedPipe()
         {
+            var protoseq = RpcProtseq.ncacn_np;
+            var endpointName = @"\pipe\" + MethodBase.GetCurrentMethod().Name;
+            TestPerformanceInternal(protoseq, endpointName, 512);
+        }
+
+        private static void TestPerformanceInternal(RpcProtseq protoseq, string endpointName,int payloadSize)
+        {
             Guid iid = Guid.NewGuid();
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
             {
-                server.AddProtocol(RpcProtseq.ncacn_np, @"\pipe\testpipename", 5);
+                server.AddProtocol(protoseq, endpointName, 5);
                 server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_WINNT);
                 server.StartListening();
                 server.OnExecute +=
-                    delegate(IRpcCallInfo client, byte[] arg)
-                    { return arg; };
+                    delegate(IRpcCallInfo client, byte[] arg) { return arg; };
 
-                using (ExplicitBytesClient client = new ExplicitBytesClient(iid, new EndpointBindingInfo(RpcProtseq.ncacn_np, null, @"\pipe\testpipename")))
+                using (
+                    ExplicitBytesClient client = new ExplicitBytesClient(iid,
+                        new EndpointBindingInfo(protoseq, null, endpointName)))
                 {
-                    client.AuthenticateAs(null, ExplicitBytesClient.Self, RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY, RpcAuthentication.RPC_C_AUTHN_WINNT);
+                    client.AuthenticateAs(null, ExplicitBytesClient.Self, RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY,
+                        RpcAuthentication.RPC_C_AUTHN_WINNT);
                     client.Execute(new byte[0]);
 
-                    byte[] bytes = new byte[512];
+                    byte[] bytes = new byte[payloadSize];
                     new Random().NextBytes(bytes);
 
                     Stopwatch timer = new Stopwatch();
@@ -165,10 +167,12 @@ namespace NDceRpc.Test
                         client.Execute(bytes);
 
                     timer.Stop();
-                    Trace.WriteLine(timer.ElapsedMilliseconds.ToString(), "TestPerformanceOnNamedPipe");
+                    Trace.WriteLine(timer.ElapsedMilliseconds.ToString(), endpointName);
                 }
             }
         }
+
+    
 
         [Test]
         public void TestPerformanceOnTcpip()
@@ -194,7 +198,7 @@ namespace NDceRpc.Test
                     Stopwatch timer = new Stopwatch();
                     timer.Start();
 
-                    for (int i = 0; i < 4000; i++)
+                    for (int i = 0; i < 5000; i++)
                         client.Execute(bytes);
 
                     timer.Stop();

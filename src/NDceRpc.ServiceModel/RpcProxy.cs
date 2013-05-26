@@ -39,8 +39,7 @@ namespace NDceRpc.ServiceModel
             _binding = binding;
             _address = address;
 
-            MethodInfo[] ops = TypeExtensions.GetAllServiceImplmentations(_typeOfService);
-            _operations = DispatchFactory.CreateOperations(ops);
+            _operations = DispatchFactory.GetOperations(_typeOfService);
  
 
             _uuid = EndpointMapper.CreateUuid(_address, typeOfService);

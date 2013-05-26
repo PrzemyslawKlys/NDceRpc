@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncOperationDispatch.cs" />
+    <Compile Include="ChannelFactory.cs" />
     <Compile Include="Custom\PipeServer.cs" />
     <Compile Include="ExceptionHandler.cs" />
     <Compile Include="LocalBinding.cs" />
@@ -70,7 +71,7 @@
     <Compile Include="Tasks.cs" />
     <Compile Include="TestClasses.cs" />
     <Compile Include="TransportFactory.cs" />
-    <Compile Include="RpcErrorData.cs" />
+    <Compile Include="Chanells\RpcErrorData.cs" />
     <Compile Include="RpcServiceDefaults.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="OperationDispatch.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Binding.cs" />
     <Compile Include="RpcCallbackChannelFactory.cs" />
     <Compile Include="CallbackServiceHost.cs" />
-    <Compile Include="ChannelFactory.cs" />
+    <Compile Include="ChannelFactoryGeneric.cs" />
     <Compile Include="DuplexChannelFactory.cs" />
     <Compile Include="EndpointAddress.cs" />
     <Compile Include="InstanceContext.cs" />
@@ -87,12 +88,12 @@
     <Compile Include="RpcOperationContext.cs" />
     <Compile Include="ServiceEndpoint.cs" />
     <Compile Include="ServiceHost.cs" />
-    <Compile Include="MessageResponse.cs" />
-    <Compile Include="RpcParamData.cs" />
+    <Compile Include="Chanells\MessageResponse.cs" />
+    <Compile Include="Chanells\RpcParamData.cs" />
     <Compile Include="ParameterDispatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RpcServerStub.cs" />
-    <Compile Include="MessageRequest.cs" />
+    <Compile Include="Chanells\MessageRequest.cs" />
     <Compile Include="RpcProxy.cs" />
     <Compile Include="ServiceHostBase.cs" />
     <Compile Include="RpcStub.cs" />

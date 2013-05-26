@@ -1,30 +1,8 @@
-﻿using System;
+using System;
 using System.ServiceModel;
 
 namespace NDceRpc.ServiceModel
 {
-    public class ChannelFactory<TService> : ChannelFactory
-    {
-
-
-        public ChannelFactory(Binding binding)
-            : base(binding, typeof(TService), false)
-        {
-
-        }
-
-        public TService CreateChannel(EndpointAddress createEndpoint)
-        {
-            return base.CreateChannel<TService>(createEndpoint);
-
-        }
-
-        public void Dispose()
-        {
-            base.Dispose();
-        }
-    }
-
     public class ChannelFactory : ICommunicationObject, IDisposable
     {
         private Binding _binding;

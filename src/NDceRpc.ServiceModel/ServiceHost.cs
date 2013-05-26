@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 
@@ -34,6 +35,7 @@ namespace NDceRpc.ServiceModel
    
         public ServiceEndpoint AddServiceEndpoint(Type contractType, Binding binding, string address)
         {
+            
             var uri = new Uri(address, UriKind.RelativeOrAbsolute);
             if (!uri.IsAbsoluteUri)
             {
@@ -45,6 +47,7 @@ namespace NDceRpc.ServiceModel
             {
                 _expectDuplexInitialization = true;
             }
+            RpcTrace.TraceEvent(TraceEventType.Start, "Start adding service endpoint for {0} at {1}",contractType,address);
             _serverStub = new RpcServerStub(_service,EndpointMapper.WcfToRpc(address), binding, _expectDuplexInitialization);
             return AddEndpoint(contractType, binding, address, uuid);
         }

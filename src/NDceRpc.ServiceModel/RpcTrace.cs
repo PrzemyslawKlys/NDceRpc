@@ -6,20 +6,24 @@ namespace NDceRpc.ServiceModel
     internal static class RpcTrace
     {
         private static readonly string Name = typeof(RpcTrace).Namespace;
-        private static TraceSource _source;
+        public static TraceSource Source;
 
 
         static RpcTrace()
         {
-            _source = new TraceSource(Name);
+            Source = new TraceSource(Name);
         }
 
+        public static void TraceEvent(TraceEventType eventType, string format, params object[] args)
+        {
+            Source.TraceEvent(TraceEventType.Verbose, 0, format, args);
 
+        }
 
 
         public static void Verbose(string message)
         {
-            _source.TraceEvent(TraceEventType.Verbose, 0, message);
+            Source.TraceEvent(TraceEventType.Verbose, 0, message);
 
         }
 
@@ -32,7 +36,7 @@ namespace NDceRpc.ServiceModel
 
         public static void Warning(string message)
         {
-            _source.TraceEvent(TraceEventType.Warning, 0, message);
+            Source.TraceEvent(TraceEventType.Warning, 0, message);
         }
 
         public static void Warning(string message, params object[] arguments)
@@ -42,7 +46,7 @@ namespace NDceRpc.ServiceModel
 
         public static void Error(string message)
         {
-            _source.TraceEvent(TraceEventType.Error, 0, message);
+            Source.TraceEvent(TraceEventType.Error, 0, message);
         }
 
         public static void Error(Exception error)

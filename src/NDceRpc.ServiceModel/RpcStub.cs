@@ -19,9 +19,9 @@ namespace NDceRpc.ServiceModel
             _serializer = binding.Serializer;
             _binding = binding;
             _singletonService = singletonService;
+
             //TODO: use only contract added and its interfaces, not all of type
-            var ops = TypeExtensions.GetAllServiceImplmentations(singletonService.GetType());
-            _operations = _operations = DispatchFactory.CreateOperations(ops);
+            _operations = DispatchFactory.GetOperations(singletonService.GetType());
         }
     }
 }

@@ -1,12 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 
 namespace NDceRpc.ServiceModel
 {
+
+    public class DispatchTable : Dictionary<int, OperationDispatchBase>{}
+
     public static class DispatchFactory
     {
+        private static Dictionary<Type, DispatchTable> _cache = new Dictionary<Type, DispatchTable>();
+        public static Dictionary<Type, DispatchTable> Cache
+        {
+            get { return _cache; }
+            set { _cache = value; }
+        }
+
         public static OperationDispatchBase Create(MethodInfo info)
         {
             //TODO: fix not null async params
@@ -23,15 +34,40 @@ namespace NDceRpc.ServiceModel
             }
         }
 
-        public static Dictionary<int, OperationDispatchBase> CreateOperations(MethodInfo[] ops)
+        public static DispatchTable CreateOperations(MethodInfo[] ops)
         {
-            Dictionary<int, OperationDispatchBase> operations= new Dictionary<int, OperationDispatchBase>();
+           var operations = new DispatchTable();
             foreach (var methodInfo in ops)
             {
                 OperationDispatchBase operation = DispatchFactory.Create(methodInfo);
                 operations[operation.Identifier] = operation;
             }
             return operations;
+        }
+
+        /// <summary>
+        /// Gets table of operations for specific type.
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Considers reflection costly operation and caching is optimization.
+        /// Considers types unchangable during runtime.
+        /// Not expected great concurency here and OK if done twice for the same type sometimes.
+        /// </remarks>
+        public static DispatchTable GetOperations(Type type)
+        {
+            DispatchTable table;
+ 
+            if (!Cache.TryGetValue(type, out table))
+            {
+                var ops = TypeExtensions.GetAllServiceImplementations(type);
+                table = DispatchFactory.CreateOperations(ops);
+                Cache[type] = table;
+            }
+
+            return table;
         }
     }
 }

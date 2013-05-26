@@ -6,8 +6,10 @@ Currently there is no good managed RPC for local IPC on Windows. I did research.
 ### Design
 
 * Like WCF with flexible interface and hooks with no public process wide methods.
-* Like Dce/Rpc compatible with native code and fast.
-* In the end should work on Mono/Linux.
+* Like Dce/Rpc compatible with native code
+* Sevarl times faster communication then WCF
+* Severat times faster to start then WCF
+* In the end should work on Mono/Linux
 
 ### How tos
 
@@ -44,6 +46,10 @@ Next test goes via RPC + Protobuf, very alpha version for now:
             }
 ```
 
+#### How to call C++ from C# and vice versa
+For now need to wrap C# or C++ IPC services clients into Reg Free COM.
+
+
 #### How to work with IDL generated C RPC
 
 * Use explicit binding handles (read MSDN docs).
@@ -52,15 +58,20 @@ Next test goes via RPC + Protobuf, very alpha version for now:
 
 
 ### TODO:
-
+* Use NRefactory to generate code from WCF interfaces code during compilations to speed up start up
+* Generate C++ from CS based IDL - WCF contacts.
+* Make convetional interface generation (no WCF attributes used).
+* Do not use System.ServiceModel.dll, copy and paste Mono WCF attributes into code (Dismiss not related parts - e.g. SOAP
+* Try IKVM.Emit to generate in runtime (better API and potentially faster) 
 * Use Mono WCF tests
-* Use Mono WCF code
+* Use Mono WCF code more
 * Add WCF tests, pull back to mono
 * Add callback and async IDL generated structs in C#
-* Add IDL parser (use one of DceRpc implementatios yacc lexx files)
-* Make behave like WCF with different encodings, serilizers and marshalers (NRD, BinaryDataContract)
+* Add IDL parser (use one of open soruce DceRpc implementations yacc lexx defitions, F# lexx and yacc)
+* Investigate [user_marshal] to integrate protobuf into IDL.
+* Make behave like WCF with different encodings, serilizers(Thrift) and marshalers (NRD, BinaryDataContract)
 * Support SyncrhonizationContext of callback, "ref" params, Task/event based asycn
-* Add some another Binary serializer compatible with C++ (e.g. BSON).
+* Add some another Binary serializer compatible with C++ (e.g. Thrift).
 * Improve start perfomance
 * Improve runtime prefromace
 

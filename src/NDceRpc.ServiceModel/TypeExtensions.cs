@@ -7,12 +7,12 @@ namespace NDceRpc.ServiceModel
 {
     public static class TypeExtensions
     {
-        public static MethodInfo[] GetAllImplmentations<T>()
+        public static MethodInfo[] GetAllImplementations<T>()
         {
-            return GetAllImplmentations(typeof (T));
+            return GetAllImplementations(typeof (T));
         }
 
-        public static MethodInfo[] GetAllImplmentations(Type t)
+        public static MethodInfo[] GetAllImplementations(Type t)
         {
             var ofThis = t.GetMethods(BindingFlags.Public | BindingFlags.Instance);
             MethodInfo[] ops =
@@ -22,13 +22,13 @@ namespace NDceRpc.ServiceModel
             return ops;
         }
 
-        public static MethodInfo[] GetAllServiceImplmentations<T>()
+        public static MethodInfo[] GetAllServiceImplementations<T>()
         {
-            return GetAllServiceImplmentations(typeof (T));
+            return GetAllServiceImplementations(typeof (T));
         }
-        public static MethodInfo[] GetAllServiceImplmentations(Type t)
+        public static MethodInfo[] GetAllServiceImplementations(Type t)
         {
-            return GetAllImplmentations(t).Where(x => x.GetCustomAttributes(typeof (OperationContractAttribute),true).Length !=0 ).ToArray();
+            return GetAllImplementations(t).Where(x => x.GetCustomAttributes(typeof (OperationContractAttribute),true).Length !=0 ).ToArray();
         }
 
         public static T GetCustomAttribute<T>(MethodInfo methodInfo)

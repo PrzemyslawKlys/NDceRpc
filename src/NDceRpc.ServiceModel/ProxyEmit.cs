@@ -30,7 +30,7 @@ namespace NDceRpc.ServiceModel
             // Implement 'IMyInterface' interface.
             proxy.AddInterfaceImplementation(service);
 
-            var methods = TypeExtensions.GetAllImplmentations(service);
+            var methods = TypeExtensions.GetAllImplementations(service);
             foreach (var methodInfo in methods)
             {
                 // Define the HelloMethod of IMyInterface.

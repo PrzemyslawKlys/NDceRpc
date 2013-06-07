@@ -36,9 +36,6 @@ namespace NDceRpc.Test
                 RpcAuthentication.RPC_C_AUTHN_NONE, RpcAuthentication.RPC_C_AUTHN_WINNT, RpcAuthentication.RPC_C_AUTHN_GSS_NEGOTIATE);
         }
 
-        /*
-         *  Helper Methods
-         */
 
         static void ReversePingTest(RpcProtseq protocol, string[] hostNames, string endpoint, params RpcAuthentication[] authTypes)
         {

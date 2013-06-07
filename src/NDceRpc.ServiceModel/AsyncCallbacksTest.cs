@@ -20,7 +20,7 @@ namespace NDceRpc.ServiceModel.Test
         {
             public void Call()
             {
-                var callback = RpcOperationContext.Current.GetCallbackChannel<IAsyncServiceCallback>();
+                var callback = OperationContext.Current.GetCallbackChannel<IAsyncServiceCallback>();
                 var wait = callback.BeginCallback(null, null);
                 wait.AsyncWaitHandle.WaitOne();
             }

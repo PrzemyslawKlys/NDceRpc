@@ -9,7 +9,7 @@ namespace NDceRpc
     /// Provides a connection-based wrapper around the RPC client
     /// </summary>
     [System.Diagnostics.DebuggerDisplay("{_handle} @{_binding}")]
-    public class Client:IDisposable
+    public class Client : IDisposable
     {
 
         protected bool _authenticated;
@@ -17,7 +17,7 @@ namespace NDceRpc
         private readonly string _binding;
         protected readonly RpcHandle _handle;
 
-        public Client(EndpointBindingInfo endpointBindingInfo) 
+        public Client(EndpointBindingInfo endpointBindingInfo)
         {
             _handle = new RpcClientHandle();
             _protocol = endpointBindingInfo.Protseq;
@@ -124,8 +124,8 @@ namespace NDceRpc
         /// </summary>
         public void AuthenticateAs(string serverPrincipalName, NetworkCredential credentials)
         {
-            RpcAuthentication[] types = new RpcAuthentication[] { RpcAuthentication.RPC_C_AUTHN_GSS_NEGOTIATE, RpcAuthentication.RPC_C_AUTHN_WINNT };
-            RpcProtectionLevel protect = RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY;
+            var types = new [] { RpcAuthentication.RPC_C_AUTHN_GSS_NEGOTIATE, RpcAuthentication.RPC_C_AUTHN_WINNT };
+            var protect = RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY;
 
             bool isAnon = (credentials != null && credentials.UserName == Anonymous.UserName && credentials.Domain == Anonymous.Domain);
             if (isAnon)
@@ -135,6 +135,11 @@ namespace NDceRpc
             }
 
             AuthenticateAs(serverPrincipalName, credentials, protect, types);
+        }
+
+        public void AuthenticateAsNone()
+        {
+            _authenticated = true;
         }
 
         /// <summary>

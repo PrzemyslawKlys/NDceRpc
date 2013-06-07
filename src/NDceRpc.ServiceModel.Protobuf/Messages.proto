@@ -1,0 +1,24 @@
+message RpcErrorData {
+  required string Type = 1;
+  optional string Message = 2;
+}
+
+message MessageResponse
+{
+   required bytes Data = 1;
+   optional RpcErrorData Error = 2;
+}
+
+
+message  RpcParamData
+{ 
+   required int32 Identifier = 1;
+   required bytes Data = 2;
+}
+
+message MessageRequest
+{
+  required int32 Operation = 1;
+  repeated RpcParamData Data = 2;
+  optional string Session = 3;
+}

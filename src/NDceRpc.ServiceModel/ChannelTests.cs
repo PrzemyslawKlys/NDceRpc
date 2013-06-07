@@ -12,87 +12,7 @@ namespace NDceRpc.ServiceModel.Test
     public class ChannelTests
     {
 
-        [ServiceContract]
-        [Guid("7916102D-903A-4E2E-B8ED-4C0DEFEEDF15")]
-        public interface IOtherService
-        {
-
-            [OperationContract(IsOneWay = true)]
-            void Do();
-        }
-
-        public class OtherService : IOtherService
-        {
-            private ManualResetEvent _wait;
-
-            public OtherService(ManualResetEvent wait)
-            {
-                _wait = wait;
-            }
-
-            public void Do()
-            {
-                _wait.Set();
-            }
-        }
-
-        public class Service : IService
-        {
-            private EventWaitHandle _wait;
-
-            public Service(EventWaitHandle wait)
-            {
-                _wait = wait;
-            }
-
-            public ServiceResult DoWithParamsAndResult(string p1, Guid p2)
-            {
-                return new ServiceResult { d1 = 2 };
-            }
-
-            public void DoOneWay()
-            {
-                _wait.Set();
-            }
-
-            public void CallOtherService(string address)
-            {
-                var factory = new ChannelFactory<IOtherService>(new NetNamedPipeBinding());
-                var channell = factory.CreateChannel<IOtherService>(new EndpointAddress(address));
-                channell.Do();
-            }
-
-            public void Dispose()
-            {
-
-            }
-        }
-
-
-        [ServiceContract]
-        [Guid("C059B8B0-9318-4467-9BB7-4FBB9979C3C5")]
-        public interface IService : IDisposable
-        {
-            [OperationContract(IsOneWay = false)]
-            ServiceResult DoWithParamsAndResult(string p1, Guid p2);
-
-            [OperationContract(IsOneWay = true)]
-            void DoOneWay();
-
-            [OperationContract(IsOneWay = true)]
-            void CallOtherService(string address);
-
-        }
-
-        [DataContract]
-        public class ServiceResult
-        {
-            [DataMember(Order = 1)]
-            public int d1 { get; set; }
-            [DataMember(Order = 2)]
-            public double d2 { get; set; }
-
-        }
+   
 
 
         //[Test]
@@ -110,7 +30,6 @@ namespace NDceRpc.ServiceModel.Test
         //    host.Open();
         //    var f = new ChannelFactory<IService>(b);
         //    var c = f.CreateChannel(new EndpointAddress(address));
-        //    host.Open();
         //    var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
         //    Assert.AreEqual(2, result.d1);
         //    host.Dispose();
@@ -130,7 +49,6 @@ namespace NDceRpc.ServiceModel.Test
             host.Open();
             var f = new ChannelFactory<IService>(b);
             var c = f.CreateChannel(new EndpointAddress(address));
-            host.Open();
             var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
             Assert.AreEqual(2, result.d1);
             host.Dispose();
@@ -147,7 +65,6 @@ namespace NDceRpc.ServiceModel.Test
             host.Open();
             var f = new ChannelFactory<IService>(b);
             var c = f.CreateChannel(new EndpointAddress(address));
-            host.Open();
             var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
             Assert.AreEqual(2, result.d1);
             host.Dispose();
@@ -164,7 +81,24 @@ namespace NDceRpc.ServiceModel.Test
             host.Open();
             var f = new ChannelFactory<IService>(b);
             var c = f.CreateChannel(new EndpointAddress(address));
+   
+            var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
+            Assert.AreEqual(2, result.d1);
+            host.Dispose();
+        }
+
+        [Test]
+        public void TpcIp()
+        {
+            var address = @"net.tcp://127.0.0.1:18080";
+            var serv = new Service(null);
+            var host = new ServiceHost(serv, address);
+            var b = new NetTcpBinding();
+            host.AddServiceEndpoint(typeof(IService), b, address);
             host.Open();
+            var f = new ChannelFactory<IService>(b);
+            var c = f.CreateChannel(new EndpointAddress(address));
+
             var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
             Assert.AreEqual(2, result.d1);
             host.Dispose();
@@ -182,7 +116,6 @@ namespace NDceRpc.ServiceModel.Test
             host.Open();
             var f = new ChannelFactory<IService>(b);
             var c = f.CreateChannel(new EndpointAddress(address));
-            host.Open();
             var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
             Assert.AreEqual(2, result.d1);
             host.Dispose();

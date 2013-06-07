@@ -29,7 +29,7 @@ namespace NDceRpc.ServiceModel.Test
 
             public void Call()
             {
-                var callback = RpcOperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
+                var callback = OperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
                 callback.OnCallback(_data);
                 callback.OnOneWayCallback();
             }

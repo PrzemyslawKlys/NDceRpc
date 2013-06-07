@@ -76,7 +76,7 @@ namespace NDceRpc.ServiceModel.Test
         {
             public string Call()
             {
-                return RpcOperationContext.Current.SessionId;
+                return OperationContext.Current.SessionId;
             }
         }
     }

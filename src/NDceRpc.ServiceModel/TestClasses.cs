@@ -27,7 +27,7 @@ namespace NDceRpc.ServiceModel
 
         public void Call()
         {
-            var callback = RpcOperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
+            var callback = OperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
             callback.OnOneWayCallback();
         }
 

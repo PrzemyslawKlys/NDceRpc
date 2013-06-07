@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Threading;
 using MeasureIt;
 using NUnit.Framework;
 using ProtoBuf.Meta;
@@ -30,7 +33,6 @@ namespace NDceRpc.ServiceModel.IntegrationTests
             }
         }
 
-
         [System.ServiceModel.ServiceContract]
         [Guid("FB055ED1-8090-4A66-9EFB-1469A5336420")]
         public interface IService
@@ -48,119 +50,114 @@ namespace NDceRpc.ServiceModel.IntegrationTests
             }
         }
 
+
+
         [Test]
-        public void SerializerGeneration()
+        public void IpcCallbck()
         {
-            FirstCallTester tester = new FirstCallTester(Console.Out);
-            tester.Start();
-            CreateProto();
-            tester.Stop();
-            tester.Start();
-            CreateProto();
-            tester.Stop();
-            tester.Report();
-
-            Reportwatch reportwatch = new Reportwatch();
-            reportwatch.Start("Protobuf");
-            var proto = ProtoBuf.Meta.TypeModel.Create();
-            proto.Add(typeof (UserInfo), true);
-            proto.CompileInPlace();
-            
-            reportwatch.stop("Protobuf");
-
-            reportwatch.Start("Protobuf serialize");
-            proto.Serialize(new MemoryStream(), CreateObj());
-            reportwatch.stop("Protobuf serialize");
-
-            reportwatch.Start("Protobuf serialize 2");
-            proto.Serialize(new MemoryStream(), CreateObj());
-            reportwatch.stop("Protobuf serialize 2");
-
-            reportwatch.Start("DataContractSerializer ctor");
-            DataContractSerializer xml = new DataContractSerializer(typeof(UserInfo));
-            reportwatch.stop("DataContractSerializer ctor");
-
-            reportwatch.Start("DataContractSerializer serialize");
-            xml.WriteObject(new MemoryStream(),CreateObj());
-            reportwatch.stop("DataContractSerializer serialize");
-
-            reportwatch.Start("DataContractSerializer serialize 2");
-            xml.WriteObject(new MemoryStream(), CreateObj());
-            reportwatch.stop("DataContractSerializer serialize 2");
-
-            reportwatch.Report("Protobuf");
-            reportwatch.Report("Protobuf serialize");
-            reportwatch.Report("Protobuf serialize 2");
-            reportwatch.Report("DataContractSerializer ctor");
-            reportwatch.Report("DataContractSerializer serialize");
-            reportwatch.Report("DataContractSerializer serialize 2");
+            var binding = new LocalBinding { MaxConnections = 5 };
+            var path = "ipc:///" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
+            DoHostWithCallback(binding, path);
+            DoHostWithCallback(binding, path);
         }
 
-        private static UserInfo CreateObj()
+        private static void DoHostWithCallback(Binding binding, string path)
         {
-            return new UserInfo { Entitlements = new List<string> { "GOD" } ,ProxyDetails = new ProxyDetails{ProxyUserCredentials = new UserCredentials() },Token = "1231238221=="};
+            var reportWatch = new MeasureIt.Reportwatch();
+
+            DoHostWithCallbackInternal(reportWatch, binding, path);
+            reportWatch.Report("ServiceHost ctor");
+            reportWatch.Report("AddServiceEndpoint");
+            reportWatch.Report("Open");
+            reportWatch.Report("ChannelFactory ctor");
+            reportWatch.Report("CreateChannel");
+            reportWatch.Report("Execute");
+            reportWatch.ReportAll();
         }
 
-        private static void CreateProto()
+        private static void DoHostWithCallbackInternal(Reportwatch reportWatch, Binding binding, string path)
         {
-            var proto = TypeModel.Create();
-            proto.Add(typeof (MessageRequest), true);
-            proto.Add(typeof (MessageResponse), true);
-            proto.Add(typeof (RpcParamData), true);
-            proto.CompileInPlace();
+            reportWatch.Start("ServiceHost ctor");
+            using (var server = new ServiceHost(new CallbackService(), new Uri(path)))
+            {
+                reportWatch.Stop("ServiceHost ctor");
 
+                reportWatch.Start("AddServiceEndpoint");
+                server.AddServiceEndpoint(typeof(ICallbackService), binding, path);
+                reportWatch.Stop("AddServiceEndpoint");
+
+                reportWatch.Start("Open");
+                server.Open();
+                reportWatch.Stop("Open");
+
+                reportWatch.Start("ChannelFactory ctor");
+                var context = new InstanceContext(new CallbackServiceCallback());
+                using (var channelFactory = new NDceRpc.ServiceModel.DuplexChannelFactory<ICallbackService>(context, binding))
+                {
+                    reportWatch.Stop("ChannelFactory ctor");
+
+                    reportWatch.Start("CreateChannel");
+                    var client = channelFactory.CreateChannel(new EndpointAddress(path));
+                    reportWatch.Stop("CreateChannel");
+
+                    reportWatch.Start("Execute");
+                    client.Call();
+                    reportWatch.Stop("Execute");
+                }
+            }
         }
 
 
         [Test]
-        public void NamedPipe_byteArray()
+        public void Ipc_byteArray()
         {
+            var binding = new LocalBinding { MaxConnections = 5 };
+            var path = "ipc:///" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             var tester = new FirstCallTester(Console.Out);
             tester.Start("1 Service");
-            DoWcfHost();
-            tester.Stop();          
+            DoWcfHost(binding, path);
+            tester.Stop();
             tester.Start("2 Service2");
-            DoWcfHost2();
+            DoWcfHost2(binding, path);
             tester.Stop();
             tester.Start("3 Service2");
-            DoWcfHost2();
+            DoWcfHost2(binding, path);
             tester.Stop();
             tester.Start("4 Service2");
-            DoWcfHost2();
+            DoWcfHost2(binding, path);
             tester.Stop();
             tester.Report();
         }
 
-        private static void DoWcfHost()
+        private static void DoWcfHost(Binding binding, string path)
         {
             var reportWatch = new MeasureIt.Reportwatch();
 
             reportWatch.Start("ServiceHost ctor");
-            using (var server = new ServiceHost(new Service(), new Uri("net.pipe://127.0.0.1/testpipename")))
+            using (var server = new ServiceHost(new Service(), new Uri(path)))
             {
-                reportWatch.stop("ServiceHost ctor");
+                reportWatch.Stop("ServiceHost ctor");
 
                 reportWatch.Start("AddServiceEndpoint");
-                var binding = new NetNamedPipeBinding {MaxConnections = 5};
-                server.AddServiceEndpoint(typeof (IService), binding, "net.pipe://127.0.0.1/testpipename");
-                reportWatch.stop("AddServiceEndpoint");
+                server.AddServiceEndpoint(typeof(IService), binding, path);
+                reportWatch.Stop("AddServiceEndpoint");
 
                 reportWatch.Start("Open");
                 server.Open();
-                reportWatch.stop("Open");
+                reportWatch.Stop("Open");
 
                 reportWatch.Start("ChannelFactory ctor");
                 using (var channelFactory = new ChannelFactory<IService>(binding))
                 {
-                    reportWatch.stop("ChannelFactory ctor");
+                    reportWatch.Stop("ChannelFactory ctor");
 
                     reportWatch.Start("CreateChannel");
-                    var client = channelFactory.CreateChannel(new EndpointAddress("net.pipe://127.0.0.1/testpipename"));
-                    reportWatch.stop("CreateChannel");
+                    var client = channelFactory.CreateChannel(new EndpointAddress(path));
+                    reportWatch.Stop("CreateChannel");
 
                     reportWatch.Start("Execute");
                     client.Execute(new byte[0]);
-                    reportWatch.stop("Execute");
+                    reportWatch.Stop("Execute");
                 }
             }
             reportWatch.Report("ServiceHost ctor");
@@ -171,11 +168,11 @@ namespace NDceRpc.ServiceModel.IntegrationTests
             reportWatch.Report("Execute");
         }
 
-        private static void DoWcfHost2()
+        private static void DoWcfHost2(Binding binding, string path)
         {
             var reportWatch = new MeasureIt.Reportwatch();
 
-            DoWcfHost2Internal(reportWatch);
+            DoWcfHost2Internal(reportWatch, binding, path);
             reportWatch.Report("ServiceHost ctor");
             reportWatch.Report("AddServiceEndpoint");
             reportWatch.Report("Open");
@@ -184,34 +181,33 @@ namespace NDceRpc.ServiceModel.IntegrationTests
             reportWatch.Report("Execute");
         }
 
-        private static void DoWcfHost2Internal(Reportwatch reportWatch)
+        private static void DoWcfHost2Internal(Reportwatch reportWatch, Binding binding, string path)
         {
             reportWatch.Start("ServiceHost ctor");
-            using (var server = new ServiceHost(new Service2(), new Uri("net.pipe://127.0.0.1/testpipename")))
+            using (var server = new ServiceHost(new Service2(), new Uri(path)))
             {
-                reportWatch.stop("ServiceHost ctor");
+                reportWatch.Stop("ServiceHost ctor");
 
                 reportWatch.Start("AddServiceEndpoint");
-                var binding = new NetNamedPipeBinding {MaxConnections = 5};
-                server.AddServiceEndpoint(typeof (IService2), binding, "net.pipe://127.0.0.1/testpipename");
-                reportWatch.stop("AddServiceEndpoint");
+                server.AddServiceEndpoint(typeof(IService2), binding, path);
+                reportWatch.Stop("AddServiceEndpoint");
 
                 reportWatch.Start("Open");
                 server.Open();
-                reportWatch.stop("Open");
+                reportWatch.Stop("Open");
 
                 reportWatch.Start("ChannelFactory ctor");
                 using (var channelFactory = new NDceRpc.ServiceModel.ChannelFactory<IService2>(binding))
                 {
-                    reportWatch.stop("ChannelFactory ctor");
+                    reportWatch.Stop("ChannelFactory ctor");
 
                     reportWatch.Start("CreateChannel");
-                    var client = channelFactory.CreateChannel(new EndpointAddress("net.pipe://127.0.0.1/testpipename"));
-                    reportWatch.stop("CreateChannel");
+                    var client = channelFactory.CreateChannel(new EndpointAddress(path));
+                    reportWatch.Stop("CreateChannel");
 
                     reportWatch.Start("Execute");
                     client.Execute2(new byte[0]);
-                    reportWatch.stop("Execute");
+                    reportWatch.Stop("Execute");
                 }
             }
         }

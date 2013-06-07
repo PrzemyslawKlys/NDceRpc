@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Threading;
 using MeasureIt;
 using NUnit.Framework;
@@ -49,6 +50,61 @@ namespace WCF.IntegrationTests
         }
 
 
+        [Test]
+        public void NamedPipeCallbck()
+        {
+            var binding = new NetNamedPipeBinding { MaxConnections = 5 };
+            var path = "net.pipe://127.0.0.1/testpipename";
+            DoHostWithCallback(binding, path);
+            DoHostWithCallback(binding, path);
+        }
+
+        private static void DoHostWithCallback(Binding binding, string path)
+        {
+            var reportWatch = new MeasureIt.Reportwatch();
+
+            DoHostWithCallbackInternal(reportWatch, binding, path);
+            reportWatch.Report("ServiceHost ctor");
+            reportWatch.Report("AddServiceEndpoint");
+            reportWatch.Report("Open");
+            reportWatch.Report("ChannelFactory ctor");
+            reportWatch.Report("CreateChannel");
+            reportWatch.Report("Execute");
+            reportWatch.ReportAll();
+        }
+
+        private static void DoHostWithCallbackInternal(Reportwatch reportWatch, Binding binding, string path)
+        {
+            reportWatch.Start("ServiceHost ctor");
+            using (var server = new ServiceHost(new CallbackService(), new Uri(path)))
+            {
+                reportWatch.Stop("ServiceHost ctor");
+
+                reportWatch.Start("AddServiceEndpoint");
+                server.AddServiceEndpoint(typeof(ICallbackService), binding, path);
+                reportWatch.Stop("AddServiceEndpoint");
+
+                reportWatch.Start("Open");
+                server.Open();
+                reportWatch.Stop("Open");
+
+                reportWatch.Start("ChannelFactory ctor");
+                var context = new InstanceContext(new CallbackServiceCallback());
+                using (var channelFactory = new DuplexChannelFactory<ICallbackService>(context, binding))
+                {
+                    reportWatch.Stop("ChannelFactory ctor");
+
+                    reportWatch.Start("CreateChannel");
+                    var client = channelFactory.CreateChannel(new EndpointAddress(path));
+                    reportWatch.Stop("CreateChannel");
+
+                    reportWatch.Start("Execute");
+                    client.Call();
+                    reportWatch.Stop("Execute");
+                }
+            }
+        }
+
 
         [Test]
         public void NamedPipe_byteArray()
@@ -72,29 +128,29 @@ namespace WCF.IntegrationTests
             reportWatch.Start("ServiceHost ctor");
             using (var server = new ServiceHost(new Service(), new Uri("net.pipe://127.0.0.1/testpipename")))
             {
-                reportWatch.stop("ServiceHost ctor");
+                reportWatch.Stop("ServiceHost ctor");
 
                 reportWatch.Start("AddServiceEndpoint");
                 var binding = new NetNamedPipeBinding { MaxConnections = 5 };
                 server.AddServiceEndpoint(typeof(IService), binding, "net.pipe://127.0.0.1/testpipename");
-                reportWatch.stop("AddServiceEndpoint");
+                reportWatch.Stop("AddServiceEndpoint");
 
                 reportWatch.Start("Open");
                 server.Open();
-                reportWatch.stop("Open");
+                reportWatch.Stop("Open");
 
                 reportWatch.Start("ChannelFactory ctor");
                 using (var channelFactory = new ChannelFactory<IService>(binding))
                 {
-                    reportWatch.stop("ChannelFactory ctor");
+                    reportWatch.Stop("ChannelFactory ctor");
 
                     reportWatch.Start("CreateChannel");
                     var client = channelFactory.CreateChannel(new EndpointAddress("net.pipe://127.0.0.1/testpipename"));
-                    reportWatch.stop("CreateChannel");
+                    reportWatch.Stop("CreateChannel");
 
                     reportWatch.Start("Execute");
                     client.Execute(new byte[0]);
-                    reportWatch.stop("Execute");
+                    reportWatch.Stop("Execute");
                 }
             }
             reportWatch.Report("ServiceHost ctor");
@@ -123,29 +179,29 @@ namespace WCF.IntegrationTests
             reportWatch.Start("ServiceHost ctor");
             using (var server = new ServiceHost(new Service2(), new Uri("net.pipe://127.0.0.1/testpipename")))
             {
-                reportWatch.stop("ServiceHost ctor");
+                reportWatch.Stop("ServiceHost ctor");
 
                 reportWatch.Start("AddServiceEndpoint");
                 var binding = new NetNamedPipeBinding { MaxConnections = 5 };
                 server.AddServiceEndpoint(typeof(IService2), binding, "net.pipe://127.0.0.1/testpipename");
-                reportWatch.stop("AddServiceEndpoint");
+                reportWatch.Stop("AddServiceEndpoint");
 
                 reportWatch.Start("Open");
                 server.Open();
-                reportWatch.stop("Open");
+                reportWatch.Stop("Open");
 
                 reportWatch.Start("ChannelFactory ctor");
                 using (var channelFactory = new ChannelFactory<IService2>(binding))
                 {
-                    reportWatch.stop("ChannelFactory ctor");
+                    reportWatch.Stop("ChannelFactory ctor");
 
                     reportWatch.Start("CreateChannel");
                     var client = channelFactory.CreateChannel(new EndpointAddress("net.pipe://127.0.0.1/testpipename"));
-                    reportWatch.stop("CreateChannel");
+                    reportWatch.Stop("CreateChannel");
 
                     reportWatch.Start("Execute");
                     client.Execute2(new byte[0]);
-                    reportWatch.stop("Execute");
+                    reportWatch.Stop("Execute");
                 }
             }
         }

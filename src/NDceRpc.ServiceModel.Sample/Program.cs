@@ -62,14 +62,14 @@ namespace NDceRpc.ServiceModel.Sample
 
         public void Call()
         {
-            var callback = RpcOperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
+            var callback = OperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
             callback.OnOneWayCallback();
         }
 
         public void CallOneWay(CallData message)
         {
-            var callback = RpcOperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
-            ConsoleEx.SrvWriteLine(message + " from " + RpcOperationContext.Current.SessionId);
+            var callback = OperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
+            ConsoleEx.SrvWriteLine(message + " from " + OperationContext.Current.SessionId);
             callback.OnCallback(_data);
         }
     }

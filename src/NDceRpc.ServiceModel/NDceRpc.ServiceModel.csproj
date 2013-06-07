@@ -8,7 +8,7 @@
     <ProjectGuid>{9E2CB913-5E64-436A-ADDD-6E3028F797F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NDceRpc.ServiceModel</RootNamespace>
+    <RootNamespace>NDceRpc</RootNamespace>
     <AssemblyName>NDceRpc.ServiceModel</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -38,7 +38,10 @@
     <Reference Include="Microsoft.Practices.Unity.Interception">
       <HintPath>..\..\packages\Unity.2.0\lib\20\Microsoft.Practices.Unity.Interception.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NDceRpc.ServiceModel.Protobuf.Serializers, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\build\$(Configuration)\NDceRpc.ServiceModel.Protobuf.Serializers.dll</HintPath>
+    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\..\packages\protobuf-net.2.0.0.621\lib\net35\protobuf-net.dll</HintPath>
     </Reference>
@@ -56,51 +59,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncOperationDispatch.cs" />
-    <Compile Include="ChannelFactory.cs" />
-    <Compile Include="Custom\PipeServer.cs" />
-    <Compile Include="ExceptionHandler.cs" />
-    <Compile Include="LocalBinding.cs" />
-    <Compile Include="OperationDispatchBase.cs" />
-    <Compile Include="DispatchFactory.cs" />
-    <Compile Include="EndpointMapper.cs" />
-    <Compile Include="BinaryObjectSerializer.cs" />
-    <Compile Include="GuidUtility.cs" />
-    <Compile Include="IErrorHander.cs" />
-    <Compile Include="RpcTrace.cs" />
-    <Compile Include="Tasks.cs" />
-    <Compile Include="TestClasses.cs" />
-    <Compile Include="TransportFactory.cs" />
-    <Compile Include="Chanells\RpcErrorData.cs" />
-    <Compile Include="RpcServiceDefaults.cs" />
-    <Compile Include="ErrorHandler.cs" />
-    <Compile Include="OperationDispatch.cs" />
-    <Compile Include="ProtobufObjectSerializer.cs" />
-    <Compile Include="ProxyEmit.cs" />
-    <Compile Include="Binding.cs" />
-    <Compile Include="RpcCallbackChannelFactory.cs" />
-    <Compile Include="CallbackServiceHost.cs" />
-    <Compile Include="ChannelFactoryGeneric.cs" />
-    <Compile Include="DuplexChannelFactory.cs" />
-    <Compile Include="EndpointAddress.cs" />
-    <Compile Include="InstanceContext.cs" />
-    <Compile Include="NetNamedPipeBinding.cs" />
-    <Compile Include="RpcOperationContext.cs" />
-    <Compile Include="ServiceEndpoint.cs" />
-    <Compile Include="ServiceHost.cs" />
-    <Compile Include="Chanells\MessageResponse.cs" />
-    <Compile Include="Chanells\RpcParamData.cs" />
-    <Compile Include="ParameterDispatch.cs" />
+    <Compile Include="ServiceModel\AsyncOperationDispatch.cs" />
+    <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
+    <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
+    <Compile Include="ServiceModel\ChannelFactory.cs" />
+    <Compile Include="ServiceModel\Custom\PipeServer.cs" />
+    <Compile Include="ServiceModel\ExceptionHandler.cs" />
+    <Compile Include="ServiceModel\LocalBinding.cs" />
+    <Compile Include="ServiceModel\NetTcpBinding.cs" />
+    <Compile Include="ServiceModel\OperationDispatchBase.cs" />
+    <Compile Include="ServiceModel\DispatchFactory.cs" />
+    <Compile Include="ServiceModel\EndpointMapper.cs" />
+    <Compile Include="Serialization\BinaryObjectSerializer.cs" />
+    <Compile Include="ServiceModel\GuidUtility.cs" />
+    <Compile Include="ServiceModel\IErrorHander.cs" />
+    <Compile Include="ServiceModel\RpcTrace.cs" />
+    <Compile Include="ServiceModel\Tasks.cs" />
+    <Compile Include="ServiceModel\TransportFactory.cs" />
+    <Compile Include="ServiceModel\RpcServiceDefaults.cs" />
+    <Compile Include="ServiceModel\ErrorHandler.cs" />
+    <Compile Include="ServiceModel\OperationDispatch.cs" />
+    <Compile Include="Serialization\ProtobufObjectSerializer.cs" />
+    <Compile Include="ServiceModel\ProxyEmit.cs" />
+    <Compile Include="ServiceModel\Binding.cs" />
+    <Compile Include="ServiceModel\RpcCallbackChannelFactory.cs" />
+    <Compile Include="ServiceModel\CallbackServiceHost.cs" />
+    <Compile Include="ServiceModel\ChannelFactoryGeneric.cs" />
+    <Compile Include="ServiceModel\DuplexChannelFactory.cs" />
+    <Compile Include="ServiceModel\EndpointAddress.cs" />
+    <Compile Include="ServiceModel\InstanceContext.cs" />
+    <Compile Include="ServiceModel\NetNamedPipeBinding.cs" />
+    <Compile Include="ServiceModel\OperationContext.cs" />
+    <Compile Include="ServiceModel\ServiceEndpoint.cs" />
+    <Compile Include="ServiceModel\ServiceHost.cs" />
+    <Compile Include="ServiceModel\ParameterDispatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RpcServerStub.cs" />
-    <Compile Include="Chanells\MessageRequest.cs" />
-    <Compile Include="RpcProxy.cs" />
-    <Compile Include="ServiceHostBase.cs" />
-    <Compile Include="RpcStub.cs" />
-    <Compile Include="Transports.cs" />
-    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="ServiceModel\RpcServerStub.cs" />
+    <Compile Include="ServiceModel\RpcProxy.cs" />
+    <Compile Include="ServiceModel\ServiceHostBase.cs" />
+    <Compile Include="ServiceModel\RpcStub.cs" />
+    <Compile Include="ServiceModel\Transports.cs" />
+    <Compile Include="ServiceModel\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NDceRpc.ServiceModel.Protobuf\NDceRpc.ServiceModel.Protobuf.csproj">
+      <Project>{C5FE9181-0F91-4868-A886-D573BBB4251A}</Project>
+      <Name>NDceRpc.ServiceModel.Protobuf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NDceRpc\NDceRpc.csproj">
       <Project>{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}</Project>
       <Name>NDceRpc</Name>
@@ -111,7 +116,16 @@
       <Link>NDceRpc.snk</Link>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>::cd $(ProjectDir)
+::C:\ci\co\CommonOffice\src\NDceRpc\tools\protobuf-net-VS9\protogen.exe  -i:"$(ProjectDir)Messages.proto" -o:"$(ProjectDir)Messages.proto.cs" -p:datacontract</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

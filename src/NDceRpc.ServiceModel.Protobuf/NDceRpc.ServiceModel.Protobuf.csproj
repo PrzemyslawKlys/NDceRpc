@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C5FE9181-0F91-4868-A886-D573BBB4251A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NDceRpc.ServiceModel.Chanells</RootNamespace>
+    <AssemblyName>NDceRpc.ServiceModel.Protobuf</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\build\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\build\Release\NDceRpc.ServiceModel.Protobuf.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\NDceRpc.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="protobuf-net, Version=2.0.0.621, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\protobuf-net.2.0.0.621\lib\net35\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MessageRequest.cs" />
+    <Compile Include="MessageResponse.cs" />
+    <Compile Include="Messages.proto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RpcErrorData.cs" />
+    <Compile Include="RpcParamData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\NDceRpc.snk">
+      <Link>NDceRpc.snk</Link>
+    </None>
+    <None Include="Messages.proto" />
+    <None Include="protogen.bat" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(ProjectDir)..\..\tools\protobuf-net r640\Precompile\precompile.exe" "$(TargetPath)" -o:NDceRpc.ServiceModel.Protobuf.Serializers.dll -t:Messages -f:.NETFramework\v3.5\Profile\Client
+ILDASM.exe "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /OUTPUT=NDceRpc.ServiceModel.Protobuf.Serializers.dll.il
+copy "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.original"
+"$(ProjectDir)..\..\tools\Framework\v2.0.50727\ilasm.exe"   "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.il" /DLL /OUTPUT="$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /KEY="$(ProjectDir)..\..\NDceRpc.snk"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

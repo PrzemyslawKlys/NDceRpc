@@ -39,13 +39,13 @@ namespace NDceRpc.ServiceModel.Test
         {
             public void OneWayExecute()
             {
-                var callback = RpcOperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
+                var callback = OperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
                 callback.OneWayCall();
             }
 
             public void Execute()
             {
-                var callback = RpcOperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
+                var callback = OperationContext.Current.GetCallbackChannel<ICallbackServiceCallback>();
                 callback.OneWayCall();
             }
         }

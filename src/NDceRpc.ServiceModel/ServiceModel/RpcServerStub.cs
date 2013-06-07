@@ -69,9 +69,8 @@ namespace NDceRpc.ServiceModel
 
         private void SetupOperationConext(IRpcCallInfo call,MessageRequest request, Type contractType)
         {
-            OperationContext.Current = new OperationContext();
+            OperationContext.Current = new OperationContext {SessionId = request.Session};
 
-            OperationContext.Current.SessionId = request.Session;
             if (request.Session != null)
             {
                 if (_duplex)

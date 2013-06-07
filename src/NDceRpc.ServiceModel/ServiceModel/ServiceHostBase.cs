@@ -12,7 +12,7 @@ namespace NDceRpc.ServiceModel
     /// <summary>
     /// 
     /// </summary>
-    public class ServiceHostBase : ICommunicationObject,IDisposable
+    public class ServiceHostBase : ICommunicationObject, IDisposable
     {
         private TimeSpan closeTimeout = RpcServiceDefaults.ServiceHostCloseTimeout;
 
@@ -89,42 +89,47 @@ namespace NDceRpc.ServiceModel
             if (State == CommunicationState.Opened)
                 throw new InvalidOperationException(
                     "The communication object, System.ServiceModel.ServiceHost, cannot be modified while it is in the Opened state.");
-
-            ThreadPool.QueueUserWorkItem(x =>
+           Action open =  delegate
                 {
                     try
                     {
                         if (_host == null)
                         {
                             RpcExecuteHandler onExecute =
-    delegate(IRpcCallInfo client, byte[] arg)
-    {
+                                delegate(IRpcCallInfo client, byte[] arg)
+                                    {
+                                        if (_concurrency == ConcurrencyMode.Single)
+                                        {
+                                            lock (_serverStub)
+                                            {
+                                                _operationPending.Reset();
+                                                try
+                                                {
+                                                    return DoRequest(client, _endpoint._contractType, arg);
+                                                }
+                                                finally
+                                                {
+                                                    _operationPending.Set();
+                                                }
+                                            }
+                                        }
+                                        if (_concurrency == ConcurrencyMode.Multiple)
+                                        {
+                                            //BUG: need have collection of operations because second operation rewrites state of first
+                                            _operationPending.Reset();
+                                            try
+                                            {
+                                                return DoRequest(client, _endpoint._contractType, arg);
+                                            }
+                                            finally
+                                            {
+                                                _operationPending.Set();
+                                            }
+                                        }
 
-        if (_concurrency == ConcurrencyMode.Single)
-        {
-            lock (_serverStub)
-            {
-                _operationPending.Reset();
-                try
-                {
-                    return DoRequest(client, _endpoint._contractType, arg);
-                }
-                finally
-                {
-                    _operationPending.Set();
-                }
-            }
-        }
-        _operationPending.Reset();
-        try
-        {
-            return DoRequest(client, _endpoint._contractType, arg);
-        }
-        finally
-        {
-            _operationPending.Set();
-        }
-    };
+                                        throw new NotImplementedException(
+                                            string.Format("ConcurrencyMode {0} is note implemented", _concurrency));
+                                    };
                             _host = TransportFactory.CreateHost(_endpoint._binding, _endpoint._address, _endpoint._uuid);
                             //TODO: make GC root disposable
                             lock (_gcRoot.SyncRoot)
@@ -143,8 +148,8 @@ namespace NDceRpc.ServiceModel
                         bool handled = ExceptionHandler.AlwaysHandle.HandleException(ex);
                         if (!handled) throw;
                     }
-
-                });
+                };
+           Tasks.Factory.StartNew(open);
             _opened.WaitOne();
             State = CommunicationState.Opened;
         }

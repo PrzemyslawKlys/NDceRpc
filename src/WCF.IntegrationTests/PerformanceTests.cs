@@ -35,13 +35,13 @@ namespace WCF.IntegrationTests
         public void NamedPipe_byteArray()
         {
 
-            using (var server = new System.ServiceModel.ServiceHost(new Service(), new Uri("net.pipe://127.0.0.1/testpipename")))
+            using (var server = new ServiceHost(new Service(), new Uri("net.pipe://127.0.0.1/testpipename")))
             {
-                var binding = new System.ServiceModel.NetNamedPipeBinding {MaxConnections = 5};
+                var binding = new NetNamedPipeBinding {MaxConnections = 5};
                 server.AddServiceEndpoint(typeof(IService),binding, "net.pipe://127.0.0.1/testpipename");
                 server.Open();
                 Thread.Sleep(100);
-                using (var channelFactory = new System.ServiceModel.ChannelFactory<IService>(binding))
+                using (var channelFactory = new ChannelFactory<IService>(binding))
                 {
 
                     var client = channelFactory.CreateChannel(new EndpointAddress("net.pipe://127.0.0.1/testpipename"));

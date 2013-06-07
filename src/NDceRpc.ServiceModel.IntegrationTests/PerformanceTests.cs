@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.ServiceModel;
+
 using System.Threading;
 using NUnit.Framework;
 
@@ -12,15 +12,15 @@ namespace NDceRpc.ServiceModel.Test
     public class PerformanceTests
     {
 
-        [ServiceContract]
+        [ System.ServiceModel.ServiceContract]
         [Guid("11B688EC-5F06-4AE4-AA0A-2895BB125FE7")]
         public interface IService 
         {
-            [OperationContract(IsOneWay = false)]
+            [System.ServiceModel.OperationContract(IsOneWay = false)]
             byte[] Execute(byte[] arg);
         }
 
-        [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+        [System.ServiceModel.ServiceBehavior(InstanceContextMode = System.ServiceModel.InstanceContextMode.Single)]
         private class Service : IService
         {
             public byte[] Execute(byte[] arg)
@@ -31,17 +31,48 @@ namespace NDceRpc.ServiceModel.Test
 
 
         [Test]
-        public void TestPerformanceOnNamedPipe()
+        public void NamedPipe_byteArray()
         {
-            var uri = @"net.pipe://127.0.0.1/testpipename" + MethodBase.GetCurrentMethod().Name;
-            using (var server = new NDceRpc.ServiceModel.ServiceHost(new Service(), uri))
+
+            using (var server = new ServiceHost(new Service(), new Uri("net.pipe://127.0.0.1/testpipename")))
             {
-                server.AddServiceEndpoint(typeof(IService), new NDceRpc.ServiceModel.NetNamedPipeBinding { MaxConnections = 5 },
-                                          uri);
+                var binding = new NetNamedPipeBinding { MaxConnections = 5 };
+                server.AddServiceEndpoint(typeof(IService), binding, "net.pipe://127.0.0.1/testpipename");
                 server.Open();
-                using (
-                    var channelFactory = new ChannelFactory<IService>(new NetNamedPipeBinding {MaxConnections = 5})
-                    )
+                Thread.Sleep(100);
+                using (var channelFactory = new ChannelFactory<IService>(binding))
+                {
+
+                    var client = channelFactory.CreateChannel(new EndpointAddress("net.pipe://127.0.0.1/testpipename"));
+                    client.Execute(new byte[0]);
+
+                    byte[] bytes = new byte[512];
+                    new Random().NextBytes(bytes);
+
+                    Stopwatch timer = new Stopwatch();
+                    timer.Start();
+
+                    for (int i = 0; i < 5000; i++)
+                        client.Execute(bytes);
+
+                    timer.Stop();
+                    Trace.WriteLine(timer.ElapsedMilliseconds.ToString() + " ms", MethodBase.GetCurrentMethod().Name);
+                }
+            }
+        }
+
+
+        [Test]
+        public void Ipc_byteArray()
+        {
+            var uri = "ipc:///" + MethodBase.GetCurrentMethod().Name;
+            using (var server = new ServiceHost(new Service(), new Uri(uri)))
+            {
+                var binding = new LocalBinding { MaxConnections = 5 };
+                server.AddServiceEndpoint(typeof(IService), binding, uri);
+                server.Open();
+                Thread.Sleep(100);
+                using (var channelFactory = new ChannelFactory<IService>(binding))
                 {
 
                     var client = channelFactory.CreateChannel(new EndpointAddress(uri));
@@ -57,12 +88,9 @@ namespace NDceRpc.ServiceModel.Test
                         client.Execute(bytes);
 
                     timer.Stop();
-                    Trace.WriteLine(timer.ElapsedMilliseconds.ToString(), "ncacn_np-timming");
+                    Trace.WriteLine(timer.ElapsedMilliseconds.ToString() + " ms", MethodBase.GetCurrentMethod().Name);
                 }
             }
         }
-
-
-        
     }
 }

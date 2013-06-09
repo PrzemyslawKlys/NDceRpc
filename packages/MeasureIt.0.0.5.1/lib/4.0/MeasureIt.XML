@@ -73,21 +73,6 @@
             See <see cref="T:System.Environment"/>.
             </remarks>
         </member>
-        <member name="T:MeasureIt.CompositeSpeedTester">
-            <summary>
-            Runs speed bucket of test several times in order to make speed tests more statistially indpendant of random fluctioations.
-            </summary>
-        </member>
-        <member name="P:MeasureIt.CompositeSpeedTester.Entities">
-            <summary>
-            Test
-            </summary>
-        </member>
-        <member name="F:MeasureIt.SpeedTester.DEFAULT_NUMBER_OF_SHUFFLES">
-            <summary>
-            How many times to shuffle and run inner tests.
-            </summary>
-        </member>
         <member name="T:MeasureIt.ExpressIt">
             <summary>
             Creates "statically typed" automatically inferred string representations of properties,variables and methods.
@@ -138,6 +123,21 @@
             </summary>
             <param name="obj"></param>
             <returns></returns>
+        </member>
+        <member name="T:MeasureIt.CompositeSpeedTester">
+            <summary>
+            Runs speed bucket of test several times in order to make speed tests more statistially indpendant of random fluctioations.
+            </summary>
+        </member>
+        <member name="P:MeasureIt.CompositeSpeedTester.Entities">
+            <summary>
+            Test
+            </summary>
+        </member>
+        <member name="F:MeasureIt.SpeedTester.DEFAULT_NUMBER_OF_SHUFFLES">
+            <summary>
+            How many times to shuffle and run inner tests.
+            </summary>
         </member>
     </members>
 </doc>

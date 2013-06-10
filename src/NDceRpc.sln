@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Protob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignTests", "DesignTests\DesignTests.csproj", "{B54F506E-35D7-4AF7-9F51-A996F4814A62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAlpc", "NAlpc\NAlpc.csproj", "{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -235,6 +237,18 @@ Global
 		{B54F506E-35D7-4AF7-9F51-A996F4814A62}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B54F506E-35D7-4AF7-9F51-A996F4814A62}.Release|Win32.ActiveCfg = Release|Any CPU
 		{B54F506E-35D7-4AF7-9F51-A996F4814A62}.Release|x86.ActiveCfg = Release|Any CPU
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Debug|Win32.ActiveCfg = Debug|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Debug|x86.ActiveCfg = Debug|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Debug|x86.Build.0 = Debug|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Release|Any CPU.ActiveCfg = Release|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Release|Mixed Platforms.Build.0 = Release|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Release|Win32.ActiveCfg = Release|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Release|x86.ActiveCfg = Release|x86
+		{5B372ACF-4B8B-4DB3-ACB3-66C31146C2F5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

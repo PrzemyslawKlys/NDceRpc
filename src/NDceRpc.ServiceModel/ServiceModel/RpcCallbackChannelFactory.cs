@@ -8,7 +8,7 @@ namespace NDceRpc.ServiceModel
         private Type _type;
         private readonly Guid _session;
         private readonly bool _callback;
-        private RpcProxy _client;
+        private RpcProxyRouter _client;
 
         public RpcCallbackChannelFactory(Binding binding, Type typeOfService,Guid session, bool callback = false)
         {
@@ -21,7 +21,7 @@ namespace NDceRpc.ServiceModel
         public TService CreateChannel<TService>(EndpointAddress createEndpoint)
         {
             if (_client == null)
-                _client = new RpcProxy(createEndpoint.Uri, _type, _binding, false, null, _session);
+                _client = new RpcProxyRouter(createEndpoint.Uri, _type, _binding, false, null, _session);
             return (TService)_client.Channell;
         }
 

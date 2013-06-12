@@ -8,7 +8,7 @@ namespace NDceRpc.ServiceModel
         private Binding _binding;
         private Type _type;
         private readonly bool _callback;
-        private RpcProxy _proxy;
+        private RpcProxyRouter _proxyRouter;
 
         public ChannelFactory(Binding binding, Type typeOfService, bool callback = false)
         {
@@ -19,14 +19,14 @@ namespace NDceRpc.ServiceModel
 
         public TService CreateChannel<TService>(EndpointAddress createEndpoint)
         {
-            if (_proxy== null)
-                _proxy = new RpcProxy(createEndpoint.Uri, _type, _binding,_callback);
-            return (TService)_proxy.Channell;
+            if (_proxyRouter== null)
+                _proxyRouter = new RpcProxyRouter(createEndpoint.Uri, _type, _binding,_callback);
+            return (TService)_proxyRouter.Channell;
         }
 
         public void Dispose()
         {
-            _proxy.Close(_binding.CloseTimeout);
+            _proxyRouter.Close(_binding.CloseTimeout);
         }
 
         public void Abort()
@@ -36,7 +36,7 @@ namespace NDceRpc.ServiceModel
 
         public void Close()
         {
-            _proxy.Close(_binding.CloseTimeout);
+            _proxyRouter.Close(_binding.CloseTimeout);
         }
 
         public void Close(TimeSpan timeout)

@@ -12,7 +12,7 @@ namespace NDceRpc.ServiceModel
 
         public ParameterDispatch(ParameterInfo parameterInfo)
         {
-            _identifier = parameterInfo.MetadataToken;
+            _identifier = parameterInfo.Position;
             Info = parameterInfo;
         }
 

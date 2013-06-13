@@ -6,9 +6,6 @@ using System.ServiceModel;
 
 namespace NDceRpc.ServiceModel
 {
-
-    public class DispatchTable : Dictionary<int, OperationDispatchBase>{}
-
     public static class DispatchFactory
     {
         private static Dictionary<Type, DispatchTable> _cache = new Dictionary<Type, DispatchTable>();

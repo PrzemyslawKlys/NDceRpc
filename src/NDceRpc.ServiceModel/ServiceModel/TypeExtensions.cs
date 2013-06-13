@@ -31,7 +31,7 @@ namespace NDceRpc.ServiceModel
             return GetAllImplementations(t).Where(x => x.GetCustomAttributes(typeof (OperationContractAttribute),true).Length !=0 ).ToArray();
         }
 
-        public static T GetCustomAttribute<T>(MethodInfo methodInfo)
+        public static T GetCustomAttribute<T>(MethodBase methodInfo)
         {
             return (T) (methodInfo.GetCustomAttributes(typeof (T), false).SingleOrDefault());
         }

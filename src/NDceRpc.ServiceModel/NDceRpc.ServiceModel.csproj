@@ -62,6 +62,7 @@
     <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
     <Compile Include="ServiceModel\ChannelFactory.cs" />
     <Compile Include="ServiceModel\Custom\PipeServer.cs" />
+    <Compile Include="ServiceModel\DispatchTable.cs" />
     <Compile Include="ServiceModel\ExceptionHandler.cs" />
     <Compile Include="ServiceModel\LocalBinding.cs" />
     <Compile Include="ServiceModel\NetTcpBinding.cs" />

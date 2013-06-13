@@ -5,14 +5,17 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.Threading;
+using NDceRpc.ExplicitBytes;
 using NDceRpc.ServiceModel.Channels;
 
 namespace NDceRpc.ServiceModel
 {
+
+
     public class RpcServerStub : RpcStub
     {
-        private readonly Type _contractType;
-        private readonly EndpointBindingInfo _address;
+
+        //private readonly EndpointBindingInfo _address;
         private readonly bool _duplex;
         private readonly SynchronizationContext _syncContext;
 
@@ -20,15 +23,14 @@ namespace NDceRpc.ServiceModel
         private OperationContext _noOp = new OperationContext();
 
 
-        public RpcServerStub(object singletonService, EndpointBindingInfo address, Binding binding, bool duplex = false,SynchronizationContext syncContext = null )
-            : base(singletonService, binding)
+        public RpcServerStub(object singletonService, ServiceEndpoint endpoint, bool duplex = false, SynchronizationContext syncContext = null)
+            : base(singletonService, endpoint)
         {
-            _address = address;
             _duplex = duplex;
             _syncContext = syncContext;
         }
 
-        public MessageResponse Invoke(IRpcCallInfo call, MessageRequest request, Type contractType)
+        private MessageResponse InvokeContract(IRpcCallInfo call, MessageRequest request, Type contractType)
         {
             SetupOperationConext(call, request, contractType);
 
@@ -57,13 +59,88 @@ namespace NDceRpc.ServiceModel
 
             return response;
         }
+        private ManualResetEvent _opened = new ManualResetEvent(false);
+        protected IExplicitBytesServer _host;
+        private ManualResetEvent _operationPending = new ManualResetEvent(true);
+        private ConcurrencyMode _concurrency;
+
+        internal void Open(ConcurrencyMode concurrency)
+        {
+            _concurrency = concurrency;
+            Action open = delegate
+            {
+                try
+                {
+                    if (_host == null)
+                    {
+                        RpcExecuteHandler onExecute =
+                            delegate(IRpcCallInfo client, byte[] arg)
+                            {
+                                if (_concurrency == ConcurrencyMode.Single)
+                                {
+                                    lock (this)
+                                    {
+                                        _operationPending.Reset();
+                                        try
+                                        {
+                                            return Invoke(client, _endpoint._contractType, arg);
+                                        }
+                                        finally
+                                        {
+                                            _operationPending.Set();
+                                        }
+                                    }
+                                }
+                                if (_concurrency == ConcurrencyMode.Multiple)
+                                {
+                                    //BUG: need have collection of operations because second operation rewrites state of first
+                                    _operationPending.Reset();
+                                    try
+                                    {
+                                        return Invoke(client, _endpoint._contractType, arg);
+                                    }
+                                    finally
+                                    {
+                                        _operationPending.Set();
+                                    }
+                                }
+
+                                throw new NotImplementedException(
+                                    string.Format("ConcurrencyMode {0} is note implemented", _concurrency));
+                            };
+                        _host = TransportFactory.CreateHost(_endpoint._binding, _endpoint._address, _endpoint._uuid);
+
+
+                        _host.OnExecute += onExecute;
+                        _host.StartListening();
+                    }
+                    _opened.Set();
+                }
+                catch (Exception ex)
+                {
+                    bool handled = ExceptionHandler.AlwaysHandle.HandleException(ex);
+                    if (!handled) throw;
+                }
+            };
+            Tasks.Factory.StartNew(open);
+            _opened.WaitOne();
+        }
+
+        public byte[] Invoke(IRpcCallInfo call, Type contractType, byte[] arg)
+        {
+            var messageRequest = (MessageRequest)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(arg), typeof(MessageRequest));
+            MessageResponse response = InvokeContract(call, messageRequest, contractType);
+            var stream = new MemoryStream();
+            ProtobufMessageEncodingBindingElement.WriteObject(stream, response);
+            return stream.ToArray();
+        }
 
         private void EnrichResponceWithReturn(OperationDispatchBase operation, object result, MessageResponse response)
         {
-            if (operation.MethodInfo.ReturnType != typeof (void) && operation.GetType() != typeof (AsyncOperationDispatch))
+            if (operation.MethodInfo.ReturnType != typeof(void) && operation.GetType() != typeof(AsyncOperationDispatch))
             {
                 var stream = new MemoryStream();
-                _serializer.WriteObject(stream, result);
+                _endpoint._binding.Serializer.WriteObject(stream, result);
                 response.Data = stream.ToArray();
             }
         }
@@ -93,7 +170,7 @@ namespace NDceRpc.ServiceModel
                 RpcParamData pData = request.Data[i];
                 var map = operation.Params[pData.Identifier];
                 var type = map.Info.ParameterType;
-                var obj = _serializer.ReadObject(new MemoryStream(pData.Data), type);
+                var obj = _endpoint._binding.Serializer.ReadObject(new MemoryStream(pData.Data), type);
                 args.Add(obj);
             }
             return args;
@@ -116,12 +193,12 @@ namespace NDceRpc.ServiceModel
                             var contract =
                                 contractType.GetCustomAttributes(typeof(ServiceContractAttribute), false).Single() as
                                 ServiceContractAttribute;
-                            channelFactory = new RpcCallbackChannelFactory(_binding,
+                            channelFactory = new RpcCallbackChannelFactory(_endpoint._binding,
                                                                            contract.CallbackContract, new Guid(request.Session),
                                                                            true);
                             _clients[request.Session] = channelFactory;
                         }
-                        var callbackBindingInfo = (EndpointBindingInfo)_address.Clone();
+                        var callbackBindingInfo = EndpointMapper.WcfToRpc(_endpoint._address);
                         if (!call.IsClientLocal)
                         {
                             //BUG: callbacks accross network does not work
@@ -132,6 +209,16 @@ namespace NDceRpc.ServiceModel
                         OperationContext.Current.SetGetter(_clients[request.Session], EndpointMapper.RpcToWcf(callbackBindingInfo));
                     }
                 }
+            }
+        }
+
+        internal void Dispose(TimeSpan CloseTimeout)
+        {
+            if (_host != null)
+            {
+                _operationPending.WaitOne(CloseTimeout);
+                _host.Dispose();
+                _host = null;
             }
         }
     }

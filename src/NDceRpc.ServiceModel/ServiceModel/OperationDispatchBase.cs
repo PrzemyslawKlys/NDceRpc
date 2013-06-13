@@ -20,18 +20,25 @@ namespace NDceRpc.ServiceModel
             MethodInfo = methodInfo;
         }
 
-        protected void SetIdentifier(MethodInfo methodInfo)
+
+        public static  int GetIdentifier(MethodBase methodInfo)
         {
             var dispatchId = TypeExtensions.GetCustomAttribute<DispIdAttribute>(methodInfo);
             if (dispatchId == null)
             {
-                _identifier = methodInfo.MetadataToken;
+               return methodInfo.MetadataToken;
             }
             else
             {
-                _identifier = dispatchId.Value;
+              return dispatchId.Value;
             }
         }
+
+        protected void SetIdentifier(MethodInfo methodInfo)
+        {
+            _identifier = GetIdentifier(methodInfo);
+        }
+
 
         public MethodInfo MethodInfo { get; set; }
         public OperationContractAttribute Operation { get; set; }

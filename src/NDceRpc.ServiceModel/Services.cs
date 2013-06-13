@@ -90,4 +90,49 @@ namespace NDceRpc.ServiceModel.Test
         public double d2 { get; set; }
 
     }
+
+    [ServiceContract]
+
+    public interface IInheritanceService : IBaseService,IDisposable
+    {
+
+        [OperationContract(IsOneWay = false)]
+        void Do();
+
+
+
+    }
+
+    [ServiceContract]
+
+    public interface IBaseService : IDisposable
+    {
+
+        [OperationContract(IsOneWay = false)]
+        void DoBase();
+
+
+
+    }
+
+    public class InheritanceService : IInheritanceService
+    {
+        
+
+
+        public void Do()
+        {
+           
+        }
+
+        public void Dispose()
+        {
+            
+        }
+
+        public void DoBase()
+        {
+                
+        }
+    }
 }

@@ -55,6 +55,40 @@ namespace NDceRpc.ServiceModel.Test
         }
 
         [Test]
+        public void InterfaceInheritance()
+        {
+            var address = @"ipc:///test" + MethodBase.GetCurrentMethod().Name;
+            var serv = new InheritanceService();
+            var host = new ServiceHost(serv, address);
+            var b = new LocalBinding();
+            host.AddServiceEndpoint(typeof(IInheritanceService), b, address);
+            host.Open();
+            var f = new ChannelFactory<IInheritanceService>(b);
+            var c = f.CreateChannel(new EndpointAddress(address));
+            c.Do();
+            c.DoBase();
+
+            host.Dispose();
+        }
+
+        [Test]
+        public void LocalChannelICommuicationObject()
+        {
+            var address = @"ipc:///test" + MethodBase.GetCurrentMethod().Name;
+            var serv = new Service(null);
+            var host = new ServiceHost(serv, address);
+            var b = new LocalBinding();
+            host.AddServiceEndpoint(typeof(IService), b, address);
+            host.Open();
+            var f = new ChannelFactory<IService>(b);
+            var c = f.CreateChannel(new EndpointAddress(address));
+            var obj = c as ICommunicationObject;
+            var state = obj.State; 
+            Assert.AreEqual(CommunicationState.Opened,state);
+            host.Dispose();
+        }
+
+        [Test]
         public void LongLocalName()
         {
             var address = @"ipc:///1/test.test/testtestLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNameLongNamefd0286a60b9b4db18659-b715e5db5b3bd0286a6-0b9b-4db1-8659-b715e5db5b3b";

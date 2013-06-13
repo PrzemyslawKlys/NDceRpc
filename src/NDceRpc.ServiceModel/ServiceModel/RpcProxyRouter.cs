@@ -17,14 +17,17 @@ using NDceRpc.ServiceModel.Channels;
 
 namespace NDceRpc.ServiceModel
 {
+    internal class Operations : Dictionary<int, OperationDispatchBase>
+    {
 
+    }
     public class RpcProxyRouter : IDisposable
     {
         private object _service;
         private IExplicitBytesClient _client;
         private RpcServerStub _dipatcher;
         private object _remote;
-        private Dictionary<int, OperationDispatchBase> _operations = new Dictionary<int, OperationDispatchBase>();
+        private DispatchTable _operations = new DispatchTable();
         private string _session;
         private BinaryObjectSerializer _serializer;
         private Type _typeOfService;
@@ -38,7 +41,7 @@ namespace NDceRpc.ServiceModel
         private SynchronizationContext _syncContext;
 
         //TODO: split RpcProxyRouter and RpcCallbackProxy
-        public RpcProxyRouter(string address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid),Type generatedProxyType = null)
+        public RpcProxyRouter(string address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid), Type generatedProxyType = null)
         {
             _serializer = binding.Serializer;
             _typeOfService = typeOfService;
@@ -61,8 +64,8 @@ namespace NDceRpc.ServiceModel
             }
 
             //TODO: got to Mono and reuse their approach for WCF
-        
-          
+
+
             var serviceContract = _typeOfService.GetCustomAttributes(typeof(ServiceContractAttribute), false).SingleOrDefault() as ServiceContractAttribute;
             //TODO: null check only for duplex callback, really should always be here
             if (serviceContract != null && serviceContract.SessionMode == SessionMode.Required)
@@ -70,7 +73,7 @@ namespace NDceRpc.ServiceModel
                 _session = Guid.NewGuid().ToString();
             }
             //TODO: allow to be initialized with pregenerated proxy
-            var realProxy = new RpcRealProxy(_typeOfService,this);;
+            var realProxy = new RpcRealProxy(_typeOfService, this); ;
             _remote = realProxy.GetTransparentProxy();
             _client = TransportFactory.CreateClient(_binding, _uuid, _address);
 
@@ -79,13 +82,14 @@ namespace NDceRpc.ServiceModel
 
         internal class RpcRealProxy : RealProxy, System.Runtime.Remoting.IRemotingTypeInfo, IChannel, ICommunicationObject
         {
-     
+
 
             private readonly Type _service;
             private readonly RpcProxyRouter _router;
             private string _typeName;
 
-            public RpcRealProxy(Type service,RpcProxyRouter router):base(service)
+            public RpcRealProxy(Type service, RpcProxyRouter router)
+                : base(service)
             {
                 _service = service;
                 _router = router;
@@ -94,151 +98,169 @@ namespace NDceRpc.ServiceModel
 
             public override IMessage Invoke(IMessage msg)
             {
-                IMethodCallMessage input = (IMethodCallMessage) msg;
+
+                IMethodCallMessage input = (IMethodCallMessage)msg;
+
+
                 //TODO: move to RpcCallbackProxy
                 if (_router._context != null)
-                    _router._context.Initialize(_router._typeOfService, _router._address, _router._binding, _router._session,_router._syncContext);
+                    _router._context.Initialize(_router._typeOfService, _router._address, _router._binding, _router._session, _router._syncContext);
 
                 MethodResponse methodReturn;
-                var op = _router._operations[input.MethodBase.MetadataToken];
 
-                var r = new MessageRequest();
-                if (_router._session != null)
+                OperationDispatchBase op;
+                if (_router._operations.TryGetValue(OperationDispatchBase.GetIdentifier(input.MethodBase), out op))
                 {
-                    r.Session = _router._session;
-                }
-                r.Operation = op.Identifier;
-                var ps = new List<RpcParamData>();
-                for (int i = 0; i < op.Params.Count; i++)
-                {
-                    var paramIdentifier = i;//TODO: try to make this connection with more inderect way
-                    var stream = new MemoryStream();
-                    _router._serializer.WriteObject(stream, input.GetInArg(i));
-                    ps.Add(new RpcParamData { Identifier = paramIdentifier, Data = stream.ToArray() });
-                }
-                r.Data.AddRange(ps.ToArray());
-                var rData = new MemoryStream();
-                _router._serializer.WriteObject(rData, r);
-                if (op is AsyncOperationDispatch)
-                {
-                    object asyncState = input.GetInArg(op.Params.Count + 1);
-                    var task = Tasks.Factory.StartNew((x) =>
+
+
+                    var r = new MessageRequest();
+                    if (_router._session != null)
                     {
-                        try
+                        r.Session = _router._session;
+                    }
+                    r.Operation = op.Identifier;
+                    var ps = new List<RpcParamData>();
+                    for (int i = 0; i < op.Params.Count; i++)
+                    {
+                        var paramIdentifier = i;//TODO: try to make this connection with more inderect way
+                        var stream = new MemoryStream();
+                        _router._serializer.WriteObject(stream, input.GetInArg(i));
+                        ps.Add(new RpcParamData { Identifier = paramIdentifier, Data = stream.ToArray() });
+                    }
+                    r.Data.AddRange(ps.ToArray());
+                    var rData = new MemoryStream();
+                    _router._serializer.WriteObject(rData, r);
+                    if (op is AsyncOperationDispatch)
+                    {
+                        object asyncState = input.GetInArg(op.Params.Count + 1);
+                        var task = Tasks.Factory.StartNew((x) =>
                         {
-                            _router._operationPending.Reset();
-
-                            byte[] result = null;
-
-
-                            result = _router._client.Execute(rData.ToArray());
-
-
-                            var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
-                            if (response.Error != null)
+                            try
                             {
-                                throw new Exception(response.Error.Type + response.Error.Message);
+                                _router._operationPending.Reset();
+
+                                byte[] result = null;
+
+
+                                result = _router._client.Execute(rData.ToArray());
+
+
+                                var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
+                                if (response.Error != null)
+                                {
+                                    throw new Exception(response.Error.Type + response.Error.Message);
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            bool handled = ErrorHandler.Handle(ex);
-                            if (!handled) throw;
-                        }
-                        finally
-                        {
-                            _router._operationPending.Set();
-                        }
-                    }, asyncState);
-
-                    task.ContinueWith(x =>
-                    {
-                        var asyncCallback = (AsyncCallback)input.GetInArg(op.Params.Count);
-
-                        if (asyncCallback != null)
-                        {
-                            asyncCallback(task);
-                        }
-                    });
-                    return new ReturnMessage(task,null,0,null, input);
-
-                }
-                else if (op.Operation.IsOneWay)
-                {
-                    Debug.Assert(op.MethodInfo.ReturnType == typeof(void));
-
-                    Task task = Tasks.Factory.StartNew(() =>
-                    {
-                        try
-                        {
-                            _router._operationPending.Reset();
-
-                            byte[] result = null;
-
-
-                            result = _router._client.Execute(rData.ToArray());
-
-
-                            var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
-                            if (response.Error != null)
+                            catch (Exception ex)
                             {
-                                return new ReturnMessage(new Exception(response.Error.Type + response.Error.Message),input);
+                                bool handled = ErrorHandler.Handle(ex);
+                                if (!handled) throw;
                             }
-                        }
-                        catch (Exception ex)
-                        {
+                            finally
+                            {
+                                _router._operationPending.Set();
+                            }
+                        }, asyncState);
 
-                            bool handled = ErrorHandler.Handle(ex);
-                            if (!handled) return new ReturnMessage(ex, input);
-                        }
-                        finally
+                        task.ContinueWith(x =>
                         {
-                            _router._operationPending.Set();
+                            var asyncCallback = (AsyncCallback)input.GetInArg(op.Params.Count);
+
+                            if (asyncCallback != null)
+                            {
+                                asyncCallback(task);
+                            }
+                        });
+                        return new ReturnMessage(task, null, 0, null, input);
+
+                    }
+                    else if (op.Operation.IsOneWay)
+                    {
+                        Debug.Assert(op.MethodInfo.ReturnType == typeof(void));
+
+                        Task task = Tasks.Factory.StartNew(() =>
+                        {
+                            try
+                            {
+                                _router._operationPending.Reset();
+
+                                byte[] result = null;
+
+
+                                result = _router._client.Execute(rData.ToArray());
+
+
+                                var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
+                                if (response.Error != null)
+                                {
+                                    return new ReturnMessage(new Exception(response.Error.Type + response.Error.Message), input);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+
+                                bool handled = ErrorHandler.Handle(ex);
+                                if (!handled) return new ReturnMessage(ex, input);
+                            }
+                            finally
+                            {
+                                _router._operationPending.Set();
+                            }
+                            return new ReturnMessage(null, null, 0, null, input);
                         }
+                        );
                         return new ReturnMessage(null, null, 0, null, input);
                     }
-                    );
+
+                    try
+                    {
+                        _router._operationPending.Reset();
+
+                        byte[] result = null;
+
+                        result = _router._client.Execute(rData.ToArray());
+
+                        var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
+                        if (response.Error != null)
+                        {
+                            throw new Exception(response.Error.Type + response.Error.Message);
+                        }
+                        if (op.MethodInfo.ReturnType != typeof(void))
+                        {
+                            var retVal = _router._serializer.ReadObject(new MemoryStream(response.Data), op.MethodInfo.ReturnType);
+                            var ret = new ReturnMessage(retVal, null, 0, null, input);
+                            return ret;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        bool handled = ErrorHandler.Handle(ex);
+                        if (!handled) return new ReturnMessage(ex, input);
+                    }
+                    finally
+                    {
+                        _router._operationPending.Set();
+                    }
                     return new ReturnMessage(null, null, 0, null, input);
                 }
-
-                try
-                {
-                    _router._operationPending.Reset();
-
-                    byte[] result = null;
-
-                    result = _router._client.Execute(rData.ToArray());
-
-                    var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
-                    if (response.Error != null)
-                    {
-                        throw new Exception(response.Error.Type + response.Error.Message);
-                    }
-                    if (op.MethodInfo.ReturnType != typeof(void))
-                    {
-                        var retVal = _router._serializer.ReadObject(new MemoryStream(response.Data), op.MethodInfo.ReturnType);
-                        var ret = new ReturnMessage(retVal, null, 0, null, input);
-                        return ret;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    bool handled = ErrorHandler.Handle(ex);
-                    if (!handled) return new ReturnMessage(ex, input);
-                }
-                finally
-                {
-                    _router._operationPending.Set();
-                }
-                return new ReturnMessage(null, null, 0, null, input);
+                throw new InvalidOperationException(string.Format("Cannot find operation {0} on service {1}",input.MethodName,_service));
+            
             }
 
             public bool CanCastTo(Type fromType, object o)
             {
-                if (fromType == _service || fromType == typeof(IContextChannel)
-                    || fromType == typeof(IChannel) || fromType == typeof(ICommunicationObject))
+                if (fromType == _service
+
+                    )
                 {
                     return true;
+                }
+                if (
+                    fromType == typeof (IContextChannel) ||
+                    fromType == typeof (IChannel) || fromType == typeof (ICommunicationObject))
+                {
+                    //throw new NotImplementedException("Need to implement WCF channell contracts");
+                    return false;//TODO: support these
                 }
                 return false;
             }

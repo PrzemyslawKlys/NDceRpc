@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
@@ -46,38 +47,31 @@ namespace NDceRpc.ServiceModel
         }
 
         protected Uri _baseAddress;
-        private ManualResetEvent _opened = new ManualResetEvent(false);
+    
         protected object _service;
-        protected IExplicitBytesServer _host;
+    
         protected bool _disposed;
-        protected RpcServerStub _serverStub;
+        protected List<RpcServerStub> _serverStub = new List<RpcServerStub>();
         protected ConcurrencyMode _concurrency = ConcurrencyMode.Single;
         private object _thisLock = new object();
-        private ManualResetEvent _operationPending = new ManualResetEvent(true);
-        private ServiceEndpoint _endpoint;
+      
+   
         private static System.Collections.ArrayList _gcRoot = new ArrayList();
 
-        protected ServiceEndpoint AddEndpoint(Type contractType, Binding binding, string address, Guid uuid)
+        internal ServiceEndpoint CreateEndpoint(Type contractType, Binding binding, string address, Guid uuid)
         {
             var uri = new Uri(address, UriKind.RelativeOrAbsolute);
             if (!uri.IsAbsoluteUri)
             {
                 address = _baseAddress + address;
             }
-            _endpoint = new ServiceEndpoint(binding, contractType, address, uuid);
-            return _endpoint;
+            var endpoint = new ServiceEndpoint(binding, contractType, address, uuid);
+            return endpoint;
         }
 
 
 
-        private byte[] DoRequest(IRpcCallInfo call, Type contractType, byte[] arg)
-        {
-            var messageRequest = (MessageRequest)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(arg), typeof(MessageRequest));
-            var response = _serverStub.Invoke(call, messageRequest, contractType);
-            var stream = new MemoryStream();
-            _endpoint._serializer.WriteObject(stream, response);
-            return stream.ToArray();
-        }
+  
 
         public void EndClose(IAsyncResult result)
         {
@@ -89,68 +83,15 @@ namespace NDceRpc.ServiceModel
             if (State == CommunicationState.Opened)
                 throw new InvalidOperationException(
                     "The communication object, System.ServiceModel.ServiceHost, cannot be modified while it is in the Opened state.");
-           Action open =  delegate
+            foreach (var stub in _serverStub)
+            {
+                stub.Open(_concurrency);
+                //TODO: make GC root disposable
+                lock (_gcRoot.SyncRoot)
                 {
-                    try
-                    {
-                        if (_host == null)
-                        {
-                            RpcExecuteHandler onExecute =
-                                delegate(IRpcCallInfo client, byte[] arg)
-                                    {
-                                        if (_concurrency == ConcurrencyMode.Single)
-                                        {
-                                            lock (_serverStub)
-                                            {
-                                                _operationPending.Reset();
-                                                try
-                                                {
-                                                    return DoRequest(client, _endpoint._contractType, arg);
-                                                }
-                                                finally
-                                                {
-                                                    _operationPending.Set();
-                                                }
-                                            }
-                                        }
-                                        if (_concurrency == ConcurrencyMode.Multiple)
-                                        {
-                                            //BUG: need have collection of operations because second operation rewrites state of first
-                                            _operationPending.Reset();
-                                            try
-                                            {
-                                                return DoRequest(client, _endpoint._contractType, arg);
-                                            }
-                                            finally
-                                            {
-                                                _operationPending.Set();
-                                            }
-                                        }
-
-                                        throw new NotImplementedException(
-                                            string.Format("ConcurrencyMode {0} is note implemented", _concurrency));
-                                    };
-                            _host = TransportFactory.CreateHost(_endpoint._binding, _endpoint._address, _endpoint._uuid);
-                            //TODO: make GC root disposable
-                            lock (_gcRoot.SyncRoot)
-                            {
-                                _gcRoot.Add(this);
-                                _gcRoot.Add(_host);
-                            }
-
-                            _host.OnExecute += onExecute;
-                            _host.StartListening();
-                        }
-                        _opened.Set();
-                    }
-                    catch (Exception ex)
-                    {
-                        bool handled = ExceptionHandler.AlwaysHandle.HandleException(ex);
-                        if (!handled) throw;
-                    }
-                };
-           Tasks.Factory.StartNew(open);
-            _opened.WaitOne();
+                    _gcRoot.Add(stub);
+                }
+            }
             State = CommunicationState.Opened;
         }
 
@@ -187,13 +128,12 @@ namespace NDceRpc.ServiceModel
             {
                 return;
             }
-
-            if (_host != null)
+            foreach (var stub in _serverStub)
             {
-                _operationPending.WaitOne(CloseTimeout);
-                _host.Dispose();
-                _host = null;
+                stub.Dispose(CloseTimeout);
             }
+            _serverStub = new List<RpcServerStub>();
+   
             _disposed = true;
         }
 

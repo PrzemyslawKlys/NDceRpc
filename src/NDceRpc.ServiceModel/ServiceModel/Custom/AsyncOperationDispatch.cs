@@ -51,6 +51,6 @@ namespace NDceRpc.ServiceModel
 
         }
 
-       
+  
     }
 }

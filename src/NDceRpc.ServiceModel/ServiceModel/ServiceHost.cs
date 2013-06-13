@@ -8,7 +8,7 @@ namespace NDceRpc.ServiceModel
     public sealed class ServiceHost :ServiceHostBase
     {
 
-        private bool _expectDuplexInitialization;
+
         private ServiceBehaviorAttribute _behaviour= new ServiceBehaviorAttribute();
    
 
@@ -59,14 +59,16 @@ namespace NDceRpc.ServiceModel
                 address = _baseAddress + address;
             }
             var uuid = EndpointMapper.CreateUuid(address, contractType);
+            bool expectDuplexInitialization = false;
             var service = contractType.GetCustomAttributes(typeof(ServiceContractAttribute), false).SingleOrDefault() as ServiceContractAttribute;
             if (service.CallbackContract != null)
             {
-                _expectDuplexInitialization = true;
+                expectDuplexInitialization = true;
             }
             RpcTrace.TraceEvent(TraceEventType.Start, "Start adding service endpoint for {0} at {1}",contractType,address);
-            _serverStub = new RpcServerStub(_service,EndpointMapper.WcfToRpc(address), binding, _expectDuplexInitialization);
-            return AddEndpoint(contractType, binding, address, uuid);
+            var endpoint = base.CreateEndpoint(contractType, binding, address, uuid);
+            _serverStub.Add(new RpcServerStub(_service, endpoint, expectDuplexInitialization));
+            return endpoint;
         }
     }
 }

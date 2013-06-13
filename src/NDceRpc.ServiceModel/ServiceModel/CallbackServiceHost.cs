@@ -44,10 +44,11 @@ namespace NDceRpc.ServiceModel
             {
                 address = _baseAddress + address;
             }
-            EndpointBindingInfo bindingInfo = EndpointMapper.WcfToRpc(address);
-            _serverStub = new RpcServerStub(_service, bindingInfo, binding,false, _serviceCtx.SynchronizationContext);
 
-            return AddEndpoint(contractType, binding, address, uuid);
+            var endpoint = base.CreateEndpoint(contractType, binding, address, uuid);
+            _serverStub.Add( new RpcServerStub(_service,endpoint, false, _serviceCtx.SynchronizationContext));
+
+            return endpoint;
         }
 
         public void Close()

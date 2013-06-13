@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
+using System.Threading;
 using NDceRpc.ServiceModel.Channels;
 
 namespace NDceRpc.ServiceModel
@@ -13,16 +14,18 @@ namespace NDceRpc.ServiceModel
         private readonly Type _contractType;
         private readonly EndpointBindingInfo _address;
         private readonly bool _duplex;
+        private readonly SynchronizationContext _syncContext;
 
         private Dictionary<string, RpcCallbackChannelFactory> _clients = new Dictionary<string, RpcCallbackChannelFactory>();
         private OperationContext _noOp = new OperationContext();
 
 
-        public RpcServerStub(object singletonService, EndpointBindingInfo address, Binding binding, bool duplex = false)
+        public RpcServerStub(object singletonService, EndpointBindingInfo address, Binding binding, bool duplex = false,SynchronizationContext syncContext = null )
             : base(singletonService, binding)
         {
             _address = address;
             _duplex = duplex;
+            _syncContext = syncContext;
         }
 
         public MessageResponse Invoke(IRpcCallInfo call, MessageRequest request, Type contractType)
@@ -30,15 +33,8 @@ namespace NDceRpc.ServiceModel
             SetupOperationConext(call, request, contractType);
 
             OperationDispatchBase operation = _operations[request.Operation];
-            var args = new List<object>(operation.Params.Count);
-            for (int i = 0; i < operation.Params.Count; i++)
-            {
-                RpcParamData pData = request.Data[i];
-                var map = operation.Params[pData.Identifier];
-                var type = map.Info.ParameterType;
-                var obj = _serializer.ReadObject(new MemoryStream(pData.Data), type);
-                args.Add(obj);
-            }
+
+            var args = deserializeMessageArguments(request, operation);
             if (operation is AsyncOperationDispatch)
             {
                 args.Add(null);//AsyncCallback
@@ -47,13 +43,8 @@ namespace NDceRpc.ServiceModel
             var response = new MessageResponse();
             try
             {
-                object result = operation.MethodInfo.Invoke(_singletonService, BindingFlags.Public, null, args.ToArray(), null);
-                if (operation.MethodInfo.ReturnType != typeof(void) && operation.GetType() != typeof(AsyncOperationDispatch))
-                {
-                    var stream = new MemoryStream();
-                    _serializer.WriteObject(stream, result);
-                    response.Data = stream.ToArray();
-                }
+                var result = InvokeServerMethod(operation, args);
+                EnrichResponceWithReturn(operation, result, response);
             }
             catch (Exception ex)
             {
@@ -65,6 +56,47 @@ namespace NDceRpc.ServiceModel
             }
 
             return response;
+        }
+
+        private void EnrichResponceWithReturn(OperationDispatchBase operation, object result, MessageResponse response)
+        {
+            if (operation.MethodInfo.ReturnType != typeof (void) && operation.GetType() != typeof (AsyncOperationDispatch))
+            {
+                var stream = new MemoryStream();
+                _serializer.WriteObject(stream, result);
+                response.Data = stream.ToArray();
+            }
+        }
+
+        private object InvokeServerMethod(OperationDispatchBase operation, List<object> args)
+        {
+            object result = null;
+            if (_syncContext != null)
+            {
+                _syncContext.Send(
+                    _ =>
+                    result = operation.MethodInfo.Invoke(_singletonService, BindingFlags.Public, null, args.ToArray(), null),
+                    null);
+            }
+            else
+            {
+                result = operation.MethodInfo.Invoke(_singletonService, BindingFlags.Public, null, args.ToArray(), null);
+            }
+            return result;
+        }
+
+        private List<object> deserializeMessageArguments(MessageRequest request, OperationDispatchBase operation)
+        {
+            var args = new List<object>(operation.Params.Count);
+            for (int i = 0; i < operation.Params.Count; i++)
+            {
+                RpcParamData pData = request.Data[i];
+                var map = operation.Params[pData.Identifier];
+                var type = map.Info.ParameterType;
+                var obj = _serializer.ReadObject(new MemoryStream(pData.Data), type);
+                args.Add(obj);
+            }
+            return args;
         }
 
         private void SetupOperationConext(IRpcCallInfo call, MessageRequest request, Type contractType)

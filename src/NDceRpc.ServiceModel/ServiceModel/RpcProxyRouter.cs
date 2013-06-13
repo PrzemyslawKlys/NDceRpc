@@ -35,6 +35,7 @@ namespace NDceRpc.ServiceModel
         private ManualResetEvent _operationPending = new ManualResetEvent(true);
         private Binding _binding;
         private Guid _uuid;
+        private SynchronizationContext _syncContext;
 
         //TODO: split RpcProxyRouter and RpcCallbackProxy
         public RpcProxyRouter(string address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid),Type generatedProxyType = null)
@@ -42,6 +43,10 @@ namespace NDceRpc.ServiceModel
             _serializer = binding.Serializer;
             _typeOfService = typeOfService;
             _context = context;
+            if (_context != null && _context._useSynchronizationContext)
+            {
+                _syncContext = SynchronizationContext.Current;
+            }
             _generatedProxyType = generatedProxyType;
             _binding = binding;
             _address = address;
@@ -92,7 +97,7 @@ namespace NDceRpc.ServiceModel
                 IMethodCallMessage input = (IMethodCallMessage) msg;
                 //TODO: move to RpcCallbackProxy
                 if (_router._context != null)
-                    _router._context.Initialize(_router._typeOfService, _router._address, _router._binding, _router._session);
+                    _router._context.Initialize(_router._typeOfService, _router._address, _router._binding, _router._session,_router._syncContext);
 
                 MethodResponse methodReturn;
                 var op = _router._operations[input.MethodBase.MetadataToken];

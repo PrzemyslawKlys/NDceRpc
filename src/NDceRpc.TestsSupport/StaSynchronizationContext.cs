@@ -7,13 +7,14 @@ using System.Security.Permissions;
 
 namespace StaThreadSyncronizer
 {
+    //http://www.codeproject.com/Articles/32119/Understanding-SynchronizationContext-Part-III
    [SecurityPermission(SecurityAction.Demand, ControlThread = true)]
    public class StaSynchronizationContext : SynchronizationContext, IDisposable
    {
       private BlockingQueue<SendOrPostCallbackItem> mQueue;
       private StaThread mStaThread;
 
-     internal int ManagedThreadId 
+     public int ManagedThreadId 
      {
          get { return mStaThread.ManagedThreadId; }
      }

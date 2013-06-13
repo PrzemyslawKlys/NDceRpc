@@ -22,7 +22,11 @@ namespace NDceRpc.ServiceModel
         public InstanceContext(object contextObject)
         {
             _contextObject = contextObject;
+            var behaviour = contextObject.GetType().GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault() as CallbackBehaviorAttribute;
+            _useSynchronizationContext = behaviour == null ? false : behaviour.UseSynchronizationContext;
         }
+        public SynchronizationContext SynchronizationContext { get; private set; }
+        internal bool _useSynchronizationContext;
 
         public void Abort()
         {
@@ -103,23 +107,25 @@ namespace NDceRpc.ServiceModel
         //            context.Invoke(response);
         //        }
         //    });
-        internal void Initialize(Type typeOfService, string serverAddress, Binding binding, string session)
+        internal void Initialize(Type typeOfService, string serverAddress, Binding binding, string session, SynchronizationContext syncContext)
         {
             if (!_started)
             {
                 var opened = new ManualResetEvent(false);
                 Tasks.Factory.StartNew(() =>
                     {
+                        this.SynchronizationContext = syncContext;
                         _typeOfService = typeOfService;
                         _serverAddress = serverAddress;
                         _binding = binding;
                         _session = session;
                         var contract = _typeOfService.GetCustomAttributes(typeof(ServiceContractAttribute), false).Single() as ServiceContractAttribute;
+                        
                         Debug.Assert(contract.CallbackContract != null);
                         //BUG: should be used only for non polling HTTM, all others should go via provided single channel
                         var address = _serverAddress + _session.Replace("-","");
-                        
-                        _callbackServer = new CallbackServiceHost(_contextObject, address);
+
+                        _callbackServer = new CallbackServiceHost(this, address);
                         _callbackServer.AddServiceEndpoint(contract.CallbackContract, new Guid(_session), _binding, address);
                         _callbackServer.Open();
                         

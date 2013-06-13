@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WCF.Tests</RootNamespace>
     <AssemblyName>WCF.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,12 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SyncCallbackServiceClasses.cs" />
-    <Compile Include="Support\BlockingQueue.cs" />
-    <Compile Include="Support\SendOrPostCallbackItem.cs" />
-    <Compile Include="Support\StaServiceBehaviorAttribute.cs" />
-    <Compile Include="Support\StaSynchronizationContext.cs" />
-    <Compile Include="Support\StaThread.cs" />
-    <Compile Include="Support\SyncronizationQueue.cs" />
     <Compile Include="ChannelTests.cs" />
     <Compile Include="SecurityTests.cs" />
     <Compile Include="HostTests.cs" />
@@ -60,6 +55,12 @@
     <Compile Include="SerializerTests.cs" />
     <Compile Include="Services.cs" />
     <Compile Include="SynchronizationTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NDceRpc.TestsSupport\NDceRpc.TestsSupport.csproj">
+      <Project>{628323B0-1142-45E2-AE24-7A86BDE1010D}</Project>
+      <Name>NDceRpc.TestsSupport</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

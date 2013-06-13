@@ -7,30 +7,33 @@ namespace NDceRpc.ServiceModel
 
     internal sealed class CallbackServiceHost : ServiceHostBase
     {
+        private readonly InstanceContext _serviceCtx;
 
 
         private CallbackBehaviorAttribute _behaviour = new CallbackBehaviorAttribute();
 
 
-        public CallbackServiceHost(Type service, Uri baseAddress)
-            : this(Activator.CreateInstance(service), baseAddress.ToString())
+        //public CallbackServiceHost(Type service, Uri baseAddress,)
+        //    : this(Activator.CreateInstance(service), baseAddress.ToString())
+        //{
+        //    //TODO: make it not singleton
+        //}
+
+        public CallbackServiceHost(InstanceContext serviceCtx, Uri baseAddress)
+            : this(serviceCtx, baseAddress.ToString())
         {
-            //TODO: make it not singleton
         }
 
-        public CallbackServiceHost(object service, Uri baseAddress)
-            : this(service, baseAddress.ToString())
+        public CallbackServiceHost(InstanceContext serviceCtx, string baseAddress)
         {
-        }
-
-        public CallbackServiceHost(object service, string baseAddress)
-        {
+            _serviceCtx = serviceCtx;
+            if (serviceCtx == null) throw new ArgumentNullException("serviceCtx");
             _baseAddress = new Uri(baseAddress,UriKind.Absolute);
-            var serviceBehaviour = service.GetType().GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault() as CallbackBehaviorAttribute;
+            var serviceBehaviour = serviceCtx._contextObject.GetType().GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault() as CallbackBehaviorAttribute;
             if (serviceBehaviour != null) _behaviour = serviceBehaviour;
-            if (service == null) throw new ArgumentNullException("service");
+   
             base._concurrency = _behaviour.ConcurrencyMode;
-            _service = service;
+            _service = serviceCtx._contextObject;
         }
   
         public ServiceEndpoint AddServiceEndpoint(Type contractType, Guid uuid, Binding binding, string address)
@@ -41,7 +44,7 @@ namespace NDceRpc.ServiceModel
                 address = _baseAddress + address;
             }
             EndpointBindingInfo bindingInfo = EndpointMapper.WcfToRpc(address);
-            _serverStub = new RpcServerStub(_service, bindingInfo, binding);
+            _serverStub = new RpcServerStub(_service, bindingInfo, binding,false, _serviceCtx.SynchronizationContext);
 
             return AddEndpoint(contractType, binding, address, uuid);
         }

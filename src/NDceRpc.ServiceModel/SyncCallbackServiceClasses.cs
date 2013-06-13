@@ -1,8 +1,7 @@
-﻿using System.Runtime.Serialization;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using System.Threading;
 
-namespace WCF.Tests
+namespace NDceRpc.ServiceModel.Test
 {
 
 
@@ -20,7 +19,7 @@ namespace WCF.Tests
 
         public int Call()
         {
-            return OperationContext.Current.GetCallbackChannel<ISyncCallbackServiceCallback>().OnCallback();
+            return NDceRpc.ServiceModel.OperationContext.Current.GetCallbackChannel<ISyncCallbackServiceCallback>().OnCallback();
         }
     }
 

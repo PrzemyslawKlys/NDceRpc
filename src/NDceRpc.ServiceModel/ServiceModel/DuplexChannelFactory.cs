@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices.ComTypes;
 using System.ServiceModel;
+using System.Threading;
 
 namespace NDceRpc.ServiceModel
 {
@@ -26,7 +27,7 @@ namespace NDceRpc.ServiceModel
         public T CreateChannel(EndpointAddress createEndpoint)
         {
             if (_client == null)
-                 _client = new RpcProxyRouter(createEndpoint.Uri, _type, _binding, false, _context);
+                _client = new RpcProxyRouter(createEndpoint.Uri, _type, _binding, false, _context);
             return (T)_client.Channell;
         }
 

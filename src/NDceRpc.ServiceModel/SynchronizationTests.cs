@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.ServiceModel;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using StaThreadSyncronizer;
 
-namespace WCF.Tests
+namespace NDceRpc.ServiceModel.Test
 {
     [TestFixture]
     public class SynchronizationTests
@@ -27,7 +22,7 @@ namespace WCF.Tests
         public void CallbackToNotSyncContext()
         {
             var path = @"net.pipe://127.0.0.1/" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
-            var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None) { MaxConnections = 5 };
+            var binding = new NetNamedPipeBinding() { MaxConnections = 5 };
 
             using (var server = new ServiceHost(new SyncCallbackService(), new Uri(path)))
             {
@@ -40,11 +35,11 @@ namespace WCF.Tests
                 using (var syncContext = new StaSynchronizationContext())
                 {
                     InstanceContext context = null;
-                    DuplexChannelFactory<ISyncCallbackService> channelFactory = null;
+                    NDceRpc.ServiceModel.DuplexChannelFactory<ISyncCallbackService> channelFactory = null;
                     ISyncCallbackService client = null;
                     syncContext.Send(_ => SynchronizationContext.SetSynchronizationContext(syncContext), null);
                     syncContext.Send(_ => context = new InstanceContext(new NotSyncCallbackServiceCallback()), null);
-                    syncContext.Send(_ => channelFactory = new DuplexChannelFactory<ISyncCallbackService>(context, binding), null);
+                    syncContext.Send(_ => channelFactory = new NDceRpc.ServiceModel.DuplexChannelFactory<ISyncCallbackService>(context, binding), null);
                     syncContext.Send(_ => client = channelFactory.CreateChannel(new EndpointAddress(path)), null);
                     using (channelFactory)
                     {
@@ -63,7 +58,7 @@ namespace WCF.Tests
         public void CallbackToSyncContext()
         {
             var path = @"net.pipe://127.0.0.1/" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
-            var binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None) { MaxConnections = 5 };
+            var binding = new NetNamedPipeBinding() { MaxConnections = 5 };
 
             using (var server = new ServiceHost(new SyncCallbackService(), new Uri(path)))
             {
@@ -76,11 +71,11 @@ namespace WCF.Tests
                 using (var syncContext = new StaSynchronizationContext())
                 {
                     InstanceContext context = null;
-                    DuplexChannelFactory<ISyncCallbackService> channelFactory = null;
+                    NDceRpc.ServiceModel.DuplexChannelFactory<ISyncCallbackService> channelFactory = null;
                     ISyncCallbackService client = null;
                     syncContext.Send(_ => SynchronizationContext.SetSynchronizationContext(syncContext), null);
                     syncContext.Send(_ => context = new InstanceContext(new SyncCallbackServiceCallback()), null);
-                    syncContext.Send(_ => channelFactory = new DuplexChannelFactory<ISyncCallbackService>(context, binding),null);
+                    syncContext.Send(_ => channelFactory = new NDceRpc.ServiceModel.DuplexChannelFactory<ISyncCallbackService>(context, binding),null);
                     syncContext.Send(_ => client =  channelFactory.CreateChannel(new EndpointAddress(path)),null);
                     using (channelFactory)
                     {

@@ -53,12 +53,25 @@ namespace NDceRpc.ServiceModel.IntegrationTests
 
 
         [Test]
-        public void IpcCallbck()
+        public void IpcCallback()
         {
             var binding = new LocalBinding { MaxConnections = 5 };
             var path = "ipc:///" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             DoHostWithCallback(binding, path);
             DoHostWithCallback(binding, path);
+        }
+
+        [Test]
+        public void IpcCallbackLoop()
+        {
+            var binding = new LocalBinding { MaxConnections = 5 };
+            var path = "ipc:///" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
+            var reportWatch = new MeasureIt.Reportwatch();
+            for (int i = 0; i < 1000; i++)
+            {
+                DoHostWithCallbackInternal(reportWatch, binding, path);
+            }
+            reportWatch.ReportAll();
         }
 
         private static void DoHostWithCallback(Binding binding, string path)

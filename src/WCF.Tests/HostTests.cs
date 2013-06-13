@@ -22,5 +22,28 @@ namespace WCF.Tests
                 host.Open();
             }
         }
+
+        [Test]
+
+        public void Open_2Endpoints_callsBoth()
+        {
+            var baseAddress = @"net.pipe://127.0.0.1/" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
+            var serv = new Service(null);
+            using (var host = new ServiceHost(serv, new Uri[] { new Uri(baseAddress) }))
+            {
+                var binding = new NetNamedPipeBinding();
+                host.AddServiceEndpoint(typeof(IService), binding, baseAddress + "/1");
+                host.AddServiceEndpoint(typeof(IService), binding, baseAddress + "/2");
+                host.Open();
+                using (var channelFatory = new ChannelFactory<IService>(binding))
+                {
+                    var c1 = channelFatory.CreateChannel(new EndpointAddress(baseAddress + "/1"));
+                    var c2 = channelFatory.CreateChannel(new EndpointAddress(baseAddress + "/2"));
+                    c1.DoWithParamsAndResult("", Guid.Empty);
+                    c2.DoWithParamsAndResult("", Guid.Empty);
+                }
+
+            }
+        }
     }
 }

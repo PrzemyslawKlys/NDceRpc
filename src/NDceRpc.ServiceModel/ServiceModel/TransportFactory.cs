@@ -31,12 +31,12 @@ namespace NDceRpc.ServiceModel
         //private static Dictionary<string, ExplicitBytesRoutingClient> _routingClients = new Dictionary<string, ExplicitBytesRoutingClient>();
         // private static Dictionary<string, ExplicitBytesRoutingServer> _routingServers = new Dictionary<string, ExplicitBytesRoutingServer>();
 
-        private static RuntimeTypeModel _serializer = TypeModel.Create();
+        //private static RuntimeTypeModel _serializer = TypeModel.Create();
 
         static TransportFactory()
         {
-            _serializer.Add(typeof(RpcRoutedMessage), true);
-            _serializer.CompileInPlace();
+            //_serializer.Add(typeof(RpcRoutedMessage), true);
+           // _serializer.CompileInPlace();
         }
 
         public static IExplicitBytesClient CreateClient(Binding binding, Guid uuid, string address)
@@ -175,12 +175,13 @@ namespace NDceRpc.ServiceModel
 
             public byte[] Execute(byte[] arg)
             {
-                var toRoute = new RpcRoutedMessage() { Data = arg, Receiver = _address };
-                var stream = new MemoryStream();
-                _serializer.Serialize(stream, toRoute);
-                var ret = _client.Execute(stream.ToArray());
-                var msg = (RpcRoutedMessage)_serializer.Deserialize(new MemoryStream(ret), null, typeof(RpcRoutedMessage));
-                return msg.Data;
+               // var toRoute = new RpcRoutedMessage() { Data = arg, Receiver = _address };
+              //  var stream = new MemoryStream();
+                //_serializer.Serialize(stream, toRoute);
+                //var ret = _client.Execute(stream.ToArray());
+                //var msg = (RpcRoutedMessage)_serializer.Deserialize(new MemoryStream(ret), null, typeof(RpcRoutedMessage));
+               // return msg.Data;
+                return null;
             }
 
             public void Dispose()

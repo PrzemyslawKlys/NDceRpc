@@ -39,18 +39,27 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SyncCallbackServiceClasses.cs" />
+    <Compile Include="Support\BlockingQueue.cs" />
+    <Compile Include="Support\SendOrPostCallbackItem.cs" />
+    <Compile Include="Support\StaServiceBehaviorAttribute.cs" />
+    <Compile Include="Support\StaSynchronizationContext.cs" />
+    <Compile Include="Support\StaThread.cs" />
+    <Compile Include="Support\SyncronizationQueue.cs" />
     <Compile Include="ChannelTests.cs" />
     <Compile Include="SecurityTests.cs" />
     <Compile Include="HostTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializerTests.cs" />
     <Compile Include="Services.cs" />
+    <Compile Include="SynchronizationTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

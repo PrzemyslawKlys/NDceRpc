@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using MeasureIt;
 using NDceRpc.ServiceModel.Channels;
-using NDceRpc.ServiceModel.IntegrationTests;
+
 using NUnit.Framework;
 using ProtoBuf.Meta;
 

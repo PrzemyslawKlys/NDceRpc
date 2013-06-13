@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PerformanceCounters.cs" />
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
     <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />

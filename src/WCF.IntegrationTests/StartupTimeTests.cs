@@ -105,6 +105,18 @@ namespace WCF.IntegrationTests
             }
         }
 
+        [Test]
+        public void NamedPipeCallbackLoop()
+        {
+            var binding = new NetNamedPipeBinding() { MaxConnections = 5 };
+            var path = "net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
+            var reportWatch = new MeasureIt.Reportwatch();
+            for (int i = 0; i < 1000; i++)
+            {
+                DoHostWithCallbackInternal(reportWatch, binding, path);
+            }
+            reportWatch.ReportAll();
+        }
 
         [Test]
         public void NamedPipe_byteArray()

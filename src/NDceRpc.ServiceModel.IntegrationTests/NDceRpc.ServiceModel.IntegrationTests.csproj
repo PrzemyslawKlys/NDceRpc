@@ -61,8 +61,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PerformanceTests.cs" />
     <Compile Include="MultiuserConcurrencyTests.cs" />
-    <Compile Include="RealWorldType.cs" />
-    <Compile Include="SerializersStartUpTimeTests.cs" />
     <Compile Include="StartupTimeTests.cs" />
   </ItemGroup>
   <ItemGroup>

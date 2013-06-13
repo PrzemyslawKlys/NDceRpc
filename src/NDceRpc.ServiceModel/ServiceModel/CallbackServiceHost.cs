@@ -10,7 +10,7 @@ namespace NDceRpc.ServiceModel
         private readonly InstanceContext _serviceCtx;
 
 
-        private CallbackBehaviorAttribute _behaviour = new CallbackBehaviorAttribute();
+        private CallbackBehaviorAttribute _behaviour;
 
 
         //public CallbackServiceHost(Type service, Uri baseAddress,)
@@ -19,18 +19,19 @@ namespace NDceRpc.ServiceModel
         //    //TODO: make it not singleton
         //}
 
-        public CallbackServiceHost(InstanceContext serviceCtx, Uri baseAddress)
-            : this(serviceCtx, baseAddress.ToString())
+        public CallbackServiceHost(InstanceContext serviceCtx, Uri baseAddress, CallbackBehaviorAttribute behaviour)
+            : this(serviceCtx, baseAddress.ToString(), behaviour)
         {
         }
 
-        public CallbackServiceHost(InstanceContext serviceCtx, string baseAddress)
+        public CallbackServiceHost(InstanceContext serviceCtx, string baseAddress, CallbackBehaviorAttribute behaviour)
         {
             _serviceCtx = serviceCtx;
+            _behaviour = behaviour;
             if (serviceCtx == null) throw new ArgumentNullException("serviceCtx");
             _baseAddress = new Uri(baseAddress,UriKind.Absolute);
-            var serviceBehaviour = serviceCtx._contextObject.GetType().GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault() as CallbackBehaviorAttribute;
-            if (serviceBehaviour != null) _behaviour = serviceBehaviour;
+
+    
    
             base._concurrency = _behaviour.ConcurrencyMode;
             _service = serviceCtx._contextObject;

@@ -33,7 +33,8 @@ namespace NDceRpc.ServiceModel.Test
 
 
     }
-    [CallbackBehavior(UseSynchronizationContext = true)]
+    
+    //[CallbackBehavior(UseSynchronizationContext = true)]
     public class SyncCallbackServiceCallback : ISyncCallbackServiceCallback
     {
         public int OnCallback()

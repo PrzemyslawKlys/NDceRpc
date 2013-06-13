@@ -22,11 +22,12 @@ namespace NDceRpc.ServiceModel
         public InstanceContext(object contextObject)
         {
             _contextObject = contextObject;
-            var behaviour = contextObject.GetType().GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault() as CallbackBehaviorAttribute;
-            _useSynchronizationContext = behaviour == null ? false : behaviour.UseSynchronizationContext;
+            _behaviour = contextObject.GetType().GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault() as CallbackBehaviorAttribute ?? new CallbackBehaviorAttribute();
+            _useSynchronizationContext = _behaviour.UseSynchronizationContext;
         }
         public SynchronizationContext SynchronizationContext { get; private set; }
         internal bool _useSynchronizationContext;
+        private CallbackBehaviorAttribute _behaviour;
 
         public void Abort()
         {
@@ -125,7 +126,7 @@ namespace NDceRpc.ServiceModel
                         //BUG: should be used only for non polling HTTM, all others should go via provided single channel
                         var address = _serverAddress + _session.Replace("-","");
 
-                        _callbackServer = new CallbackServiceHost(this, address);
+                        _callbackServer = new CallbackServiceHost(this, address, _behaviour);
                         _callbackServer.AddServiceEndpoint(contract.CallbackContract, new Guid(_session), _binding, address);
                         _callbackServer.Open();
                         

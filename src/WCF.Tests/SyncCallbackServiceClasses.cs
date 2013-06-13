@@ -34,7 +34,8 @@ namespace WCF.Tests
 
 
     }
-    [CallbackBehavior(UseSynchronizationContext = true)]
+    
+    //[CallbackBehavior(UseSynchronizationContext = true)] - default
     public class SyncCallbackServiceCallback : ISyncCallbackServiceCallback
     {
         public int OnCallback()

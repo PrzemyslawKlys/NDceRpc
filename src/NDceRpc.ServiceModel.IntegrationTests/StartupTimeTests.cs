@@ -104,19 +104,23 @@ namespace NDceRpc.ServiceModel.IntegrationTests
                 reportWatch.Stop("Open");
 
                 reportWatch.Start("ChannelFactory ctor");
-                var context = new InstanceContext(new CallbackServiceCallback());
-                using (var channelFactory = new NDceRpc.ServiceModel.DuplexChannelFactory<ICallbackService>(context, binding))
+                using (  var context = new InstanceContext(new CallbackServiceCallback()))
                 {
-                    reportWatch.Stop("ChannelFactory ctor");
+                    using (var channelFactory = new NDceRpc.ServiceModel.DuplexChannelFactory<ICallbackService>(context, binding))
+                    {
+                        reportWatch.Stop("ChannelFactory ctor");
 
-                    reportWatch.Start("CreateChannel");
-                    var client = channelFactory.CreateChannel(new EndpointAddress(path));
-                    reportWatch.Stop("CreateChannel");
+                        reportWatch.Start("CreateChannel");
+                        var client = channelFactory.CreateChannel(new EndpointAddress(path));
+                        reportWatch.Stop("CreateChannel");
 
-                    reportWatch.Start("Execute");
-                    client.Call();
-                    reportWatch.Stop("Execute");
+                        reportWatch.Start("Execute");
+                        client.Call();
+                        reportWatch.Stop("Execute");
+                    }
                 }
+              
+     
             }
         }
 

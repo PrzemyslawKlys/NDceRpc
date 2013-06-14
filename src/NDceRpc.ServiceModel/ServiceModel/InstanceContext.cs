@@ -7,7 +7,7 @@ using System.Threading;
 namespace NDceRpc.ServiceModel
 {
     //RpcTwoChannelInstanseContext
-    public class InstanceContext : ICommunicationObject
+    public class InstanceContext : ICommunicationObject, IDisposable
     {
         internal readonly object _contextObject;
         private CallbackServiceHost _callbackServer;
@@ -95,7 +95,7 @@ namespace NDceRpc.ServiceModel
         //TODO: implement polling duplex
         //TODO: implement single channell duplex
         //context.CreateClientStub(_typeOfService);
-        //ThreadPool.QueueUserWorkItem((x) =>
+        // Tasks.Factory.StartNew((x) =>
         //    {
         //        while (!_disposed)
         //        {
@@ -112,30 +112,35 @@ namespace NDceRpc.ServiceModel
         {
             if (!_started)
             {
-                var opened = new ManualResetEvent(false);
-                Tasks.Factory.StartNew(() =>
-                    {
-                        this.SynchronizationContext = syncContext;
-                        _typeOfService = typeOfService;
-                        _serverAddress = serverAddress;
-                        _binding = binding;
-                        _session = session;
-                        var contract = _typeOfService.GetCustomAttributes(typeof(ServiceContractAttribute), false).Single() as ServiceContractAttribute;
-                        
-                        Debug.Assert(contract.CallbackContract != null);
-                        //BUG: should be used only for non polling HTTM, all others should go via provided single channel
-                        var address = _serverAddress + _session.Replace("-","");
-
-                        _callbackServer = new CallbackServiceHost(this, address, _behaviour);
-                        _callbackServer.AddServiceEndpoint(contract.CallbackContract, new Guid(_session), _binding, address);
-                        _callbackServer.Open();
-                        
-                        opened.Set();
-                    });
-                opened.WaitOne();
-
+                Open(typeOfService, serverAddress, binding, session, syncContext);
             }
             _started = true;
+        }
+
+        private void Open(Type typeOfService, string serverAddress, Binding binding, string session,
+                          SynchronizationContext syncContext)
+        {
+            this.SynchronizationContext = syncContext;
+            _typeOfService = typeOfService;
+            _serverAddress = serverAddress;
+            _binding = binding;
+            _session = session;
+            var contract =
+                _typeOfService.GetCustomAttributes(typeof(ServiceContractAttribute), false).Single() as
+                ServiceContractAttribute;
+
+            Debug.Assert(contract.CallbackContract != null);
+            //BUG: should be used only for non polling HTTM, all others should go via provided single channel
+            var address = _serverAddress + _session.Replace("-", "");
+
+            _callbackServer = new CallbackServiceHost(this, address, _behaviour);
+            _callbackServer.AddServiceEndpoint(contract.CallbackContract, new Guid(_session), _binding, address);
+            _callbackServer.Open();
+        }
+
+        public void Dispose()
+        {
+            //_callbackServer.Dispose();
         }
     }
 }

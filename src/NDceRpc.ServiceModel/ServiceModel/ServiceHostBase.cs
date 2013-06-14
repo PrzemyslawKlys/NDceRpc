@@ -132,7 +132,7 @@ namespace NDceRpc.ServiceModel
             {
                 stub.Dispose(CloseTimeout);
             }
-            _serverStub = new List<RpcServerStub>();
+            _serverStub.Clear();
    
             _disposed = true;
         }

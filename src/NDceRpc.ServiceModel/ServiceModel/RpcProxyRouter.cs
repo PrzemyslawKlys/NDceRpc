@@ -17,10 +17,6 @@ using NDceRpc.ServiceModel.Channels;
 
 namespace NDceRpc.ServiceModel
 {
-    internal class Operations : Dictionary<int, OperationDispatchBase>
-    {
-
-    }
     public class RpcProxyRouter : IDisposable
     {
         private object _service;
@@ -362,7 +358,17 @@ namespace NDceRpc.ServiceModel
         public void Close(TimeSpan closeTimeout)
         {
             _operationPending.WaitOne(closeTimeout);
-            _client.Dispose();
+            if (_context != null)
+            {
+                _context.Dispose();
+                _context = null;
+            }
+            if (_client != null)
+            {
+                _client.Dispose();
+                _client = null;
+            }
+           
         }
 
         public void Dispose()

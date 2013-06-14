@@ -59,7 +59,7 @@ namespace NDceRpc.ServiceModel
 
             return response;
         }
-        private ManualResetEvent _opened = new ManualResetEvent(false);
+        //private ManualResetEvent _opened = new ManualResetEvent(false);
         protected IExplicitBytesServer _host;
         private ManualResetEvent _operationPending = new ManualResetEvent(true);
         private ConcurrencyMode _concurrency;
@@ -67,7 +67,7 @@ namespace NDceRpc.ServiceModel
         internal void Open(ConcurrencyMode concurrency)
         {
             _concurrency = concurrency;
-            Action open = delegate
+            //Action open = delegate
             {
                 try
                 {
@@ -114,7 +114,7 @@ namespace NDceRpc.ServiceModel
                         _host.OnExecute += onExecute;
                         _host.StartListening();
                     }
-                    _opened.Set();
+                    //_opened.Set();
                 }
                 catch (Exception ex)
                 {
@@ -122,8 +122,8 @@ namespace NDceRpc.ServiceModel
                     if (!handled) throw;
                 }
             };
-            Tasks.Factory.StartNew(open);
-            _opened.WaitOne();
+            //Tasks.Factory.StartNew(open);
+            //_opened.WaitOne();
         }
 
         public byte[] Invoke(IRpcCallInfo call, Type contractType, byte[] arg)

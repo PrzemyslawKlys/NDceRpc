@@ -1,14 +1,21 @@
 :: downloads dependencies used
-:: TODO: dispose Unity.Interception usage, try to use IKVM.Reflection.Emit (fast and very robust, used by Mono compiler)
-nuget\nuget.exe install Unity -Version 2.0
 
-nuget\nuget.exe install protobuf-net -Version 2.0.0.621 
-nuget\nuget.exe install NSubstitute -Version 1.5.0.0
-nuget\nuget.exe install NUnit -Version 2.6.2
-nuget\nuget.exe install CodeContracts.Unofficial -Version 1.0.0.2
+nuget\nuget.exe install protobuf-net
+
+:: for .NET 3.5
+nuget\nuget.exe install CodeContracts.Unofficial
 nuget\nuget.exe install TaskParallelLibrary
+
+:: for tests
+
+nuget\nuget.exe install Unity -Version 2.1.505.2
+nuget\nuget.exe install Unity.Interception -Version 2.1.505.2
+nuget\nuget.exe install NSubstitute
+nuget\nuget.exe install NUnit
 nuget\nuget.exe install MeasureIt
-nuget\nuget.exe install ilmerge
+
+:: for deployment
+nuget\nuget.exe install ILRepack
 
 
 

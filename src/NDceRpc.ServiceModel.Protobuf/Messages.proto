@@ -16,6 +16,7 @@ message  RpcParamData
    required bytes Data = 2;
 }
 
+//TODO: use message header approach instead of reserialization i.e. RpcParamData should be block of data in the and
 message MessageRequest
 {
   required int32 Operation = 1;

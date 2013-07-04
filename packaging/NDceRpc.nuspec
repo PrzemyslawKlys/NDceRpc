@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NDceRpc</id>
-    <version>0.0.6.8</version>
+    <version>0.0.7.0</version>
     <authors>dzmitry_lahoda</authors>
     <owners>dzmitry_lahoda</owners>
     <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>
@@ -15,10 +15,10 @@
     <tags>dce rpc interop</tags>
 	<dependencies>
 	  <group targetFramework="NET40">
-		<dependency id="protobuf-net" version="2.0.0.640" />
+		<dependency id="protobuf-net" />
       </group>
 	  <group targetFramework="NET35">
-	    <dependency id="protobuf-net" version="2.0.0.621" />
+	    <dependency id="protobuf-net"/>
 	    <dependency id="TaskParallelLibrary"/>
 		<dependency id="CodeContracts.Unofficial"/>
       </group>

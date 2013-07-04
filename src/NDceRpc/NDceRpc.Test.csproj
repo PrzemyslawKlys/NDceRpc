@@ -47,6 +47,7 @@
     <OutputPath>..\..\build\Debug\</OutputPath>
     <DocumentationFile />
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Optimize>True</Optimize>

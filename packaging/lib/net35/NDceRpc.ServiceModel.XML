@@ -120,7 +120,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="F:NDceRpc.ServiceModel.TransportFactory._serializer">
+        <member name="M:NDceRpc.ServiceModel.TransportFactory.#cctor">
             <summary>
             Where client should go for data
             </summary>

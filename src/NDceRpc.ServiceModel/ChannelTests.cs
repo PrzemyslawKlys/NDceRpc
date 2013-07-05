@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Threading;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace NDceRpc.ServiceModel.Test
 {
@@ -72,20 +73,78 @@ namespace NDceRpc.ServiceModel.Test
         }
 
         [Test]
-        public void LocalChannelICommuicationObject()
+        public void PipeChannel_notOpenedServer_created()
         {
             var address = @"ipc:///test" + MethodBase.GetCurrentMethod().Name;
-            var serv = new Service(null);
-            var host = new ServiceHost(serv, address);
             var b = new LocalBinding();
+            var f = new ChannelFactory<IService>(b);
+            var c = f.CreateChannel(new EndpointAddress(address));
+            var obj = c as ICommunicationObject;
+            var state = obj.State;
+            Assert.AreEqual(CommunicationState.Created, state);
+        }
+
+        [Test]
+        public void PipeChannel_notOpenedServer_fail()
+        {
+            var address = @"ipc:///test" + MethodBase.GetCurrentMethod().Name;
+            var b = new LocalBinding();
+            var f = new ChannelFactory<IService>(b);
+            var c = f.CreateChannel(new EndpointAddress(address));
+            Exception comminicationEx = null;
+            try
+            {
+                c.DoWithParamsAndResult(null, Guid.Empty);
+            }
+            catch (Exception ex)
+            {
+                comminicationEx = ex;
+            }
+            var obj = c as ICommunicationObject;
+            var state = obj.State;
+            Assert.AreEqual(CommunicationState.Faulted, state);
+            Assert.That(comminicationEx, new ExceptionTypeConstraint(typeof(EndpointNotFoundException)));
+        }
+
+        [Test]
+        public void PipeChannel_openClose_fail()
+        {
+            var address = @"ipc:///test" + MethodBase.GetCurrentMethod().Name;
+            var b = new LocalBinding();
+            var serv = new Service(null);
+            var host = new ServiceHost(serv, new Uri(address));
             host.AddServiceEndpoint(typeof(IService), b, address);
             host.Open();
             var f = new ChannelFactory<IService>(b);
             var c = f.CreateChannel(new EndpointAddress(address));
+            c.DoWithParamsAndResult(null, Guid.Empty);
+            host.Close();
+            Exception comminicationEx = null;
+            try
+            {
+                c.DoWithParamsAndResult(null, Guid.Empty);
+            }
+            catch (Exception ex)
+            {
+                comminicationEx = ex;
+            }
             var obj = c as ICommunicationObject;
-            var state = obj.State; 
-            Assert.AreEqual(CommunicationState.Opened,state);
-            host.Dispose();
+            var state = obj.State;
+            Assert.AreEqual(CommunicationState.Faulted, state);
+            Assert.That(comminicationEx, new ExceptionTypeConstraint(typeof(CommunicationException)));
+        }
+
+
+        [Test]
+        public void LocalChannel_notOpenedServer_fail()
+        {
+            var address = @"ipc:///test" + MethodBase.GetCurrentMethod().Name;
+            var b = new LocalBinding();
+            var f = new ChannelFactory<IService>(b);
+            var c = f.CreateChannel(new EndpointAddress(address));
+            var obj = c as ICommunicationObject;
+            var state = obj.State;
+            Assert.AreEqual(CommunicationState.Created, state);
         }
 
         [Test]

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
 using System.ServiceModel;
@@ -12,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using NDceRpc.ExplicitBytes;
+using NDceRpc.Interop;
 using NDceRpc.ServiceModel.Channels;
 
 
@@ -83,6 +85,7 @@ namespace NDceRpc.ServiceModel
             private readonly Type _service;
             private readonly RpcProxyRouter _router;
             private string _typeName;
+            private CommunicationState _state = CommunicationState.Created;
 
             public RpcRealProxy(Type service, RpcProxyRouter router)
                 : base(service)
@@ -102,13 +105,20 @@ namespace NDceRpc.ServiceModel
                 if (_router._context != null)
                     _router._context.Initialize(_router._typeOfService, _router._address, _router._binding, _router._session, _router._syncContext);
 
+                if (input.TypeName.StartsWith(typeof(ICommunicationObject).FullName))
+                {
+                    //TODO: use somthing faster than string comparison
+                    if (input.MethodName == "get_State")
+                    {
+                        return new ReturnMessage(State, null, 0, input.LogicalCallContext, input);
+                    }
+                }
+
                 MethodResponse methodReturn;
 
                 OperationDispatchBase op;
                 if (_router._operations.TryGetValue(OperationDispatchBase.GetIdentifier(input.MethodBase), out op))
                 {
-
-
                     var r = new MessageRequest();
                     if (_router._session != null)
                     {
@@ -138,14 +148,21 @@ namespace NDceRpc.ServiceModel
                                 byte[] result = null;
 
 
-                                result = _router._client.Execute(rData.ToArray());
+                                result = ExecuteRequest(rData);
 
-
-                                var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
+                                var response =
+                                    (MessageResponse)
+                                    ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result),
+                                                                                     typeof(MessageResponse));
                                 if (response.Error != null)
                                 {
                                     throw new Exception(response.Error.Type + response.Error.Message);
                                 }
+                            }
+                            catch (ExternalException ex)
+                            {
+                                HandleCommunicationError(ex);
+                                throw;
                             }
                             catch (Exception ex)
                             {
@@ -183,14 +200,18 @@ namespace NDceRpc.ServiceModel
                                 byte[] result = null;
 
 
-                                result = _router._client.Execute(rData.ToArray());
-
+                                result = ExecuteRequest(rData);
 
                                 var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
                                 if (response.Error != null)
                                 {
                                     return new ReturnMessage(new Exception(response.Error.Type + response.Error.Message), input);
                                 }
+                            }
+                            catch (ExternalException ex)
+                            {
+                                HandleCommunicationError(ex);
+                                throw;
                             }
                             catch (Exception ex)
                             {
@@ -214,7 +235,7 @@ namespace NDceRpc.ServiceModel
 
                         byte[] result = null;
 
-                        result = _router._client.Execute(rData.ToArray());
+                        result = ExecuteRequest( rData);
 
                         var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
                         if (response.Error != null)
@@ -228,6 +249,11 @@ namespace NDceRpc.ServiceModel
                             return ret;
                         }
                     }
+                    catch (ExternalException ex)
+                    {
+                        HandleCommunicationError(ex);
+                        throw;
+                    }
                     catch (Exception ex)
                     {
                         bool handled = ErrorHandler.Handle(ex);
@@ -239,8 +265,41 @@ namespace NDceRpc.ServiceModel
                     }
                     return new ReturnMessage(null, null, 0, null, input);
                 }
-                throw new InvalidOperationException(string.Format("Cannot find operation {0} on service {1}",input.MethodName,_service));
-            
+                throw new InvalidOperationException(string.Format("Cannot find operation {0} on service {1}", input.MethodName, _service));
+
+            }
+
+            private void HandleCommunicationError(ExternalException ex)
+            {
+
+                    var oldState = State;
+                    setState(CommunicationState.Faulted);
+                    switch (oldState)
+                    {
+                        case CommunicationState.Created:
+                            throw new EndpointNotFoundException(string.Format("Failed to connect to {0}", _router._address));
+                        case CommunicationState.Opened:
+                            throw new CommunicationException(string.Format("Failed to request {0}", _router._address));
+                    }
+            }
+
+            private byte[] ExecuteRequest(MemoryStream rData)
+            {
+                var result = _router._client.Execute(rData.ToArray());
+                setState(CommunicationState.Opened);
+                return result;
+            }
+
+            private void setState(CommunicationState newState)
+            {
+                if (State == CommunicationState.Created && newState == CommunicationState.Opened)
+                {
+                    State = newState;
+                }
+                else if (newState == CommunicationState.Faulted)
+                {
+                    State = CommunicationState.Faulted; ;
+                }
             }
 
             public bool CanCastTo(Type fromType, object o)
@@ -252,11 +311,11 @@ namespace NDceRpc.ServiceModel
                     return true;
                 }
                 if (
-                    fromType == typeof (IContextChannel) ||
-                    fromType == typeof (IChannel) || fromType == typeof (ICommunicationObject))
+                    // fromType == typeof (IContextChannel) ||
+                    // fromType == typeof (IChannel) || 
+                    fromType == typeof(ICommunicationObject))
                 {
-                    //throw new NotImplementedException("Need to implement WCF channell contracts");
-                    return false;//TODO: support these
+                    return true;
                 }
                 return false;
             }
@@ -322,7 +381,12 @@ namespace NDceRpc.ServiceModel
                 throw new NotImplementedException();
             }
 
-            public CommunicationState State { get; private set; }
+            public CommunicationState State
+            {
+                get { return _state; }
+                private set { _state = value; }
+            }
+
             public event EventHandler Closed;
             public event EventHandler Closing;
             public event EventHandler Faulted;
@@ -368,7 +432,7 @@ namespace NDceRpc.ServiceModel
                 _client.Dispose();
                 _client = null;
             }
-           
+
         }
 
         public void Dispose()

@@ -12,24 +12,26 @@ namespace NDceRpc.ServiceModel
         private ServiceBehaviorAttribute _behaviour= new ServiceBehaviorAttribute();
    
 
-        public ServiceHost(Type service, Uri baseAddress)
-            : this(Activator.CreateInstance(service), baseAddress.ToString())
+        public ServiceHost(Type service,params Uri[] baseAddresses)
+            : this(Activator.CreateInstance(service), baseAddresses)
         {
             //TODO: make it not singleton
         }
 
+        [Obsolete("Wcf has not such constuctor")]
         public ServiceHost(object service, Uri baseAddress)
             : this(service, baseAddress.ToString())
         {
         }
 
+        [Obsolete("Wcf has not such constuctor")]
         public ServiceHost(object service, string baseAddress)
         {
             _baseAddress = new Uri(baseAddress,UriKind.Absolute);
             Reflect(service);
         }
 
-        public ServiceHost(object service, Uri[] baseAddress)
+        public ServiceHost(object service,params Uri[] baseAddress)
         {
             if (baseAddress == null)
                 throw new ArgumentNullException("baseAddress");

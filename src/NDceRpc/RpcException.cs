@@ -64,6 +64,7 @@ namespace NDceRpc
         public RpcException(RPC_STATUS errorsCode)
             : base(unchecked((int)errorsCode))
         {
+
         }
         /// <summary>
         /// Returns the RPC Error as an enumeration

@@ -243,6 +243,16 @@
             <summary> WIN32 RPC Error Codes </summary>
             <seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms681386.aspx"/>
         </member>
+        <member name="F:NDceRpc.Interop.RPC_STATUS.RPC_S_WRONG_KIND_OF_BINDING">
+            <summary>
+            The binding handle is not the correct type.
+            </summary>
+        </member>
+        <member name="F:NDceRpc.Interop.RPC_STATUS.RPC_S_INVALID_BINDING">
+            <summary>
+            The binding handle is invalid.
+            </summary>
+        </member>
         <member name="F:NDceRpc.Interop.RPC_STATUS.RPC_S_STRING_TOO_LONG">
             <summary>
             The string is too long.
@@ -252,6 +262,17 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="M:NDceRpc.Interop.NativeMethods.RpcBindingReset(System.IntPtr)">
+             <summary>
+             The RpcBindingReset function resets a binding handle so that the host is specified but the server on that host is unspecified.
+             </summary>
+             <param name="Binding">Server binding handle to reset.</param>
+             <returns>
+                    <see cref="F:NDceRpc.Interop.RPC_STATUS.RPC_S_OK"/> The call succeeded.
+            <see cref="F:NDceRpc.Interop.RPC_STATUS.RPC_S_INVALID_BINDING"/>  The binding handle was invalid.
+            <see cref="F:NDceRpc.Interop.RPC_STATUS.RPC_S_WRONG_KIND_OF_BINDING"/> This was the wrong kind of binding for the operation.
+             </returns>
         </member>
         <member name="M:NDceRpc.Interop.NativeMethods.RpcBindingFromStringBinding(System.String,System.IntPtr@)">
             <summary>

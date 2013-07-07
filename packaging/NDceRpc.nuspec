@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NDceRpc</id>
-    <version>0.0.7.0</version>
+    <version>0.0.8.0</version>
     <authors>dzmitry_lahoda</authors>
     <owners>dzmitry_lahoda</owners>
     <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>

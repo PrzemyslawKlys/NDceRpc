@@ -37,6 +37,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <OutputPath>..\..\build\Debug\</OutputPath>
     <DocumentationFile>..\..\build\Debug\NDceRpc.XML</DocumentationFile>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Optimize>True</Optimize>

@@ -8,6 +8,22 @@ namespace NDceRpc.Interop
     /// </summary>
     public static class NativeMethods
     {
+
+        /// <summary>
+        /// The RpcBindingReset function resets a binding handle so that the host is specified but the server on that host is unspecified.
+        /// </summary>
+        /// <param name="Binding">Server binding handle to reset.</param>
+        /// <returns>
+        ///        <see cref="RPC_STATUS.RPC_S_OK"/> The call succeeded.
+        ///<see cref="RPC_STATUS.RPC_S_INVALID_BINDING"/>  The binding handle was invalid.
+        ///<see cref="RPC_STATUS.RPC_S_WRONG_KIND_OF_BINDING"/> This was the wrong kind of binding for the operation.
+        /// </returns>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingReset",
+CallingConvention = CallingConvention.StdCall,
+CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcBindingReset(IntPtr Binding);
+
+
         ///<summary>
         /// Validates the format of the string binding handle and converts
         /// it to a binding handle.
@@ -84,15 +100,15 @@ namespace NDceRpc.Interop
     CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcServerRegisterIf(IntPtr IfSpec, IntPtr MgrTypeUuid, IntPtr MgrEpv);
 
-      ///IfSpec: RPC_IF_HANDLE->void*     
-	        ///MgrTypeUuid: UUID*     
-	        ///MgrEpv: void*     
-	        ///Flags: unsigned int     
-	        ///MaxCalls: unsigned int     
-	        ///MaxRpcSize: unsigned int     
-	        ///IfCallbackFn: RPC_IF_CALLBACK_FN*     
-	        [DllImport("rpcrt4.dll", EntryPoint = "RpcServerRegisterIf2", CallingConvention = CallingConvention.StdCall)]
-        public static extern RPC_STATUS RpcServerRegisterIf2(IntPtr IfSpec, ref Guid MgrTypeUuid, IntPtr MgrEpv, uint Flags, uint MaxCalls, uint MaxRpcSize, ref RPC_IF_CALLBACK_FN IfCallbackFn);  
+        ///IfSpec: RPC_IF_HANDLE->void*     
+        ///MgrTypeUuid: UUID*     
+        ///MgrEpv: void*     
+        ///Flags: unsigned int     
+        ///MaxCalls: unsigned int     
+        ///MaxRpcSize: unsigned int     
+        ///IfCallbackFn: RPC_IF_CALLBACK_FN*     
+        [DllImport("rpcrt4.dll", EntryPoint = "RpcServerRegisterIf2", CallingConvention = CallingConvention.StdCall)]
+        public static extern RPC_STATUS RpcServerRegisterIf2(IntPtr IfSpec, ref Guid MgrTypeUuid, IntPtr MgrEpv, uint Flags, uint MaxCalls, uint MaxRpcSize, ref RPC_IF_CALLBACK_FN IfCallbackFn);
 
 
         ///<summary>
@@ -100,8 +116,8 @@ namespace NDceRpc.Interop
         ///unsigned long StatusToConvert,
         ///unsigned char *ErrorText
         /// </summary>
-                [DllImport("Rpcrt4.dll", EntryPoint = "DceErrorInqText", CallingConvention = CallingConvention.StdCall,
-    CharSet = CharSet.Unicode, SetLastError = true)]
+        [DllImport("Rpcrt4.dll", EntryPoint = "DceErrorInqText", CallingConvention = CallingConvention.StdCall,
+CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS DceErrorInqText(uint StatusToConvert, out string ErrorText);
 
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcServerUnregisterIf", CallingConvention = CallingConvention.StdCall,
@@ -156,6 +172,6 @@ namespace NDceRpc.Interop
         public static extern RPC_STATUS RpcServerRegisterAuthInfo(String ServerPrincName, uint AuthnSvc, IntPtr GetKeyFn,
                                                                  IntPtr Arg);
 
-  
+
     }
 }

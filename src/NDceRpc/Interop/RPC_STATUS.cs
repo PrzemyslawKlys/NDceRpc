@@ -16,6 +16,18 @@
         RPC_S_ASYNC_CALL_PENDING = 997,
         RPC_S_UNKNOWN_PRINCIPAL = 1332,
         RPC_S_TIMEOUT = 1460,
+
+        /// <summary>
+        /// The binding handle is not the correct type.
+        /// </summary>
+        RPC_S_WRONG_KIND_OF_BINDING = 1701,// (0x6A5)
+
+        /// <summary>
+        /// The binding handle is invalid.
+        /// </summary>
+        RPC_S_INVALID_BINDING = 1702,// (0x6A6)
+
+
         RPC_S_ALREADY_REGISTERED = 1711,
         RPC_S_TYPE_ALREADY_REGISTERED = 1712,
         RPC_S_ALREADY_LISTENING = 1713,
@@ -24,10 +36,13 @@
         RPC_S_DUPLICATE_ENDPOINT = 1740,
         RPC_S_BINDING_HAS_NO_AUTH = 1746,
         RPC_S_CANNOT_SUPPORT = 1764,
+
+
+
         /// <summary>
         /// The string is too long.
         /// </summary>
-        RPC_S_STRING_TOO_LONG = 1743 ,
+        RPC_S_STRING_TOO_LONG = 1743,
         RPC_E_FAIL = 0x80004005u
     }
 }

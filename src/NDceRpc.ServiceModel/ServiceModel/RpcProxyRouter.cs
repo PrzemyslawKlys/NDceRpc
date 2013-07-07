@@ -298,7 +298,8 @@ namespace NDceRpc.ServiceModel
                 }
                 else if (newState == CommunicationState.Faulted)
                 {
-                    State = CommunicationState.Faulted; ;
+                    State = CommunicationState.Faulted;
+                 
                 }
             }
 
@@ -328,17 +329,17 @@ namespace NDceRpc.ServiceModel
 
             public void Abort()
             {
-                throw new NotImplementedException();
+          
             }
 
             public void Close()
             {
-                throw new NotImplementedException();
+        
             }
 
             public void Close(TimeSpan timeout)
             {
-                throw new NotImplementedException();
+              
             }
 
             public IAsyncResult BeginClose(AsyncCallback callback, object state)

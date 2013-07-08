@@ -21,7 +21,7 @@ namespace NDceRpc.ServiceModel
         private static ExceptionHandler transportExceptionHandler = ExceptionHandler.alwaysHandle;
        
         [SecurityCritical]
-        private static ExceptionHandler asynchronousThreadExceptionHandler;
+        private static ExceptionHandler asynchronousThreadExceptionHandler = ExceptionHandler.alwaysHandle;
 
         /// <summary>
         /// Gets an instance of <see cref="T:NDceRpc.ServiceModel.ExceptionHandler"/> that handles all exceptions.

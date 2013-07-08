@@ -139,6 +139,7 @@ namespace NDceRpc.ServiceModel
                     if (op is AsyncOperationDispatch)
                     {
                         object asyncState = input.GetInArg(op.Params.Count + 1);
+                        var asyncCallback = (AsyncCallback)input.GetInArg(op.Params.Count);
                         var task = Tasks.Factory.StartNew((x) =>
                         {
                             try
@@ -161,29 +162,39 @@ namespace NDceRpc.ServiceModel
                             }
                             catch (ExternalException ex)
                             {
-                                HandleCommunicationError(ex);
-                                throw;
+                                throw HandleCommunicationError(ex);
                             }
                             catch (Exception ex)
                             {
                                 bool handled = ErrorHandler.Handle(ex);
-                                if (!handled) throw;
+                                if (!handled) 
+                                    throw;
                             }
                             finally
                             {
                                 _router._operationPending.Set();
                             }
+                            return new ReturnMessage(null, null, 0, null, input);
                         }, asyncState);
 
                         task.ContinueWith(x =>
-                        {
-                            var asyncCallback = (AsyncCallback)input.GetInArg(op.Params.Count);
+                            {
+                                //TODO: do exception handling like in WCF
+                                RpcTrace.Error(x.Exception);
 
+                                if (asyncCallback != null)
+                                {
+                                    asyncCallback(x);
+                                }
+                            }, TaskContinuationOptions.OnlyOnFaulted);
+
+                        task.ContinueWith(x =>
+                        {
                             if (asyncCallback != null)
                             {
-                                asyncCallback(task);
+                                asyncCallback(x);
                             }
-                        });
+                        }, TaskContinuationOptions.OnlyOnRanToCompletion);
                         return new ReturnMessage(task, null, 0, null, input);
 
                     }
@@ -210,14 +221,13 @@ namespace NDceRpc.ServiceModel
                             }
                             catch (ExternalException ex)
                             {
-                                HandleCommunicationError(ex);
-                                throw;
+                                throw  HandleCommunicationError(ex);
                             }
                             catch (Exception ex)
                             {
-
                                 bool handled = ErrorHandler.Handle(ex);
-                                if (!handled) return new ReturnMessage(ex, input);
+                                if (!handled) 
+                                    throw;
                             }
                             finally
                             {
@@ -226,6 +236,8 @@ namespace NDceRpc.ServiceModel
                             return new ReturnMessage(null, null, 0, null, input);
                         }
                         );
+                        //TODO: do exception handling like in WCF
+                        task.ContinueWith(x => RpcTrace.Error(x.Exception), TaskContinuationOptions.OnlyOnFaulted);
                         return new ReturnMessage(null, null, 0, null, input);
                     }
 
@@ -235,7 +247,7 @@ namespace NDceRpc.ServiceModel
 
                         byte[] result = null;
 
-                        result = ExecuteRequest( rData);
+                        result = ExecuteRequest(rData);
 
                         var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
                         if (response.Error != null)
@@ -251,8 +263,8 @@ namespace NDceRpc.ServiceModel
                     }
                     catch (ExternalException ex)
                     {
-                        HandleCommunicationError(ex);
-                        throw;
+                        var wrappedException = HandleCommunicationError(ex);
+                        return new ReturnMessage(wrappedException, input);
                     }
                     catch (Exception ex)
                     {
@@ -269,18 +281,19 @@ namespace NDceRpc.ServiceModel
 
             }
 
-            private void HandleCommunicationError(ExternalException ex)
+            private Exception HandleCommunicationError(ExternalException ex)
             {
-
-                    var oldState = State;
-                    setState(CommunicationState.Faulted);
-                    switch (oldState)
-                    {
-                        case CommunicationState.Created:
-                            throw new EndpointNotFoundException(string.Format("Failed to connect to {0}", _router._address));
-                        case CommunicationState.Opened:
-                            throw new CommunicationException(string.Format("Failed to request {0}", _router._address));
-                    }
+                //TODO: not all RPC errors means this - can fail in local memory and thread inside RPC - should interpret accordingly
+                var oldState = State;
+                setState(CommunicationState.Faulted);
+                switch (oldState)
+                {
+                    case CommunicationState.Created:
+                        return new EndpointNotFoundException(string.Format("Failed to connect to {0}", _router._address));
+                    case CommunicationState.Opened:
+                        return new CommunicationException(string.Format("Failed to request {0}", _router._address));
+                }
+                return ex;
             }
 
             private byte[] ExecuteRequest(MemoryStream rData)
@@ -299,7 +312,7 @@ namespace NDceRpc.ServiceModel
                 else if (newState == CommunicationState.Faulted)
                 {
                     State = CommunicationState.Faulted;
-                 
+
                 }
             }
 
@@ -329,17 +342,17 @@ namespace NDceRpc.ServiceModel
 
             public void Abort()
             {
-          
+
             }
 
             public void Close()
             {
-        
+
             }
 
             public void Close(TimeSpan timeout)
             {
-              
+
             }
 
             public IAsyncResult BeginClose(AsyncCallback callback, object state)

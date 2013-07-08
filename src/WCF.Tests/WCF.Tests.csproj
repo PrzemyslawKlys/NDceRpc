@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncCallbacksTest.cs" />
+    <Compile Include="AsyncTestClasses.cs" />
     <Compile Include="SyncCallbackServiceClasses.cs" />
     <Compile Include="ChannelTests.cs" />
     <Compile Include="SecurityTests.cs" />

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Text.RegularExpressions;
 using MeasureIt;
 using NDceRpc.ServiceModel.Channels;
-
+using NDceRpc.ServiceModel.IntegrationTests;
 using NUnit.Framework;
 using ProtoBuf.Meta;
 
-namespace NDceRpc.ServiceModel.IntegrationTests
+namespace DesignTests
 {
 
     [TestFixture]

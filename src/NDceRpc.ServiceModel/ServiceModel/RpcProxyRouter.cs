@@ -131,7 +131,7 @@ namespace NDceRpc.ServiceModel
                         var paramIdentifier = i;//TODO: try to make this connection with more inderect way
                         var stream = new MemoryStream();
                         _router._serializer.WriteObject(stream, input.GetInArg(i));
-                        ps.Add(new RpcParamData { Identifier = paramIdentifier, Data = stream.ToArray() });
+                        ps.Add(new RpcParamData { Identifier = paramIdentifier, Data = stream.ToArray()  });
                     }
                     r.Data.AddRange(ps.ToArray());
                     var rData = new MemoryStream();

@@ -7,6 +7,7 @@ using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
+
 namespace WCF.Tests
 {
     [TestFixture]
@@ -111,6 +112,30 @@ namespace WCF.Tests
             var state = obj.State;
             Assert.AreEqual(CommunicationState.Faulted, state);
             Assert.That(comminicationEx, new ExceptionTypeConstraint(typeof(CommunicationException)));
+        }
+
+        [Test]
+        public void IContextChannel_operationTimeoutSetGet_Ok()
+        {
+            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
+            var binding = new NetNamedPipeBinding();
+            using (var server = new System.ServiceModel.ServiceHost(new SimplesService(), new Uri(address)))
+            {
+
+                server.AddServiceEndpoint(typeof(ISimplesService), binding, address);
+                server.Open();
+                Thread.Sleep(100);
+                using (var channelFactory = new System.ServiceModel.ChannelFactory<ISimplesService>(binding))
+                {
+                    var client = channelFactory.CreateChannel(new EndpointAddress(address));
+                    var contextChannel = client as IContextChannel;
+                    var newTimeout = TimeSpan.FromSeconds(123);
+                    contextChannel.OperationTimeout = newTimeout;
+                    var timeout = contextChannel.OperationTimeout;
+                    Assert.AreEqual(newTimeout,timeout);
+
+                }
+            }
         }
     }
 

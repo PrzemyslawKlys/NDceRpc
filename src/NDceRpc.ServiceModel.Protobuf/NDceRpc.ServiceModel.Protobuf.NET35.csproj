@@ -12,6 +12,8 @@
     <AssemblyName>NDceRpc.ServiceModel.Protobuf</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,7 +84,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(ProjectDir)..\..\tools\protobuf-net r640\Precompile\precompile.exe" "$(TargetPath)" -o:NDceRpc.ServiceModel.Protobuf.Serializers.dll -t:NDceRpc.ServiceModel.Channels.Messages -f:.NETFramework\v3.5\Profile\Client
-ILDASM.exe "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /OUTPUT=NDceRpc.ServiceModel.Protobuf.Serializers.dll.il
+"$(ProjectDir)..\..\tools\Microsoft SDKs\Windows\v7.1\Bin\ILDASM.exe" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /OUTPUT=NDceRpc.ServiceModel.Protobuf.Serializers.dll.il
 copy "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.original"
 "$(ProjectDir)..\..\tools\Framework\v2.0.50727\ilasm.exe"   "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.il" /DLL /OUTPUT="$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /KEY="$(ProjectDir)..\..\NDceRpc.snk"</PostBuildEvent>
   </PropertyGroup>

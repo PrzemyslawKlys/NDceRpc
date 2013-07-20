@@ -257,7 +257,29 @@ namespace NDceRpc.ServiceModel.Test
             otherHost.Dispose();
         }
 
+        [Test]
+        public void IContextChannel_operationTimeoutSetGet_Ok()
+        {
+            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
+            var binding = new NetNamedPipeBinding();
+            using (var server = new ServiceHost(new SimplesService(), new Uri(address)))
+            {
 
+                server.AddServiceEndpoint(typeof(ISimplesService), binding, address);
+                server.Open();
+                Thread.Sleep(100);
+                using (var channelFactory = new ChannelFactory<ISimplesService>(binding))
+                {
+                    var client = channelFactory.CreateChannel(new EndpointAddress(address));
+                    var contextChannel = client as IContextChannel;
+                    var newTimeout = TimeSpan.FromSeconds(123);
+                    contextChannel.OperationTimeout = newTimeout;
+                    var timeout = contextChannel.OperationTimeout;
+                    Assert.AreEqual(newTimeout, timeout);
+
+                }
+            }
+        }
     }
 
 

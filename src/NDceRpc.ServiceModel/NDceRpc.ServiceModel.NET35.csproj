@@ -38,6 +38,10 @@
     <AssemblyOriginatorKeyFile>..\..\NDceRpc.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CodeContracts.Unofficial.1.0.0.2\lib\net35-client\Microsoft.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="NDceRpc.ServiceModel.Protobuf.Serializers, Version=0.0.0.0, Culture=neutral, PublicKeyToken=7ef76aa0ad6f5cef, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\build\NET35\$(Configuration)\NDceRpc.ServiceModel.Protobuf.Serializers.dll</HintPath>
@@ -74,8 +78,8 @@
     <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Custom\PipeServer.cs" />
-    <Compile Include="ServiceModel\DispatchFactory.cs" />
     <Compile Include="ServiceModel\DispatchTable.cs" />
+    <Compile Include="ServiceModel\DispatchTableFactory.cs" />
     <Compile Include="ServiceModel\DuplexChannelFactory.cs" />
     <Compile Include="ServiceModel\EndpointAddress.cs" />
     <Compile Include="ServiceModel\EndpointMapper.cs" />

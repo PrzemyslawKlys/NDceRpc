@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace NDceRpc.ServiceModel.Test
 {
-    // Simple async result implementation.
     class CompletedAsyncResult<T> : IAsyncResult
     {
         T data;
@@ -18,7 +19,6 @@ namespace NDceRpc.ServiceModel.Test
         public T Data
         { get { return data; } }
 
-        #region IAsyncResult Members
         public object AsyncState
         { get { return (object)data; } }
 
@@ -30,24 +30,48 @@ namespace NDceRpc.ServiceModel.Test
 
         public bool IsCompleted
         { get { return true; } }
-        #endregion
+
+    }
+
+    [ServiceContract()]
+    [Guid("FF58B22B-DE08-4874-9891-9A1144EDE7B9")]
+    public interface IAsyncTaskService
+    {
+        [OperationContract]
+        [DispId(1)]
+        Task<string> GetMessages(string msg);
+    }
+
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    class AsyncTaskService : IAsyncTaskService
+    {
+        public Task<string> GetMessages(string msg)
+        {
+
+            return System.Threading.Tasks.Task<string>.Factory.StartNew(() =>
+            {
+                return new String(msg.Reverse().ToArray());
+            });
+        }
     }
 
     [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(IAsyncServiceCallback))]
+    [Guid("101380E2-1C11-403E-8CFC-3BD2815E6BAB")]
     public interface IAsyncService
     {
         [OperationContract(IsOneWay = false)]
+        [DispId(1)]
         void DoSyncCall();
 
+        [DispId(2)]
         [OperationContractAttribute(AsyncPattern = true)]
         IAsyncResult BeginServiceAsyncMethod(AsyncCallback callback, object asyncState);
 
-        // Note: There is no OperationContractAttribute for the end method.
         string EndServiceAsyncMethod(IAsyncResult result);
     }
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-     class AsyncService : IAsyncService
+    class AsyncService : IAsyncService
     {
         private object _data;
         private ManualResetEvent _done;
@@ -63,7 +87,7 @@ namespace NDceRpc.ServiceModel.Test
             var wait = callback.BeginCallback(null, null);
             wait.AsyncWaitHandle.WaitOne();
             callback.EndCallback(wait);
-     
+
         }
 
         public IAsyncResult BeginServiceAsyncMethod(AsyncCallback callback, object data)
@@ -78,7 +102,7 @@ namespace NDceRpc.ServiceModel.Test
         }
     }
 
-
+    [Guid("56F95F2A-C070-4482-80CD-6E8C025C9FB5")]
     public interface IAsyncServiceCallback
     {
         [OperationContract(IsOneWay = true, AsyncPattern = true)]
@@ -88,7 +112,7 @@ namespace NDceRpc.ServiceModel.Test
         void EndCallback(IAsyncResult asyncResult);
     }
 
-     class AsyncServiceCallback : IAsyncServiceCallback
+    class AsyncServiceCallback : IAsyncServiceCallback
     {
         public IAsyncResult BeginCallback(AsyncCallback callback, object data)
         {

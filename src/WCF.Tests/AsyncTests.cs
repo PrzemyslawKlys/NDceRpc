@@ -16,7 +16,7 @@ namespace WCF.Tests
         public void CallbackAsyncCallback_wait_done()
         {
 
-            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + " " + MethodBase.GetCurrentMethod().Name;
+            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             var binding = new NetNamedPipeBinding();
 
 
@@ -39,9 +39,9 @@ namespace WCF.Tests
         }
 
         [Test]
-        public void CallAsyncCallback_wait_done()
+        public void CallAsync_wait_done()
         {
-            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + " " + MethodBase.GetCurrentMethod().Name;
+            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             var binding = new NetNamedPipeBinding();
 
             var done = new ManualResetEvent(false);
@@ -73,12 +73,43 @@ namespace WCF.Tests
                 done.WaitOne();
             }
         }
+        
+        
+        [Test]
+        public void CallTask_wait_done()
+        {
+            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
+            var binding = new NetNamedPipeBinding();
+
+
+            var srv = new AsyncTaskService();
+     
+
+            using (var host = new ServiceHost(srv, new Uri(address)))
+            {
+                host.AddServiceEndpoint(typeof(IAsyncTaskService), binding, address);
+                host.Open();
+
+                var done = Task.Factory.StartNew(()=>
+                    {
+                        using (var factory = new ChannelFactory<IAsyncTaskService>( binding))
+                        {
+                            var client = factory.CreateChannel(new EndpointAddress(address));
+                            var result = client.GetMessages("123");
+                            result.Wait();
+                            Assert.AreEqual(result.Result, "321");
+                        }
+                    });
+                done.Wait();             
+            }
+        }
 
         [Test]
+        [ExpectedException(typeof(CommunicationObjectFaultedException))]
         public void CallAsync_noServer_done()
         {
 
-            var address = @"net.pipe://127.0.0.1/1/test.test/test" + MethodBase.GetCurrentMethod().Name;
+            var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             var binding = new NetNamedPipeBinding();
 
             var callback = new AsyncServiceCallback();

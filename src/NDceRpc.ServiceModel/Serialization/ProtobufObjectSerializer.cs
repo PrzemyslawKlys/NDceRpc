@@ -54,7 +54,7 @@ namespace NDceRpc.ServiceModel
 
         public override void AddKnownType(Type type)
         {
-            _proto.Add(type, true);
+          var meta =   _proto.Add(type, true);
         }
     }
 }

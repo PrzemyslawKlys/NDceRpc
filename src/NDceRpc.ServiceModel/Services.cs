@@ -9,6 +9,22 @@ using System.Threading;
 
 namespace NDceRpc.ServiceModel.Test
 {
+
+    [ServiceContract]
+    public interface ISimplesService
+    {
+        [OperationContract(IsOneWay = false)]
+        void Do();
+    }
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class SimplesService : ISimplesService
+    {
+        public void Do()
+        {
+
+        }
+    }
+
     [ServiceContract]
     [Guid("7916102D-903A-4E2E-B8ED-4C0DEFEEDF15")]
     public interface IOtherService

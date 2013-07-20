@@ -49,7 +49,7 @@ namespace NDceRpc.ServiceModel.Test
                     byte[] bytes = new byte[512];
                     new Random().NextBytes(bytes);
 
-                    Stopwatch timer = new Stopwatch();
+                    var timer = new Stopwatch();
                     timer.Start();
 
                     for (int i = 0; i < 5000; i++)
@@ -81,7 +81,7 @@ namespace NDceRpc.ServiceModel.Test
                     byte[] bytes = new byte[512];
                     new Random().NextBytes(bytes);
 
-                    Stopwatch timer = new Stopwatch();
+                    var timer = new Stopwatch();
                     timer.Start();
 
                     for (int i = 0; i < 5000; i++)

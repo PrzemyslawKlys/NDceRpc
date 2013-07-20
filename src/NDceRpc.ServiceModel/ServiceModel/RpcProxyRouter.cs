@@ -52,7 +52,7 @@ namespace NDceRpc.ServiceModel
             _binding = binding;
             _address = address;
 
-            _operations = DispatchFactory.GetOperations(_typeOfService);
+            _operations = DispatchTableFactory.GetOperations(_typeOfService);
 
 
             _uuid = EndpointMapper.CreateUuid(_address, typeOfService);
@@ -78,7 +78,7 @@ namespace NDceRpc.ServiceModel
 
         }
 
-        internal class RpcRealProxy : RealProxy, System.Runtime.Remoting.IRemotingTypeInfo, IChannel, ICommunicationObject
+        internal class RpcRealProxy : RealProxy, System.Runtime.Remoting.IRemotingTypeInfo, IContextChannel
         {
 
 
@@ -86,6 +86,7 @@ namespace NDceRpc.ServiceModel
             private readonly RpcProxyRouter _router;
             private string _typeName;
             private CommunicationState _state = CommunicationState.Created;
+            private TimeSpan _operationTimeout = TimeSpan.FromSeconds(60);
 
             public RpcRealProxy(Type service, RpcProxyRouter router)
                 : base(service)
@@ -140,7 +141,7 @@ namespace NDceRpc.ServiceModel
                     {
                         object asyncState = input.GetInArg(op.Params.Count + 1);
                         var asyncCallback = (AsyncCallback)input.GetInArg(op.Params.Count);
-                        var task = Tasks.Factory.StartNew((x) =>
+                        Task task = Tasks.Factory.StartNew((x) =>
                         {
                             try
                             {
@@ -247,8 +248,22 @@ namespace NDceRpc.ServiceModel
 
                         byte[] result = null;
 
-                        result = ExecuteRequest(rData);
-
+                        //BUG: using tasks adds  30% to simple local calls with bytes, and 10% longer then WCF...
+                        //TODO: use native MS-RPC timeouts
+                        //Task operation = Task.Factory.StartNew(() =>
+                        //    {
+                                result = ExecuteRequest(rData);
+                        //    });
+                        //var ended = operation.Wait(_operationTimeout);
+                        //if (!ended)
+                        //{
+                        //    var timeourError =
+                        //        new TimeoutException(
+                        //            string.Format("The request channel timed out attempting to send after {0}",
+                        //                          _operationTimeout));
+                        //    return new ReturnMessage(timeourError,input);
+                        //}
+                           
                         var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
                         if (response.Error != null)
                         {
@@ -325,8 +340,8 @@ namespace NDceRpc.ServiceModel
                     return true;
                 }
                 if (
-                    // fromType == typeof (IContextChannel) ||
-                    // fromType == typeof (IChannel) || 
+                     fromType == typeof (IContextChannel) ||
+                     fromType == typeof (IChannel) || 
                     fromType == typeof(ICommunicationObject))
                 {
                     return true;
@@ -410,6 +425,20 @@ namespace NDceRpc.ServiceModel
             {
                 throw new NotImplementedException();
             }
+
+            public IExtensionCollection<IContextChannel> Extensions { get; private set; }
+            public bool AllowOutputBatching { get; set; }
+            public IInputSession InputSession { get; private set; }
+            public System.ServiceModel.EndpointAddress LocalAddress { get; private set; }
+            public TimeSpan OperationTimeout
+            {
+                get { return _operationTimeout; }
+                set { _operationTimeout = value; }
+            }
+
+            public IOutputSession OutputSession { get; private set; }
+            public System.ServiceModel.EndpointAddress RemoteAddress { get; private set; }
+            public string SessionId { get; private set; }
         }
 
 

@@ -6,9 +6,9 @@ namespace NDceRpc.ServiceModel
     public abstract class RpcStub
     {
         protected object _singletonService;
-        protected DispatchTable _operations;
+        internal   DispatchTable _operations;
         protected ServiceEndpoint _endpoint;
-        public DispatchTable Operations
+        internal  DispatchTable Operations
         {
             get { return _operations; }
         }
@@ -18,7 +18,7 @@ namespace NDceRpc.ServiceModel
 
             _endpoint = endpoint;
             _singletonService = singletonService;
-            _operations = DispatchFactory.GetOperations(endpoint._contractType);
+            _operations = DispatchTableFactory.GetOperations(endpoint._contractType);
 
         }
     }

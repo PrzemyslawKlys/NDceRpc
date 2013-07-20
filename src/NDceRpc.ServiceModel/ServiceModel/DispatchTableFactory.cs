@@ -6,16 +6,16 @@ using System.ServiceModel;
 
 namespace NDceRpc.ServiceModel
 {
-    public static class DispatchFactory
+    internal static class DispatchTableFactory
     {
         private static Dictionary<Type, DispatchTable> _cache = new Dictionary<Type, DispatchTable>();
-        public static Dictionary<Type, DispatchTable> Cache
+        private static Dictionary<Type, DispatchTable> Cache
         {
             get { return _cache; }
             set { _cache = value; }
         }
 
-        public static OperationDispatchBase Create(MethodInfo info)
+        private static OperationDispatchBase Create(MethodInfo info)
         {
             //TODO: fix not null async params
             //TODO: add all async patterns
@@ -31,12 +31,12 @@ namespace NDceRpc.ServiceModel
             }
         }
 
-        public static DispatchTable CreateOperations(MethodInfo[] ops)
+        private static DispatchTable CreateOperations(MethodInfo[] ops)
         {
            var operations = new DispatchTable();
             foreach (var methodInfo in ops)
             {
-                OperationDispatchBase operation = DispatchFactory.Create(methodInfo);
+                OperationDispatchBase operation = DispatchTableFactory.Create(methodInfo);
                 operations[operation.Identifier] = operation;
             }
             return operations;

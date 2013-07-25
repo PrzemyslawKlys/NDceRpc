@@ -35,12 +35,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\build\Release\NDceRpc.ServiceModel.XML</DocumentationFile>
-    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
     <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
     <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
-    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
     <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
     <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
     <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
@@ -93,11 +93,13 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="PerformanceCounters.cs" />
+    <Compile Include="ServiceModel\Channels\MessageVersion.cs" />
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
     <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
     <Compile Include="ServiceModel\ChannelFactory.cs" />
     <Compile Include="ServiceModel\Custom\PipeServer.cs" />
+    <Compile Include="Description\IEndpointBehavior.cs" />
     <Compile Include="ServiceModel\DispatchTable.cs" />
     <Compile Include="ServiceModel\ExceptionHandler.cs" />
     <Compile Include="ServiceModel\LocalBinding.cs" />
@@ -107,12 +109,12 @@
     <Compile Include="ServiceModel\EndpointMapper.cs" />
     <Compile Include="Serialization\BinaryObjectSerializer.cs" />
     <Compile Include="ServiceModel\GuidUtility.cs" />
-    <Compile Include="ServiceModel\IErrorHander.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IErrorHandler.cs" />
     <Compile Include="ServiceModel\RpcTrace.cs" />
     <Compile Include="ServiceModel\Tasks.cs" />
     <Compile Include="ServiceModel\TransportFactory.cs" />
     <Compile Include="ServiceModel\RpcServiceDefaults.cs" />
-    <Compile Include="ServiceModel\ErrorHandler.cs" />
+    <Compile Include="ServiceModel\ObsoleteErrorHandler.cs" />
     <Compile Include="ServiceModel\OperationDispatch.cs" />
     <Compile Include="Serialization\ProtobufObjectSerializer.cs" />
     <Compile Include="ServiceModel\ProxyEmit.cs" />

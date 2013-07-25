@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NDceRpc.ServiceModel
 {
-    public abstract class RpcStub
+    public abstract class EndpointDispatcher
     {
         protected object _singletonService;
         internal   DispatchTable _operations;
@@ -13,7 +13,7 @@ namespace NDceRpc.ServiceModel
             get { return _operations; }
         }
 
-        protected RpcStub(object singletonService, ServiceEndpoint endpoint)
+        protected EndpointDispatcher(object singletonService, ServiceEndpoint endpoint)
         {
 
             _endpoint = endpoint;

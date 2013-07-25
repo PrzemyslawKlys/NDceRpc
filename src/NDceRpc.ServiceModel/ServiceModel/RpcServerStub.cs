@@ -12,7 +12,7 @@ namespace NDceRpc.ServiceModel
 {
 
 
-    public class RpcServerStub : RpcStub
+    public class RpcEndpointDispatcher : EndpointDispatcher
     {
 
         //private readonly EndpointBindingInfo _address;
@@ -23,14 +23,14 @@ namespace NDceRpc.ServiceModel
         private OperationContext _noOp = new OperationContext();
 
 
-        public RpcServerStub(object singletonService, ServiceEndpoint endpoint, bool duplex = false, SynchronizationContext syncContext = null)
+        public RpcEndpointDispatcher(object singletonService, ServiceEndpoint endpoint, bool duplex = false, SynchronizationContext syncContext = null)
             : base(singletonService, endpoint)
         {
             _duplex = duplex;
             _syncContext = syncContext;
         }
 
-        private MessageResponse InvokeContract(IRpcCallInfo call, MessageRequest request, Type contractType)
+        private Message InvokeContract(IRpcCallInfo call, MessageRequest request, Type contractType)
         {
             SetupOperationConext(call, request, contractType);
 
@@ -42,7 +42,7 @@ namespace NDceRpc.ServiceModel
                 args.Add(null);//AsyncCallback
                 args.Add(null);//object asyncState
             }
-            var response = new MessageResponse();
+            var response = new Message();
             try
             {
                 var result = InvokeServerMethod(operation, args);
@@ -50,7 +50,7 @@ namespace NDceRpc.ServiceModel
             }
             catch (Exception ex)
             {
-                response.Error = new RpcErrorData { Type = ex.GetType().FullName, Message = ex.ToString() };
+                response.Fault = new FaultData() {Code = ex.GetType().GUID.ToString(),Reason = ex.Message,Detail = ex.ToString(),Name = ex.GetType().FullName,Node = _endpoint._address};
             }
             finally
             {
@@ -129,13 +129,13 @@ namespace NDceRpc.ServiceModel
         public byte[] Invoke(IRpcCallInfo call, Type contractType, byte[] arg)
         {
             var messageRequest = (MessageRequest)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(arg), typeof(MessageRequest));
-            MessageResponse response = InvokeContract(call, messageRequest, contractType);
+            Message response = InvokeContract(call, messageRequest, contractType);
             var stream = new MemoryStream();
             ProtobufMessageEncodingBindingElement.WriteObject(stream, response);
             return stream.ToArray();
         }
 
-        private void EnrichResponceWithReturn(OperationDispatchBase operation, object result, MessageResponse response)
+        private void EnrichResponceWithReturn(OperationDispatchBase operation, object result, Message response)
         {
             if (operation.MethodInfo.ReturnType != typeof(void) && operation.GetType() != typeof(AsyncOperationDispatch))
             {

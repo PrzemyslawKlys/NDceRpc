@@ -240,14 +240,17 @@ namespace NDceRpc.ServiceModel.Test
             Assert.IsTrue(data.List == null);
         }
         [Test]
-        public void EmptyListIsEmpty()
+        [Description("Protobuf on the wire does not distinguish empty collection and null")]
+        public void EmptyListIsNull()
         {
             var ser = new ProtobufObjectSerializer();
             var stream = new MemoryStream();
             ser.WriteObject(stream, new Data { List = new List<string>() });
             stream.Position = 0;
+
             var data = ser.ReadObject(stream, typeof(Data)) as Data;
-            Assert.IsTrue(data.List.Count == 0);
+
+            Assert.IsNull(data.List);
         }
     }
 }

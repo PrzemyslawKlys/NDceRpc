@@ -15,15 +15,15 @@ using System.Threading.Tasks;
 using NDceRpc.ExplicitBytes;
 using NDceRpc.Interop;
 using NDceRpc.ServiceModel.Channels;
+using Message = NDceRpc.ServiceModel.Channels.Message;
 
 
 namespace NDceRpc.ServiceModel
 {
-    public class RpcProxyRouter : IDisposable
+    public class ClientRuntime : IDisposable
     {
         private object _service;
         private IExplicitBytesClient _client;
-        private RpcServerStub _dipatcher;
         private object _remote;
         private DispatchTable _operations = new DispatchTable();
         private string _session;
@@ -39,7 +39,7 @@ namespace NDceRpc.ServiceModel
         private SynchronizationContext _syncContext;
 
         //TODO: split RpcProxyRouter and RpcCallbackProxy
-        public RpcProxyRouter(string address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid), Type generatedProxyType = null)
+        public ClientRuntime(string address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid), Type generatedProxyType = null)
         {
             _serializer = binding.Serializer;
             _typeOfService = typeOfService;
@@ -83,12 +83,12 @@ namespace NDceRpc.ServiceModel
 
 
             private readonly Type _service;
-            private readonly RpcProxyRouter _router;
+            private readonly ClientRuntime _router;
             private string _typeName;
             private CommunicationState _state = CommunicationState.Created;
             private TimeSpan _operationTimeout = TimeSpan.FromSeconds(60);
 
-            public RpcRealProxy(Type service, RpcProxyRouter router)
+            public RpcRealProxy(Type service, ClientRuntime router)
                 : base(service)
             {
                 _service = service;
@@ -105,13 +105,28 @@ namespace NDceRpc.ServiceModel
                 //TODO: move to RpcCallbackProxy
                 if (_router._context != null)
                     _router._context.Initialize(_router._typeOfService, _router._address, _router._binding, _router._session, _router._syncContext);
-
-                if (input.TypeName.StartsWith(typeof(ICommunicationObject).FullName))
+                
+                Debug.Assert(input.MethodBase != null);
+                Debug.Assert(input.MethodBase.DeclaringType !=null);
+                var iid = input.MethodBase.DeclaringType;
+                if (iid == typeof(ICommunicationObject))
                 {
                     //TODO: use somthing faster than string comparison
                     if (input.MethodName == "get_State")
                     {
                         return new ReturnMessage(State, null, 0, input.LogicalCallContext, input);
+                    }
+                }
+                else if (iid == typeof (IContextChannel))
+                {
+                    if (input.MethodName == "set_OperationTimeout")
+                    {
+                        OperationTimeout = (TimeSpan)input.InArgs[0];
+                        return new ReturnMessage(null, null, 0, input.LogicalCallContext, input);
+                    }
+                    if (input.MethodName == "get_OperationTimeout")
+                    {
+                        return new ReturnMessage(OperationTimeout, null, 0, input.LogicalCallContext, input);
                     }
                 }
 
@@ -153,12 +168,12 @@ namespace NDceRpc.ServiceModel
                                 result = ExecuteRequest(rData);
 
                                 var response =
-                                    (MessageResponse)
+                                    (Message)
                                     ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result),
-                                                                                     typeof(MessageResponse));
-                                if (response.Error != null)
+                                                                                     typeof(Message));
+                                if (response.Fault != null)
                                 {
-                                    throw new Exception(response.Error.Type + response.Error.Message);
+                                    throw new Exception(response.Fault.Name + response.Fault.Detail);
                                 }
                             }
                             catch (ExternalException ex)
@@ -167,7 +182,7 @@ namespace NDceRpc.ServiceModel
                             }
                             catch (Exception ex)
                             {
-                                bool handled = ErrorHandler.Handle(ex);
+                                bool handled = ObsoleteErrorHandler.Handle(ex);
                                 if (!handled) 
                                     throw;
                             }
@@ -214,10 +229,10 @@ namespace NDceRpc.ServiceModel
 
                                 result = ExecuteRequest(rData);
 
-                                var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
-                                if (response.Error != null)
+                                var response = (Message)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(Message));
+                                if (response.Fault != null)
                                 {
-                                    return new ReturnMessage(new Exception(response.Error.Type + response.Error.Message), input);
+                                    return new ReturnMessage(new Exception(response.Fault.Name + response.Fault.Detail), input);
                                 }
                             }
                             catch (ExternalException ex)
@@ -226,7 +241,7 @@ namespace NDceRpc.ServiceModel
                             }
                             catch (Exception ex)
                             {
-                                bool handled = ErrorHandler.Handle(ex);
+                                bool handled = ObsoleteErrorHandler.Handle(ex);
                                 if (!handled) 
                                     throw;
                             }
@@ -264,10 +279,10 @@ namespace NDceRpc.ServiceModel
                         //    return new ReturnMessage(timeourError,input);
                         //}
                            
-                        var response = (MessageResponse)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(MessageResponse));
-                        if (response.Error != null)
+                        var response = (Message)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(Message));
+                        if (response.Fault != null)
                         {
-                            throw new Exception(response.Error.Type + response.Error.Message);
+                            throw new Exception(response.Fault.Name + response.Fault.Detail);
                         }
                         if (op.MethodInfo.ReturnType != typeof(void))
                         {
@@ -283,7 +298,7 @@ namespace NDceRpc.ServiceModel
                     }
                     catch (Exception ex)
                     {
-                        bool handled = ErrorHandler.Handle(ex);
+                        bool handled = ObsoleteErrorHandler.Handle(ex);
                         if (!handled) return new ReturnMessage(ex, input);
                     }
                     finally
@@ -442,7 +457,7 @@ namespace NDceRpc.ServiceModel
         }
 
 
-        public RpcProxyRouter(Uri address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null)
+        public ClientRuntime(Uri address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null)
             : this(address.ToString(), typeOfService, binding, callback, context)
         {
 

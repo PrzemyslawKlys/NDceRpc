@@ -66,6 +66,7 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Description\IEndpointBehavior.cs" />
     <Compile Include="PerformanceCounters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\BinaryObjectSerializer.cs" />
@@ -74,23 +75,24 @@
     <Compile Include="ServiceModel\CallbackServiceHost.cs" />
     <Compile Include="ServiceModel\ChannelFactory.cs" />
     <Compile Include="ServiceModel\ChannelFactoryGeneric.cs" />
+    <Compile Include="ServiceModel\Channels\MessageVersion.cs" />
     <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
     <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Custom\PipeServer.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IErrorHandler.cs" />
     <Compile Include="ServiceModel\DispatchTable.cs" />
     <Compile Include="ServiceModel\DispatchTableFactory.cs" />
     <Compile Include="ServiceModel\DuplexChannelFactory.cs" />
     <Compile Include="ServiceModel\EndpointAddress.cs" />
     <Compile Include="ServiceModel\EndpointMapper.cs" />
-    <Compile Include="ServiceModel\ErrorHandler.cs" />
     <Compile Include="ServiceModel\ExceptionHandler.cs" />
     <Compile Include="ServiceModel\GuidUtility.cs" />
-    <Compile Include="ServiceModel\IErrorHander.cs" />
     <Compile Include="ServiceModel\InstanceContext.cs" />
     <Compile Include="ServiceModel\LocalBinding.cs" />
     <Compile Include="ServiceModel\NetNamedPipeBinding.cs" />
     <Compile Include="ServiceModel\NetTcpBinding.cs" />
+    <Compile Include="ServiceModel\ObsoleteErrorHandler.cs" />
     <Compile Include="ServiceModel\OperationContext.cs" />
     <Compile Include="ServiceModel\OperationDispatch.cs" />
     <Compile Include="ServiceModel\OperationDispatchBase.cs" />

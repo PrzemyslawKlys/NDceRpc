@@ -24,9 +24,9 @@ namespace DesignTests
         private static void CreateProto()
         {
             var proto = TypeModel.Create();
-            proto.Add(typeof(RpcErrorData), true);
+            proto.Add(typeof(FaultData), true);
             proto.Add(typeof(MessageRequest), true);
-            proto.Add(typeof(MessageResponse), true);
+            proto.Add(typeof(Message), true);
             proto.Add(typeof(RpcParamData), true);
             proto.Compile();
 
@@ -47,7 +47,7 @@ namespace DesignTests
             tester.Stop();
             tester.Report();
 
-            Reportwatch reportwatch = new Reportwatch();
+            var reportwatch = new Reportwatch();
             reportwatch.Start("Protobuf");
             var proto = ProtoBuf.Meta.TypeModel.Create();
             proto.Add(typeof(UserInfo), true);

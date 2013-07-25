@@ -1,12 +1,15 @@
-message RpcErrorData {
-  required string Type = 1;
-  optional string Message = 2;
+message FaultData {  
+  required string Code = 1;// GUID
+  required string Name = 2;  // like MyCompany.MyFault
+  required string Reason = 3;// humand readale reason of error
+  optional string Detail = 4;// can contain stack trace
+  optional string Node = 5;// what communicatio participant failed
 }
 
-message MessageResponse
+message Message
 {
    required bytes Data = 1;
-   optional RpcErrorData Error = 2;
+   optional FaultData Fault = 2;
 }
 
 

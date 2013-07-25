@@ -51,7 +51,7 @@ namespace NDceRpc.ServiceModel
         protected object _service;
     
         protected bool _disposed;
-        protected List<RpcServerStub> _serverStub = new List<RpcServerStub>();
+        protected List<RpcEndpointDispatcher> _serverStub = new List<RpcEndpointDispatcher>();
         protected ConcurrencyMode _concurrency = ConcurrencyMode.Single;
         private object _thisLock = new object();
       

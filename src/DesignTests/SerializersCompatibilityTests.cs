@@ -36,11 +36,11 @@ namespace DesignTests
 
         }
 
-     
+
         [Test]
         public void SerializeNoPublicEmptyConstructor()
         {
-            var msg = new EventMessage("sender","data",Guid.NewGuid());
+            var msg = new EventMessage("sender", "data", Guid.NewGuid());
             var proto = ProtoBuf.Meta.TypeModel.Create();
             proto.Add(typeof(EventMessage), true);
             proto.CompileInPlace();
@@ -54,8 +54,11 @@ namespace DesignTests
         {
             var msg = new EventMessage("sender", "data", Guid.NewGuid());
             var proto = ProtoBuf.Meta.TypeModel.Create();
-            proto.Add(typeof(EventMessage), true);
+            var meta = proto.Add(typeof(EventMessage), true);
+            meta.UseConstructor = false;//makes Protobuf behace as DataContractSerializer for DataContractAttribute classes
+
             proto.CompileInPlace();
+      
             var xml = new DataContractSerializer(typeof(EventMessage));
             var xmlStream = new MemoryStream();
             xml.WriteObject(xmlStream, msg);
@@ -64,11 +67,11 @@ namespace DesignTests
             proto.Serialize(protoStream, msg);
             protoStream.Position = 0;
 
-           var fromXml = xml.ReadObject(xmlStream) as EventMessage;
-            Assert.AreEqual("sender",fromXml.Sender);
+            var fromXml = xml.ReadObject(xmlStream) as EventMessage;
+            Assert.AreEqual("sender", fromXml.Sender);
 
             var fromProto = proto.Deserialize(protoStream, null, typeof(EventMessage)) as EventMessage;
-          Assert.AreEqual("sender", fromProto.Sender);
+            Assert.AreEqual("sender", fromProto.Sender);
 
         }
     }

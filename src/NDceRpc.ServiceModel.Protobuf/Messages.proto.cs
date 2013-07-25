@@ -12,42 +12,71 @@
 // Generated from: Messages.proto
 namespace NDceRpc.ServiceModel.Channels
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"RpcErrorData")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"RpcErrorData")]
-  public partial class RpcErrorData : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"FaultData")]
+  [global::System.Runtime.Serialization.DataContract(Name=@"FaultData")]
+  public partial class FaultData : global::ProtoBuf.IExtensible
   {
-    public RpcErrorData() {}
+    public FaultData() {}
     
-    private string _Type;
-    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Type", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.Runtime.Serialization.DataMember(Name=@"Type", Order = 1, IsRequired = true)]
+    private string _Code;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Code", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.Runtime.Serialization.DataMember(Name=@"Code", Order = 1, IsRequired = true)]
     
-    public string Type
+    public string Code
     {
-      get { return _Type; }
-      set { _Type = value; }
+      get { return _Code; }
+      set { _Code = value; }
+    }
+    private string _Name;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Name", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.Runtime.Serialization.DataMember(Name=@"Name", Order = 2, IsRequired = true)]
+    
+    public string Name
+    {
+      get { return _Name; }
+      set { _Name = value; }
+    }
+    private string _Reason;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"Reason", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.Runtime.Serialization.DataMember(Name=@"Reason", Order = 3, IsRequired = true)]
+    
+    public string Reason
+    {
+      get { return _Reason; }
+      set { _Reason = value; }
     }
 
-    private string _Message = "";
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"Message", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    private string _Detail = "";
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"Detail", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue("")]
-    [global::System.Runtime.Serialization.DataMember(Name=@"Message", Order = 2, IsRequired = false)]
+    [global::System.Runtime.Serialization.DataMember(Name=@"Detail", Order = 4, IsRequired = false)]
     
-    public string Message
+    public string Detail
     {
-      get { return _Message; }
-      set { _Message = value; }
+      get { return _Detail; }
+      set { _Detail = value; }
+    }
+
+    private string _Node = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"Node", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    [global::System.Runtime.Serialization.DataMember(Name=@"Node", Order = 5, IsRequired = false)]
+    
+    public string Node
+    {
+      get { return _Node; }
+      set { _Node = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"MessageResponse")]
-  [global::System.Runtime.Serialization.DataContract(Name=@"MessageResponse")]
-  public partial class MessageResponse : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"Message")]
+  [global::System.Runtime.Serialization.DataContract(Name=@"Message")]
+  public partial class Message : global::ProtoBuf.IExtensible
   {
-    public MessageResponse() {}
+    public Message() {}
     
     private byte[] _Data;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Data", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -59,15 +88,15 @@ namespace NDceRpc.ServiceModel.Channels
       set { _Data = value; }
     }
 
-    private RpcErrorData _Error = null;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"Error", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    private FaultData _Fault = null;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"Fault", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
-    [global::System.Runtime.Serialization.DataMember(Name=@"Error", Order = 2, IsRequired = false)]
+    [global::System.Runtime.Serialization.DataMember(Name=@"Fault", Order = 2, IsRequired = false)]
     
-    public RpcErrorData Error
+    public FaultData Fault
     {
-      get { return _Error; }
-      set { _Error = value; }
+      get { return _Fault; }
+      set { _Fault = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

@@ -8,7 +8,7 @@
     <ProjectGuid>{C5FE9181-0F91-4868-A886-D573BBB4251A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NDceRpc.ServiceModel.Chanells</RootNamespace>
+    <RootNamespace>NDceRpc.ServiceModel.Channels</RootNamespace>
     <AssemblyName>NDceRpc.ServiceModel.Protobuf</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -60,7 +60,7 @@
     <Compile Include="MessageResponse.cs" />
     <Compile Include="Messages.proto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RpcErrorData.cs" />
+    <Compile Include="FaultData.cs" />
     <Compile Include="RpcParamData.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,10 +72,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)..\..\tools\protobuf-net r640\Precompile\precompile.exe" "$(TargetPath)" -o:NDceRpc.ServiceModel.Protobuf.Serializers.dll -t:NDceRpc.ServiceModel.Channels.Messages -f:.NETFramework\v4.0\Profile\Client
-"$(ProjectDir)..\..\tools\Microsoft SDKs\Windows\v7.1\Bin\ILDASM.exe" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /OUTPUT=NDceRpc.ServiceModel.Protobuf.Serializers.dll.il
+    <PostBuildEvent>cd $(ProjectDir) 
+"$(ProjectDir)..\..\tools\protobuf-net r640\ProtoGen\protogen.exe" -i:"Messages.proto" -o:"Messages.proto.cs" -p:datacontract -ns:"NDceRpc.ServiceModel.Channels"
+"$(ProjectDir)..\..\tools\protobuf-net r640\Precompile\precompile.exe" "$(TargetPath)" -o:"$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" -t:NDceRpc.ServiceModel.Channels.Messages -f:.NETFramework\v4.0\Profile\Client
+"$(ProjectDir)..\..\tools\Microsoft SDKs\Windows\v7.1\Bin\ILDASM.exe" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /OUTPUT="$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.il"
 copy "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.original"
-"$(ProjectDir)..\..\tools\Framework\v4.0.30319\ilasm.exe"   "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.il" /DLL /OUTPUT="$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /KEY="$(ProjectDir)..\..\NDceRpc.snk"</PostBuildEvent>
+"$(ProjectDir)..\..\tools\Framework\v4.0.30319\ilasm.exe"   "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.il" /DLL /OUTPUT="$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /KEY="$(ProjectDir)..\..\NDceRpc.snk"
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

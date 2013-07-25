@@ -1,0 +1,9 @@
+[uuid(2630154D-9C04-41AC-B1DE-2AAAA415F1E3),
+	version(0.1),
+	//[ptr] attribute when the MIDL compiler is in DCE-compatible mode.
+	//pointer_default(ptr)
+] 
+interface ErrorHandling
+{
+  void Do([in] handle_t hBinding,[out] error_status_t* comm_s,[out] error_status_t* fault_s);
+}

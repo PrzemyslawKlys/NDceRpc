@@ -15,7 +15,7 @@ namespace NDceRpc.ServiceModel
         private readonly InstanceContext _context;
         private Binding _binding;
         private Type _type;
-        private RpcProxyRouter _client;
+        private ClientRuntime _client;
 
         public DuplexChannelFactory(InstanceContext context, Binding binding)
         {
@@ -27,7 +27,7 @@ namespace NDceRpc.ServiceModel
         public T CreateChannel(EndpointAddress createEndpoint)
         {
             if (_client == null)
-                _client = new RpcProxyRouter(createEndpoint.Uri, _type, _binding, false, _context);
+                _client = new ClientRuntime(createEndpoint.Uri, _type, _binding, false, _context);
             return (T)_client.Channell;
         }
 

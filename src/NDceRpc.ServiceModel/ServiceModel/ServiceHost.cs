@@ -69,7 +69,7 @@ namespace NDceRpc.ServiceModel
             }
             RpcTrace.TraceEvent(TraceEventType.Start, "Start adding service endpoint for {0} at {1}",contractType,address);
             var endpoint = base.CreateEndpoint(contractType, binding, address, uuid);
-            _serverStub.Add(new RpcServerStub(_service, endpoint, expectDuplexInitialization));
+            _serverStub.Add(new RpcEndpointDispatcher(_service, endpoint, expectDuplexInitialization));
             return endpoint;
         }
     }

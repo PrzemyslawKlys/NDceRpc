@@ -76,6 +76,7 @@
       <GenerateClientFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Stub</GenerateClientFiles>
       <GenerateServerFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Stub</GenerateServerFiles>
     </Midl>
+    <Midl Include="ErrorHandling.idl" />
     <Midl Include="ExplicitBytes.idl" />
     <Midl Include="ExplicitWithCallbacks.idl">
       <GenerateClientFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Stub</GenerateClientFiles>
@@ -85,16 +86,19 @@
   <ItemGroup>
     <None Include="DceRpcIdl.def" />
     <None Include="Dummy.acf" />
+    <None Include="ErrorHandling.acf" />
     <None Include="ExplicitWithCallbacks.acf" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dummy_h.h" />
+    <ClInclude Include="ErrorHandling_h.h" />
     <ClInclude Include="ExplicitWithCallbacks_h.h" />
     <ClInclude Include="Exports.h" />
     <ClInclude Include="Helper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dummy_s.c" />
+    <ClCompile Include="ErrorHandling_s.c" />
     <ClCompile Include="ExplicitWithCallbacks_s.c" />
     <ClCompile Include="Exports.cpp" />
     <ClCompile Include="Helper.cpp" />

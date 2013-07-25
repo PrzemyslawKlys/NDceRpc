@@ -146,7 +146,8 @@ namespace NDceRpc.ServiceModel.Sample
          [System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.NoInlining)]
         private static void Start(string[] args)
         {
-            ErrorHandler.Handler = new RedConsoleHandler();
+             //TODO: enable logging hook
+            //ObsoleteErrorHandler.Handler = new RedConsoleHandler();
             var isServer = args.Length < 1;
             if (isServer)
             {
@@ -268,17 +269,17 @@ namespace NDceRpc.ServiceModel.Sample
         }
     }
 
-    internal class RedConsoleHandler : IErrorHander
-    {
-        public bool Handle(Exception exception)
-        {
-            var prev = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(exception.Message);
-            Console.ForegroundColor = prev;
-            return true;
-        }
-    }
+    //internal class RedConsoleHandler : IErrorHander
+    //{
+    //    public bool Handle(Exception exception)
+    //    {
+    //        var prev = Console.ForegroundColor;
+    //        Console.ForegroundColor = ConsoleColor.Red;
+    //        Console.WriteLine(exception.Message);
+    //        Console.ForegroundColor = prev;
+    //        return true;
+    //    }
+    //}
 
 
 }

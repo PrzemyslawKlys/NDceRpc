@@ -128,7 +128,6 @@ RPC frovides 32 bit error values to identify communication and server errors lea
 COM uses composite error codes for own and user specified errors represented as 32 bit value. Also COM provides means to propagate detailed error information using specific COM interfaces implemented.
 In this solution error propagation approach similar to SOAP faults was choosen, tuned to work well with C# and C++.
 
-
 #### Operations encoding
 WCF uses string method names to identify operations allover stack. WCF can encode this strings to numbers when creating message. WCF approach takes time in runtime. Appraoch choosen here to use numbers to identify operations everywhere.
 
@@ -137,6 +136,9 @@ Small messages are possible (e.g. less then 256 bytes size), e.g. next operation
 
 #### Languages
 C like language are main target of development (C++,C#). But undrelying technologies are not limited to these only.
+
+#### Runtime
+Possibily to precompile serializers/proxy/stub is must for start up and performance reasons for local communications, hence things that WCF provides should not be copied if make precompilation hard.
 
 ### TODO:
 * Use NRefactory to generate code from WCF interfaces code during compilations to speed up start up

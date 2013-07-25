@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc", "NDceRpc\NDceRpc.csproj", "{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft", "NDceRpc\NDceRpc.Microsoft.csproj", "{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Test", "NDceRpc\NDceRpc.Test.csproj", "{197601FB-7E62-47DA-8E48-B56C9AD5DF20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel", "NDceRpc.ServiceModel\NDceRpc.ServiceModel.csproj", "{9E2CB913-5E64-436A-ADDD-6E3028F797F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Test", "NDceRpc.ServiceModel\NDceRpc.ServiceModel.Test.csproj", "{FE432F2C-E8E8-412B-9E36-D041C7ECE948}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Tests", "NDceRpc.ServiceModel\NDceRpc.ServiceModel.Tests.csproj", "{FE432F2C-E8E8-412B-9E36-D041C7ECE948}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Sample", "NDceRpc.ServiceModel.Sample\NDceRpc.ServiceModel.Sample.csproj", "{C5060F21-9D36-4312-8383-FD90D3528488}"
 EndProject
@@ -42,7 +42,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lpc", "..\packages\LPC\lpc.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.TestsSupport", "NDceRpc.TestsSupport\NDceRpc.TestsSupport.csproj", "{628323B0-1142-45E2-AE24-7A86BDE1010D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.NET35", "NDceRpc\NDceRpc.NET35.csproj", "{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.NET35", "NDceRpc\NDceRpc.Microsoft.NET35.csproj", "{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.NET35", "NDceRpc.ServiceModel\NDceRpc.ServiceModel.NET35.csproj", "{F836B964-8113-4938-B81E-9F7FD33F36F8}"
 EndProject

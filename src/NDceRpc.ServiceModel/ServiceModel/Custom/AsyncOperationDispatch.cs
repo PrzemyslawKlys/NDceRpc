@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 
-namespace NDceRpc.ServiceModel
+namespace NDceRpc.ServiceModel.Custom
 {
     public class AsyncOperationDispatch : OperationDispatchBase
     {

@@ -13,21 +13,20 @@ namespace NDceRpc.ServiceModel
     public class DuplexChannelFactory<T>:IDisposable
     {
         private readonly InstanceContext _context;
-        private Binding _binding;
-        private Type _type;
         private ClientRuntime _client;
+        private ServiceEndpoint _endpoint;
 
         public DuplexChannelFactory(InstanceContext context, Binding binding)
         {
-            _type = typeof (T);
+     
             _context = context;
-            _binding = binding;
+            _endpoint = new ServiceEndpoint(binding, typeof (T), null, Guid.Empty);
         }
 
         public T CreateChannel(EndpointAddress createEndpoint)
         {
             if (_client == null)
-                _client = new ClientRuntime(createEndpoint.Uri, _type, _binding, false, _context);
+                _client = new ClientRuntime(createEndpoint.Uri, _endpoint, false, _context);
             return (T)_client.Channell;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NDceRpc.Interop;
+using NDceRpc.Serialization;
 
 namespace NDceRpc.ServiceModel
 {

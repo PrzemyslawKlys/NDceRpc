@@ -9,19 +9,20 @@ namespace NDceRpc.ServiceModel
         private readonly Guid _session;
         private readonly bool _callback;
         private ClientRuntime _client;
+        private ServiceEndpoint _endpoint;
 
         public RpcCallbackChannelFactory(Binding binding, Type typeOfService,Guid session, bool callback = false)
         {
-            _type = typeOfService;
+
             _session = session;
             _callback = callback;
-            _binding = binding;
+            _endpoint = new ServiceEndpoint(binding, typeOfService, null, Guid.Empty);
         }
 
         public TService CreateChannel<TService>(EndpointAddress createEndpoint)
         {
             if (_client == null)
-                _client = new ClientRuntime(createEndpoint.Uri, _type, _binding, false, null, _session);
+                _client = new ClientRuntime(createEndpoint.Uri, _endpoint, false, null, _session);
             return (TService)_client.Channell;
         }
 

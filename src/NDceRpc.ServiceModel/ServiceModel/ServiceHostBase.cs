@@ -51,14 +51,14 @@ namespace NDceRpc.ServiceModel
         protected object _service;
     
         protected bool _disposed;
-        protected List<RpcEndpointDispatcher> _serverStub = new List<RpcEndpointDispatcher>();
+        protected List<RpcEndpointDispatcher> _endpointDispatchers = new List<RpcEndpointDispatcher>();
         protected ConcurrencyMode _concurrency = ConcurrencyMode.Single;
         private object _thisLock = new object();
       
    
         private static System.Collections.ArrayList _gcRoot = new ArrayList();
 
-        internal ServiceEndpoint CreateEndpoint(Type contractType, Binding binding, string address, Guid uuid)
+        protected ServiceEndpoint CreateEndpoint(Type contractType, Binding binding, string address, Guid uuid)
         {
             var uri = new Uri(address, UriKind.RelativeOrAbsolute);
             if (!uri.IsAbsoluteUri)
@@ -83,7 +83,7 @@ namespace NDceRpc.ServiceModel
             if (State == CommunicationState.Opened)
                 throw new InvalidOperationException(
                     "The communication object, System.ServiceModel.ServiceHost, cannot be modified while it is in the Opened state.");
-            foreach (var stub in _serverStub)
+            foreach (var stub in _endpointDispatchers)
             {
                 stub.Open(_concurrency);
                 //TODO: make GC root disposable
@@ -91,8 +91,14 @@ namespace NDceRpc.ServiceModel
                 {
                     _gcRoot.Add(stub);
                 }
+                foreach (var behaviour in stub._endpoint.Behaviors)
+                {
+                    behaviour.ApplyDispatchBehavior(stub._endpoint,stub);
+                }
             }
             State = CommunicationState.Opened;
+     
+           
         }
 
         public void Open(TimeSpan timeout)
@@ -128,11 +134,11 @@ namespace NDceRpc.ServiceModel
             {
                 return;
             }
-            foreach (var stub in _serverStub)
+            foreach (var stub in _endpointDispatchers)
             {
                 stub.Dispose(CloseTimeout);
             }
-            _serverStub.Clear();
+            _endpointDispatchers.Clear();
    
             _disposed = true;
         }

@@ -2,6 +2,7 @@
 {
     public class ChannelFactory<TService> : ChannelFactory
     {
+        private ServiceEndpoint _endpoint;
 
 
         public ChannelFactory(Binding binding)
@@ -9,6 +10,8 @@
         {
 
         }
+
+
 
         public TService CreateChannel(EndpointAddress createEndpoint)
         {

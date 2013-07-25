@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AsyncTests.cs" />
     <Compile Include="AsyncTestClasses.cs" />
+    <Compile Include="ServiceEndpointBehavioursTests.cs" />
     <Compile Include="SyncCallbackServiceClasses.cs" />
     <Compile Include="ChannelTests.cs" />
     <Compile Include="SecurityTests.cs" />

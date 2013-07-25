@@ -1,4 +1,5 @@
 ﻿using NDceRpc.Interop;
+using NDceRpc.Serialization;
 
 namespace NDceRpc.ServiceModel
 {

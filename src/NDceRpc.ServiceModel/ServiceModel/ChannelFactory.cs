@@ -5,28 +5,33 @@ namespace NDceRpc.ServiceModel
 {
     public class ChannelFactory : ICommunicationObject, IDisposable
     {
-        private Binding _binding;
-        private Type _type;
         private readonly bool _callback;
         private ClientRuntime _proxyRouter;
+        private ServiceEndpoint _endpoint;
 
         public ChannelFactory(Binding binding, Type typeOfService, bool callback = false)
         {
-            _type = typeOfService;
+        
             _callback = callback;
-            _binding = binding;
+            _endpoint = new ServiceEndpoint(binding,typeOfService,null,Guid.Empty);
+        }
+
+        public ServiceEndpoint Endpoint
+        {
+            get { return _endpoint; }
+            private set { _endpoint = value; }
         }
 
         public TService CreateChannel<TService>(EndpointAddress createEndpoint)
         {
             if (_proxyRouter== null)
-                _proxyRouter = new ClientRuntime(createEndpoint.Uri, _type, _binding,_callback);
+                _proxyRouter = new ClientRuntime(createEndpoint.Uri, _endpoint, _callback);
             return (TService)_proxyRouter.Channell;
         }
 
         public void Dispose()
         {
-            _proxyRouter.Close(_binding.CloseTimeout);
+            _proxyRouter.Close(_endpoint._binding.CloseTimeout);
         }
 
         public void Abort()
@@ -34,9 +39,11 @@ namespace NDceRpc.ServiceModel
             throw new NotImplementedException();
         }
 
+
+
         public void Close()
         {
-            _proxyRouter.Close(_binding.CloseTimeout);
+            _proxyRouter.Close(_endpoint._binding.CloseTimeout);
         }
 
         public void Close(TimeSpan timeout)

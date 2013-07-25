@@ -46,7 +46,7 @@ namespace NDceRpc.ServiceModel
             }
 
             var endpoint = base.CreateEndpoint(contractType, binding, address, uuid);
-            _serverStub.Add( new RpcEndpointDispatcher(_service,endpoint, false, _serviceCtx.SynchronizationContext));
+            _endpointDispatchers.Add( new RpcEndpointDispatcher(_service,endpoint, false, _serviceCtx.SynchronizationContext));
 
             return endpoint;
         }

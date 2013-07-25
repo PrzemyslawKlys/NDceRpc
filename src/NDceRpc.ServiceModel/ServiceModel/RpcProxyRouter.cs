@@ -14,7 +14,9 @@ using System.Threading.Tasks;
 
 using NDceRpc.ExplicitBytes;
 using NDceRpc.Interop;
+using NDceRpc.Serialization;
 using NDceRpc.ServiceModel.Channels;
+using NDceRpc.ServiceModel.Custom;
 using Message = NDceRpc.ServiceModel.Channels.Message;
 
 
@@ -37,25 +39,28 @@ namespace NDceRpc.ServiceModel
         private Binding _binding;
         private Guid _uuid;
         private SynchronizationContext _syncContext;
+        private ServiceEndpoint _endpoint;
 
         //TODO: split RpcProxyRouter and RpcCallbackProxy
-        public ClientRuntime(string address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid), Type generatedProxyType = null)
+        public ClientRuntime(string address, ServiceEndpoint endpoint, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid), Type generatedProxyType = null)
         {
-            _serializer = binding.Serializer;
-            _typeOfService = typeOfService;
+            _endpoint = endpoint;
+            _binding = endpoint._binding;
+            _serializer = _binding.Serializer;
+            _typeOfService = endpoint._contractType;
             _context = context;
             if (_context != null && _context._useSynchronizationContext)
             {
                 _syncContext = SynchronizationContext.Current;
             }
             _generatedProxyType = generatedProxyType;
-            _binding = binding;
+            
             _address = address;
 
             _operations = DispatchTableFactory.GetOperations(_typeOfService);
 
 
-            _uuid = EndpointMapper.CreateUuid(_address, typeOfService);
+            _uuid = EndpointMapper.CreateUuid(_address, _typeOfService);
             if (customUuid != Guid.Empty) // callback proxy
             {
                 _uuid = customUuid;
@@ -71,12 +76,23 @@ namespace NDceRpc.ServiceModel
                 _session = Guid.NewGuid().ToString();
             }
             //TODO: allow to be initialized with pregenerated proxy
-            var realProxy = new RpcRealProxy(_typeOfService, this); ;
+            var realProxy = new RpcRealProxy(_typeOfService, this,_endpoint); ;
             _remote = realProxy.GetTransparentProxy();
             _client = TransportFactory.CreateClient(_binding, _uuid, _address);
-
+            foreach (var behavior in _endpoint.Behaviors)
+            {
+                  behavior.ApplyClientBehavior(_endpoint,this);  
+            }
 
         }
+
+
+        public ClientRuntime(Uri address, ServiceEndpoint endpoint, bool callback = false, InstanceContext context = null)
+            : this(address.ToString(),  endpoint, callback, context)
+        {
+
+        }
+
 
         internal class RpcRealProxy : RealProxy, System.Runtime.Remoting.IRemotingTypeInfo, IContextChannel
         {
@@ -84,15 +100,17 @@ namespace NDceRpc.ServiceModel
 
             private readonly Type _service;
             private readonly ClientRuntime _router;
+            private readonly ServiceEndpoint _endpoint;
             private string _typeName;
             private CommunicationState _state = CommunicationState.Created;
             private TimeSpan _operationTimeout = TimeSpan.FromSeconds(60);
 
-            public RpcRealProxy(Type service, ClientRuntime router)
+            public RpcRealProxy(Type service, ClientRuntime router,ServiceEndpoint endpoint)
                 : base(service)
             {
                 _service = service;
                 _router = router;
+                _endpoint = endpoint;
                 _typeName = string.Format("{0}`[{1}]", typeof(RpcRealProxy).FullName, service.FullName);
             }
 
@@ -171,6 +189,7 @@ namespace NDceRpc.ServiceModel
                                     (Message)
                                     ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result),
                                                                                      typeof(Message));
+                 
                                 if (response.Fault != null)
                                 {
                                     throw new Exception(response.Fault.Name + response.Fault.Detail);
@@ -457,11 +476,6 @@ namespace NDceRpc.ServiceModel
         }
 
 
-        public ClientRuntime(Uri address, Type typeOfService, Binding binding, bool callback = false, InstanceContext context = null)
-            : this(address.ToString(), typeOfService, binding, callback, context)
-        {
-
-        }
 
 
 

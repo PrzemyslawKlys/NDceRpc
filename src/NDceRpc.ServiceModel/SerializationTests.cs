@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using NDceRpc.Serialization;
 using NDceRpc.ServiceModel.Channels;
 using NUnit.Framework;
 

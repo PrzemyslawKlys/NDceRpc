@@ -1,7 +1,7 @@
 ﻿using System;
 using NDceRpc.ServiceModel.Channels;
 
-namespace NDceRpc.ServiceModel
+namespace NDceRpc.ServiceModel.Dispatcher
 {
     
     public interface IErrorHandler

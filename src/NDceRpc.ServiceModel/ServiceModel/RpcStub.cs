@@ -7,7 +7,7 @@ namespace NDceRpc.ServiceModel
     {
         protected object _singletonService;
         internal   DispatchTable _operations;
-        protected ServiceEndpoint _endpoint;
+        internal ServiceEndpoint _endpoint;
         internal  DispatchTable Operations
         {
             get { return _operations; }

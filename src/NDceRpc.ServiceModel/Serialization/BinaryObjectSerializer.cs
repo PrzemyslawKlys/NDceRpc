@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace NDceRpc.ServiceModel
+namespace NDceRpc.Serialization
 {
     /// <summary>
     /// Similar to <seealso cref="XmlObjectSerializer"/>

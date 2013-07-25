@@ -70,9 +70,9 @@
       <Project>{9E2CB913-5E64-436A-ADDD-6E3028F797F1}</Project>
       <Name>NDceRpc.ServiceModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NDceRpc\NDceRpc.csproj">
+    <ProjectReference Include="..\NDceRpc\NDceRpc.Microsoft.csproj">
       <Project>{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}</Project>
-      <Name>NDceRpc</Name>
+      <Name>NDceRpc.Microsoft</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

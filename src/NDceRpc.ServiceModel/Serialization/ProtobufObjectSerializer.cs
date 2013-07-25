@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.Serialization;
 using ProtoBuf.Meta;
 
-namespace NDceRpc.ServiceModel
+namespace NDceRpc.Serialization
 {
     public class ProtobufObjectSerializer : BinaryObjectSerializer
     {

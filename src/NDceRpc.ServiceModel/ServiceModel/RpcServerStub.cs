@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.Threading;
 using NDceRpc.ExplicitBytes;
 using NDceRpc.ServiceModel.Channels;
+using NDceRpc.ServiceModel.Custom;
 
 namespace NDceRpc.ServiceModel
 {
@@ -21,6 +22,11 @@ namespace NDceRpc.ServiceModel
 
         private Dictionary<string, RpcCallbackChannelFactory> _clients = new Dictionary<string, RpcCallbackChannelFactory>();
         private OperationContext _noOp = new OperationContext();
+
+        //private ManualResetEvent _opened = new ManualResetEvent(false);
+        protected IExplicitBytesServer _host;
+        private ManualResetEvent _operationPending = new ManualResetEvent(true);
+        private ConcurrencyMode _concurrency;
 
 
         public RpcEndpointDispatcher(object singletonService, ServiceEndpoint endpoint, bool duplex = false, SynchronizationContext syncContext = null)
@@ -59,10 +65,6 @@ namespace NDceRpc.ServiceModel
 
             return response;
         }
-        //private ManualResetEvent _opened = new ManualResetEvent(false);
-        protected IExplicitBytesServer _host;
-        private ManualResetEvent _operationPending = new ManualResetEvent(true);
-        private ConcurrencyMode _concurrency;
 
         internal void Open(ConcurrencyMode concurrency)
         {

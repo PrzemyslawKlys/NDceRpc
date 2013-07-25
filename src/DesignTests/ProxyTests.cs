@@ -84,7 +84,7 @@ namespace DesignTests
             var real = CreateRealProxy(tester1);
             var unity = CreateUnityInerceptor(tester2);
             
-            SpeedTesting.Do(Console.Out,5,100000,()=> RealTime(100000,real),() => UnityTime(100000,unity));
+            SpeedTesting.Do(Console.Out,5,10000,()=> RealTime(10000,real),() => UnityTime(10000,unity));
          
         }
 

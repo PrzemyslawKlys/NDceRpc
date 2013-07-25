@@ -75,6 +75,11 @@ namespace NDceRpc.ServiceModel.Test
             channell.Do();
         }
 
+        public void DoException(string message)
+        {
+            throw new InvalidOperationException(message);
+        }
+
         public void Dispose()
         {
 
@@ -94,7 +99,8 @@ namespace NDceRpc.ServiceModel.Test
 
         [OperationContract(IsOneWay = true)]
         void CallOtherService(string address);
-
+             [OperationContract(IsOneWay = false)]
+        void DoException(string message);
     }
 
     [DataContract]

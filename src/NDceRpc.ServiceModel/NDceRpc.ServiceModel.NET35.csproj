@@ -80,6 +80,7 @@
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Custom\PipeServer.cs" />
     <Compile Include="ServiceModel\Description\IEndpointBehavior.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IClientMessageInspector.cs" />
     <Compile Include="ServiceModel\Dispatcher\IErrorHandler.cs" />
     <Compile Include="ServiceModel\DispatchTable.cs" />
     <Compile Include="ServiceModel\DispatchTableFactory.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="ServiceModel\EndpointAddress.cs" />
     <Compile Include="ServiceModel\EndpointMapper.cs" />
     <Compile Include="ServiceModel\ExceptionHandler.cs" />
+    <Compile Include="ServiceModel\FaultException.cs" />
     <Compile Include="ServiceModel\GuidUtility.cs" />
     <Compile Include="ServiceModel\InstanceContext.cs" />
     <Compile Include="ServiceModel\LocalBinding.cs" />

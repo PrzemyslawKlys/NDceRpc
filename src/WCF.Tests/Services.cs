@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
+using NUnit.Framework;
 
 namespace WCF.Tests
 {
@@ -58,6 +59,11 @@ namespace WCF.Tests
             _wait = wait;
         }
 
+        public void DoException(string message)
+        {
+            throw new InvalidOperationException(message);
+        }
+
         public ServiceResult DoWithParamsAndResult(string p1, Guid p2)
         {
             return new ServiceResult { d1 = 2 };
@@ -84,6 +90,9 @@ namespace WCF.Tests
     [Guid("C059B8B0-9318-4467-9BB7-4FBB9979C3C5")]
     public interface IService : IDisposable
     {
+        [OperationContract(IsOneWay = false)]
+        void DoException(string message);
+
         [OperationContract(IsOneWay = false)]
         ServiceResult DoWithParamsAndResult(string p1, Guid p2);
 

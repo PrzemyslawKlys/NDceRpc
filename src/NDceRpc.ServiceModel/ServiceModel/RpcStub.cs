@@ -8,9 +8,16 @@ namespace NDceRpc.ServiceModel
         protected object _singletonService;
         internal   DispatchTable _operations;
         internal ServiceEndpoint _endpoint;
+        private ChannelDispatcher _channelDispatcher = new ChannelDispatcher();
+
         internal  DispatchTable Operations
         {
             get { return _operations; }
+        }
+
+        public ChannelDispatcher ChannelDispatcher
+        {
+            get { return _channelDispatcher; }
         }
 
         protected EndpointDispatcher(object singletonService, ServiceEndpoint endpoint)

@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF.Tests", "WCF.Tests\WCF.Tests.csproj", "{26699D7B-547D-4B84-9DA8-D5753377ACCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.IntegrationTests", "NDceRpc.IntegrationTests\NDceRpc.IntegrationTests.csproj", "{ABDAC938-5FF8-4717-9FD3-29567C8EA38F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.IntegrationTests", "NDceRpc.IntegrationTests\NDceRpc.Microsoft.IntegrationTests.csproj", "{ABDAC938-5FF8-4717-9FD3-29567C8EA38F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.IntegrationTests", "NDceRpc.ServiceModel.IntegrationTests\NDceRpc.ServiceModel.IntegrationTests.csproj", "{526BAFAD-1288-4114-B200-D314EA5E42B2}"
 EndProject
@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF.IntegrationTests", "WCF
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdl", "DceRpc.Idl\DceRpc.Idl.vcxproj", "{B78DD707-29C4-456E-A501-1BD3A656E99F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.HostOfNativeSample", "NDceRpc.HostOfNativeSample\NDceRpc.HostOfNativeSample.csproj", "{C84E752E-0903-401F-81E3-1369D26F61A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.HostOfNativeSample", "NDceRpc.HostOfNativeSample\NDceRpc.Microsoft.HostOfNativeSample.csproj", "{C84E752E-0903-401F-81E3-1369D26F61A1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdlClient", "DceRpcIdlClient\DceRpcIdlClient.vcxproj", "{BE7FA817-7F6E-4A42-BD67-D1E43962D5C5}"
 EndProject

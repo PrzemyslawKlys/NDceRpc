@@ -17,6 +17,7 @@ using NDceRpc.Interop;
 using NDceRpc.Serialization;
 using NDceRpc.ServiceModel.Channels;
 using NDceRpc.ServiceModel.Custom;
+using NDceRpc.ServiceModel.Dispatcher;
 using Message = NDceRpc.ServiceModel.Channels.Message;
 
 
@@ -40,6 +41,7 @@ namespace NDceRpc.ServiceModel
         private Guid _uuid;
         private SynchronizationContext _syncContext;
         private ServiceEndpoint _endpoint;
+        private IList<IClientMessageInspector> _messageInspectors = new List<IClientMessageInspector>();
 
         //TODO: split RpcProxyRouter and RpcCallbackProxy
         public ClientRuntime(string address, ServiceEndpoint endpoint, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid), Type generatedProxyType = null)
@@ -488,6 +490,12 @@ namespace NDceRpc.ServiceModel
         public object Channell
         {
             get { return _remote; }
+        }
+
+        public IList<IClientMessageInspector> MessageInspectors
+        {
+            get { return _messageInspectors; }
+       
         }
 
 

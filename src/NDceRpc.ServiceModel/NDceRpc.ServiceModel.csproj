@@ -93,6 +93,7 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="PerformanceCounters.cs" />
+    <Compile Include="ServiceModel\ChannelDispatcher.cs" />
     <Compile Include="ServiceModel\Channels\MessageVersion.cs" />
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
@@ -100,8 +101,10 @@
     <Compile Include="ServiceModel\ChannelFactory.cs" />
     <Compile Include="ServiceModel\Custom\PipeServer.cs" />
     <Compile Include="ServiceModel\Description\IEndpointBehavior.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IClientMessageInspector.cs" />
     <Compile Include="ServiceModel\DispatchTable.cs" />
     <Compile Include="ServiceModel\ExceptionHandler.cs" />
+    <Compile Include="ServiceModel\FaultException.cs" />
     <Compile Include="ServiceModel\LocalBinding.cs" />
     <Compile Include="ServiceModel\NetTcpBinding.cs" />
     <Compile Include="ServiceModel\OperationDispatchBase.cs" />

@@ -9,11 +9,11 @@
 #include <tchar.h>
 #include <WinBase.h>
 #include "DceRpcIdlClient.h"
-#include "..\DceRpc.Idl\Dummy_h.h"
+#include "..\DceRpcIdl\Dummy_h.h"
 #include <stdlib.h>
-#include "..\DceRpc.Idl\ExplicitWithCallbacks_h.h"
+#include "..\DceRpcIdl\ExplicitWithCallbacks_h.h"
 
-DCERPCIDLCLIENT_API void CallDummyServer(void* bindingHandle)
+DCERPCIDLCLIENT_API void STDAPICALLTYPE CallDummyServer(void* bindingHandle)
 {
 	Do(bindingHandle);
 }
@@ -55,7 +55,7 @@ DWORD WINAPI StartListening(PVOID pvParam) {
 
 HANDLE g_requestTread;
 
-DCERPCIDLCLIENT_API void CallExplicitWithCallbacksServer(void* bindingHandle)
+DCERPCIDLCLIENT_API  void STDAPICALLTYPE CallExplicitWithCallbacksServer(void* bindingHandle)
 {
 	 DWORD dwThreadID = -1;
 	g_requestTread = CreateThread(NULL, 0, StartListening,bindingHandle, 0,&dwThreadID);
@@ -69,7 +69,7 @@ DCERPCIDLCLIENT_API void CallExplicitWithCallbacksServer(void* bindingHandle)
 	Request(bindingHandle,_TEXT("Hello from client!!!"));
 }
 
-DCERPCIDLCLIENT_API void* GetDummyClient()
+DCERPCIDLCLIENT_API  void* STDAPICALLTYPE GetDummyClient()
 {
 	return Dummy_v0_1_c_ifspec;
 }

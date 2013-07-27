@@ -18,19 +18,19 @@ namespace NDceRpc.HostOfNativeSample
         private const string Implementer = "DceRpcIdl";
         private const string Consumer = "DceRpcIdlClient";
 
-        [DllImport(Implementer)]
+        [DllImport(Implementer,CallingConvention = CallingConvention.StdCall)]
         static extern IntPtr GetDummyServer();
 
-        [DllImport(Consumer)]
+        [DllImport(Consumer, CallingConvention = CallingConvention.StdCall)]
         static extern IntPtr GetDummyClient();
 
-        [DllImport(Implementer)]
+        [DllImport(Implementer, CallingConvention = CallingConvention.StdCall)]
         static extern IntPtr GetExplicitWithCallbacksServer();
 
-        [DllImport(Consumer)]
+        [DllImport(Consumer, CallingConvention = CallingConvention.StdCall)]
         static extern void CallExplicitWithCallbacksServer(IntPtr bindingHandle);
 
-        [DllImport(Consumer)]
+        [DllImport(Consumer, CallingConvention = CallingConvention.StdCall)]
         static extern void CallDummyServer(IntPtr bindingHandle);
 
         static void Main(string[] args)

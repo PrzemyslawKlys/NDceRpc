@@ -8,8 +8,8 @@
     <ProjectGuid>{C84E752E-0903-401F-81E3-1369D26F61A1}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NDceRpc.HostOfNativeSample</RootNamespace>
-    <AssemblyName>NDceRpc.HostOfNativeSample</AssemblyName>
+    <RootNamespace>NDceRpc.Microsoft.HostOfNativeSample</RootNamespace>
+    <AssemblyName>NDceRpc.Microsoft.HostOfNativeSample</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

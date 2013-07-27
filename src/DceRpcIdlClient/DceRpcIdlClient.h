@@ -10,6 +10,6 @@
 #define DCERPCIDLCLIENT_API __declspec(dllimport)
 #endif
 
-DCERPCIDLCLIENT_API void* GetDummyClient();
-DCERPCIDLCLIENT_API void CallDummyServer(void* bindingHandle);
-DCERPCIDLCLIENT_API void CallExplicitWithCallbacksServer(void* bindingHandle);
+DCERPCIDLCLIENT_API  void* STDAPICALLTYPE GetDummyClient();
+DCERPCIDLCLIENT_API void STDAPICALLTYPE CallDummyServer(void* bindingHandle);
+DCERPCIDLCLIENT_API void  STDAPICALLTYPE CallExplicitWithCallbacksServer(void* bindingHandle);

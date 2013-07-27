@@ -5,8 +5,14 @@ using System.Text;
 
 namespace NDceRpc.ServiceModel.Channels
 {
-    //TODO: write down version here upon 1.0 release
+
     public sealed class MessageVersion
     {
+        public static MessageVersion _wcfProtoRpc1 = new MessageVersion();
+
+        public static MessageVersion WcfProtoRpc1
+        {
+            get { return _wcfProtoRpc1; }
+        }
     }
 }

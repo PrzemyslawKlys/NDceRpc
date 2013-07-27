@@ -2,16 +2,18 @@
 <package >
   <metadata>
     <id>NDceRpc</id>
-    <version>0.0.8.0</version>
-    <authors>dzmitry_lahoda</authors>
+    <version>0.0.9.1</version>
+    <authors>Dzmitry Lahoda</authors>
     <owners>dzmitry_lahoda</owners>
     <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>
     <projectUrl>https://github.com/asd-and-Rizzo/NDceRpc</projectUrl>
     <iconUrl>https://raw.github.com/asd-and-Rizzo/NDceRpc/master/doc/NDceRpc.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Integration of WCF and .NET with MS-RPC and binary serialization. </description>
-    <releaseNotes>Initial release for ease of reuse</releaseNotes>
-    <copyright>@->---</copyright>
+    <releaseNotes>
+	* 0.0.9.1
+	- added exception handling like in WCF
+	</releaseNotes>
     <tags>dce rpc interop</tags>
 	<dependencies>
 	  <group targetFramework="NET40">

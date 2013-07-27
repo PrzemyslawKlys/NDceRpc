@@ -8,9 +8,9 @@ copy build\Release\NDceRpc.ServiceModel.Protobuf.pdb packaging\lib\net40\
 
 copy build\Release\NDceRpc.ServiceModel.Protobuf.Serializers.dll packaging\lib\net40\
 
-copy build\Release\NDceRpc.dll packaging\lib\net40\
-copy build\Release\NDceRpc.pdb packaging\lib\net40\
-copy build\Release\NDceRpc.xml packaging\lib\net40\
+copy build\Release\NDceRpc.Microsoft.dll packaging\lib\net40\
+copy build\Release\NDceRpc.Microsoft.pdb packaging\lib\net40\
+copy build\Release\NDceRpc.Microsoft.xml packaging\lib\net40\
 
 
 :: NET 3.5
@@ -23,6 +23,6 @@ copy build\NET35\Release\NDceRpc.ServiceModel.Protobuf.pdb packaging\lib\NET35\
 
 copy build\NET35\Release\NDceRpc.ServiceModel.Protobuf.Serializers.dll packaging\lib\NET35\
 
-copy build\NET35\Release\NDceRpc.dll packaging\lib\NET35\
-copy build\NET35\Release\NDceRpc.pdb packaging\lib\NET35\
-copy build\NET35\Release\NDceRpc.xml packaging\lib\NET35\
+copy build\NET35\Release\NDceRpc.Microsoft.dll packaging\lib\NET35\
+copy build\NET35\Release\NDceRpc.Microsoft.pdb packaging\lib\NET35\
+copy build\NET35\Release\NDceRpc.Microsoft.xml packaging\lib\NET35\

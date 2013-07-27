@@ -5,7 +5,9 @@ using System.Text;
 
 namespace NDceRpc.ServiceModel.Dispatcher
 {
-    public class IClientMessageInspector
+    public interface IClientMessageInspector
     {
+        void AfterReceiveReply(ref NDceRpc.ServiceModel.Channels.Message reply, object correlationState);
+
     }
 }

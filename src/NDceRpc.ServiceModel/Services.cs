@@ -87,6 +87,26 @@ namespace NDceRpc.ServiceModel.Test
     }
 
 
+
+
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class ExceptionService : IExceptionService
+    {
+        public void DoException(string message)
+        {
+            throw new InvalidOperationException(message);
+        }
+    }
+
+
+    [Guid("B8003DB5-D743-49DE-98D3-C64852D25083")]
+    [ServiceContract]
+    public interface IExceptionService
+    {
+        [OperationContract(IsOneWay = false)]
+        void DoException(string message);
+    }
+
     [ServiceContract]
     [Guid("C059B8B0-9318-4467-9BB7-4FBB9979C3C5")]
     public interface IService : IDisposable
@@ -99,8 +119,7 @@ namespace NDceRpc.ServiceModel.Test
 
         [OperationContract(IsOneWay = true)]
         void CallOtherService(string address);
-             [OperationContract(IsOneWay = false)]
-        void DoException(string message);
+
     }
 
     [DataContract]

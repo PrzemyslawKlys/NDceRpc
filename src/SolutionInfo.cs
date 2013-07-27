@@ -1,11 +1,5 @@
-
-
 using System.Reflection;
 
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

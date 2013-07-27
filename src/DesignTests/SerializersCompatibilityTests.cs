@@ -2,6 +2,8 @@
 using System.IO;
 using System.Runtime.Serialization;
 using NUnit.Framework;
+using ProtoBuf;
+using ProtoBuf.Meta;
 
 namespace DesignTests
 {
@@ -72,6 +74,22 @@ namespace DesignTests
 
             var fromProto = proto.Deserialize(protoStream, null, typeof(EventMessage)) as EventMessage;
             Assert.AreEqual("sender", fromProto.Sender);
+
+        }
+
+
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        [Description("Default behaviour of Protobuf serializers does not handles Exception")]
+        public void SerializeException()
+        {
+            var stream = new MemoryStream();
+            var ex = new Exception("serializable exception");
+            var info = new SerializationInfo(typeof(Exception),new FormatterConverter());
+            var context = new StreamingContext(StreamingContextStates.CrossProcess);
+             ex.GetObjectData(info,context);
+             Serializer.Serialize(info, context, ex);
+           
 
         }
     }

@@ -56,12 +56,10 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="MessageRequest.cs" />
-    <Compile Include="MessageResponse.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="Messages.proto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FaultData.cs" />
-    <Compile Include="RpcParamData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\NDceRpc.snk">

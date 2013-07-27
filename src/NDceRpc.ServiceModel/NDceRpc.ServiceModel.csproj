@@ -117,7 +117,6 @@
     <Compile Include="ServiceModel\Tasks.cs" />
     <Compile Include="ServiceModel\TransportFactory.cs" />
     <Compile Include="ServiceModel\RpcServiceDefaults.cs" />
-    <Compile Include="ServiceModel\ObsoleteErrorHandler.cs" />
     <Compile Include="ServiceModel\OperationDispatch.cs" />
     <Compile Include="Serialization\ProtobufObjectSerializer.cs" />
     <Compile Include="ServiceModel\ProxyEmit.cs" />
@@ -134,10 +133,10 @@
     <Compile Include="ServiceModel\ServiceHost.cs" />
     <Compile Include="ServiceModel\ParameterDispatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceModel\RpcServerStub.cs" />
-    <Compile Include="ServiceModel\RpcProxyRouter.cs" />
+    <Compile Include="ServiceModel\RpcEndpointDispatcher.cs" />
+    <Compile Include="ServiceModel\ClientRuntime.cs" />
     <Compile Include="ServiceModel\ServiceHostBase.cs" />
-    <Compile Include="ServiceModel\RpcStub.cs" />
+    <Compile Include="ServiceModel\EndpointDispatcher.cs" />
     <Compile Include="ServiceModel\Transports.cs" />
     <Compile Include="ServiceModel\TypeExtensions.cs" />
   </ItemGroup>
@@ -146,7 +145,7 @@
       <Project>{C5FE9181-0F91-4868-A886-D573BBB4251A}</Project>
       <Name>NDceRpc.ServiceModel.Protobuf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NDceRpc\NDceRpc.Microsoft.csproj">
+    <ProjectReference Include="..\NDceRpc.Microsoft\NDceRpc.Microsoft.csproj">
       <Project>{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}</Project>
       <Name>NDceRpc.Microsoft</Name>
     </ProjectReference>

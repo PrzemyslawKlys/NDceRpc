@@ -41,6 +41,8 @@ namespace WCF.Tests
         }
 
 
+
+
         [Test]
         [Description("Propagates server side managed exception to client side and thows as error")]
 
@@ -48,16 +50,16 @@ namespace WCF.Tests
         {
             var hook = new ExceptionsEndpointBehaviour();
             var address = @"net.pipe://127.0.0.1/test" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
-            var serv = new Service(null);
+            var serv = new ExceptionService();
             using (var host = new ServiceHost(serv, new Uri[] { new Uri(address), }))
             {
                 var b = new NetNamedPipeBinding();
-                var serverEndpoint = host.AddServiceEndpoint(typeof(IService), b, address);
+                var serverEndpoint = host.AddServiceEndpoint(typeof(IExceptionService), b, address);
                 serverEndpoint.Behaviors.Add(hook);
 
                 host.Open();
 
-                var f = new ChannelFactory<IService>(b);
+                var f = new ChannelFactory<IExceptionService>(b);
                 f.Endpoint.Behaviors.Add(hook);
 
                 var c = f.CreateChannel(new EndpointAddress(address));

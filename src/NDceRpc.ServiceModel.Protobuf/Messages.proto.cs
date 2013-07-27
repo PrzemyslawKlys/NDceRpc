@@ -46,12 +46,12 @@ namespace NDceRpc.ServiceModel.Channels
       set { _Reason = value; }
     }
 
-    private string _Detail = "";
+    private byte[] _Detail = null;
     [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"Detail", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue("")]
+    [global::System.ComponentModel.DefaultValue(null)]
     [global::System.Runtime.Serialization.DataMember(Name=@"Detail", Order = 4, IsRequired = false)]
     
-    public string Detail
+    public byte[] Detail
     {
       get { return _Detail; }
       set { _Detail = value; }

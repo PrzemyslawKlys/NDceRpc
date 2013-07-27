@@ -39,6 +39,43 @@
             Maps method binary identifiers into invocable entities.
             </summary>
         </member>
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the Exception class with a specified error message 
+            and a reference to the inner exception that is the cause of this exception. 
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception, 
+            or a null reference if no inner exception is specified.</param>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.#ctor(`0,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the Exception class with additional arguments, 
+            a specified error message, and a reference to the inner exception 
+            that is the cause of this exception. 
+            </summary>
+            <param name="details">The exception's additional arguments.</param>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception, 
+            or a null reference if no inner exception is specified.</param>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            When overridden in a derived class, sets the SerializationInfo with information about the exception.
+            </summary>
+            <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.Equals(System.Object)">
+            <summary>
+            Determines whether the specified Object is equal to the current Object.
+            </summary>
+            <param name="obj">The Object to compare with the current Object. </param>
+            <returns>true if the specified Object is equal to the current Object; otherwise, false.</returns>
+        </member>
+        <member name="P:NDceRpc.ServiceModel.FaultException`1.Details">
+            <summary>Returns a reference to this exception's additional arguments.</summary>
+        </member>
         <member name="T:NDceRpc.ServiceModel.ExceptionHandler">
             <summary>
             Extend the <see cref="T:NDceRpc.ServiceModel.ExceptionHandler"/> class to create an exception handler for unhandled exceptions that occur within the NDceRpc runtime.
@@ -82,7 +119,15 @@
             A custom <see cref="T:NDceRpc.ServiceModel.ExceptionHandler"/> object that receives unhandled exceptions that occur within the global NDceRpc transports.
             </returns>
         </member>
-        <member name="M:NDceRpc.ServiceModel.DispatchFactory.GetOperations(System.Type)">
+        <member name="T:NDceRpc.ServiceModel.RpcServiceDefaults">
+            <seealso cref="T:System.ServiceModel.ServiceDefaults"/>
+        </member>
+        <member name="T:NDceRpc.Serialization.BinaryObjectSerializer">
+            <summary>
+            Similar to <seealso cref="T:System.Runtime.Serialization.XmlObjectSerializer"/>
+            </summary>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.DispatchTableFactory.GetOperations(System.Type)">
             <summary>
             Gets table of operations for specific type.
             
@@ -92,14 +137,6 @@
             <remarks>
             Considers reflection costly operation and caching is optimization.  Considers types unchangable during runtime.
             </remarks>
-        </member>
-        <member name="T:NDceRpc.ServiceModel.RpcServiceDefaults">
-            <seealso cref="T:System.ServiceModel.ServiceDefaults"/>
-        </member>
-        <member name="T:NDceRpc.ServiceModel.BinaryObjectSerializer">
-            <summary>
-            Similar to <seealso cref="T:System.Runtime.Serialization.XmlObjectSerializer"/>
-            </summary>
         </member>
         <member name="F:NDceRpc.ServiceModel.EndpointMapper.UriSchemeIpc">
             <summary>

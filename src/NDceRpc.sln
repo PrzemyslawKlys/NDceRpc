@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft", "NDceRpc\NDceRpc.Microsoft.csproj", "{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft", "NDceRpc.Microsoft\NDceRpc.Microsoft.csproj", "{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Test", "NDceRpc\NDceRpc.Test.csproj", "{197601FB-7E62-47DA-8E48-B56C9AD5DF20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.Test", "NDceRpc.Microsoft\NDceRpc.Microsoft.Test.csproj", "{197601FB-7E62-47DA-8E48-B56C9AD5DF20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel", "NDceRpc.ServiceModel\NDceRpc.ServiceModel.csproj", "{9E2CB913-5E64-436A-ADDD-6E3028F797F1}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Sample", "NDceRpc.ServiceModel.Sample\NDceRpc.ServiceModel.Sample.csproj", "{C5060F21-9D36-4312-8383-FD90D3528488}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Sample", "NDceRpc.Sample\NDceRpc.Sample.csproj", "{E95D8774-29A0-48AF-B139-FF94E34F7094}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.Sample", "NDceRpc.Microsoft.Sample\NDceRpc.Microsoft.Sample.csproj", "{E95D8774-29A0-48AF-B139-FF94E34F7094}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D92F220A-A11F-46CB-A60D-429839355ECB}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,15 +20,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF.Tests", "WCF.Tests\WCF.Tests.csproj", "{26699D7B-547D-4B84-9DA8-D5753377ACCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.IntegrationTests", "NDceRpc.IntegrationTests\NDceRpc.Microsoft.IntegrationTests.csproj", "{ABDAC938-5FF8-4717-9FD3-29567C8EA38F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.IntegrationTests", "NDceRpc.Microsoft.IntegrationTests\NDceRpc.Microsoft.IntegrationTests.csproj", "{ABDAC938-5FF8-4717-9FD3-29567C8EA38F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.IntegrationTests", "NDceRpc.ServiceModel.IntegrationTests\NDceRpc.ServiceModel.IntegrationTests.csproj", "{526BAFAD-1288-4114-B200-D314EA5E42B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF.IntegrationTests", "WCF.IntegrationTests\WCF.IntegrationTests.csproj", "{CE96FDCD-06B6-407F-87D6-E7E68A60DA18}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdl", "DceRpc.Idl\DceRpc.Idl.vcxproj", "{B78DD707-29C4-456E-A501-1BD3A656E99F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdl", "DceRpcIdl\DceRpcIdl.vcxproj", "{B78DD707-29C4-456E-A501-1BD3A656E99F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.HostOfNativeSample", "NDceRpc.HostOfNativeSample\NDceRpc.Microsoft.HostOfNativeSample.csproj", "{C84E752E-0903-401F-81E3-1369D26F61A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.HostOfNativeSample", "NDceRpc.Microsoft.HostOfNativeSample\NDceRpc.Microsoft.HostOfNativeSample.csproj", "{C84E752E-0903-401F-81E3-1369D26F61A1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdlClient", "DceRpcIdlClient\DceRpcIdlClient.vcxproj", "{BE7FA817-7F6E-4A42-BD67-D1E43962D5C5}"
 EndProject
@@ -42,7 +42,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lpc", "..\packages\LPC\lpc.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.TestsSupport", "NDceRpc.TestsSupport\NDceRpc.TestsSupport.csproj", "{628323B0-1142-45E2-AE24-7A86BDE1010D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.NET35", "NDceRpc\NDceRpc.Microsoft.NET35.csproj", "{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.NET35", "NDceRpc.Microsoft\NDceRpc.Microsoft.NET35.csproj", "{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.NET35", "NDceRpc.ServiceModel\NDceRpc.ServiceModel.NET35.csproj", "{F836B964-8113-4938-B81E-9F7FD33F36F8}"
 EndProject

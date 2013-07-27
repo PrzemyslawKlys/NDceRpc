@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using NDceRpc.ServiceModel.Dispatcher;
@@ -15,7 +17,7 @@ namespace NDceRpc.ServiceModel.Tests
         public void ServerAncClientEndpointBehavior()
         {
             var hook = new InvokesCounterBehaviour();
-            var address = @"net.pipe://127.0.0.1/test" + this.GetType().Name+"_"+ MethodBase.GetCurrentMethod().Name;
+            var address = @"net.pipe://127.0.0.1/test" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             var serv = new Service(null);
             var host = new NDceRpc.ServiceModel.ServiceHost(serv, new Uri[] { new Uri(address), });
             var b = new NDceRpc.ServiceModel.NetNamedPipeBinding();
@@ -23,7 +25,7 @@ namespace NDceRpc.ServiceModel.Tests
             serverEndpoint.Behaviors.Add(hook);
             Assert.AreEqual(0, hook.Counter);
             host.Open();
-            Assert.AreEqual(1,hook.Counter);
+            Assert.AreEqual(1, hook.Counter);
             var f = new NDceRpc.ServiceModel.ChannelFactory<IService>(b);
             f.Endpoint.Behaviors.Add(hook);
             Assert.AreEqual(1, hook.Counter);
@@ -31,10 +33,10 @@ namespace NDceRpc.ServiceModel.Tests
             Assert.AreEqual(2, hook.Counter);
             var result = c.DoWithParamsAndResult("", Guid.NewGuid());
 
-          
+
             host.Abort();
         }
-    
+
 
         [Test]
         [Description("Propagates server side managed exception to client side and thows as error")]
@@ -43,16 +45,16 @@ namespace NDceRpc.ServiceModel.Tests
         {
             var hook = new ExceptionsEndpointBehaviour();
             var address = @"net.pipe://127.0.0.1/test" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
-            var serv = new Service(null);
+            var serv = new ExceptionService();
             using (var host = new ServiceHost(serv, new Uri[] { new Uri(address), }))
             {
                 var b = new NetNamedPipeBinding();
-                var serverEndpoint = host.AddServiceEndpoint(typeof(IService), b, address);
+                var serverEndpoint = host.AddServiceEndpoint(typeof(IExceptionService), b, address);
                 serverEndpoint.Behaviors.Add(hook);
 
                 host.Open();
 
-                var f = new ChannelFactory<IService>(b);
+                var f = new ChannelFactory<IExceptionService>(b);
                 f.Endpoint.Behaviors.Add(hook);
 
                 var c = f.CreateChannel(new EndpointAddress(address));
@@ -63,7 +65,7 @@ namespace NDceRpc.ServiceModel.Tests
                 }
                 catch (InvalidOperationException ex)
                 {
-                   StringAssert.AreEqualIgnoringCase("message", ex.Message);
+                    StringAssert.AreEqualIgnoringCase("message", ex.Message);
                 }
                 host.Abort();
             }
@@ -72,8 +74,8 @@ namespace NDceRpc.ServiceModel.Tests
 
     public class ExceptionsEndpointBehaviour : NDceRpc.ServiceModel.Description.IEndpointBehavior
     {
-        public void Validate(ServiceEndpoint endpoint){}
-        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters){}
+        public void Validate(ServiceEndpoint endpoint) { }
+        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
 
         public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
         {
@@ -94,7 +96,12 @@ namespace NDceRpc.ServiceModel.Tests
             {
                 return;
             }
-          
+            var serializer = new NetDataContractSerializer();
+            var stream = new MemoryStream();
+            serializer.Serialize(stream, error);
+            stream.Position = 0;
+            fault.Fault.Detail = stream.ToArray();
+
         }
 
         public bool HandleError(Exception error)
@@ -105,10 +112,13 @@ namespace NDceRpc.ServiceModel.Tests
 
     public class ExceptionMessageInspector : NDceRpc.ServiceModel.Dispatcher.IClientMessageInspector
     {
-      
+
         public void AfterReceiveReply(ref NDceRpc.ServiceModel.Channels.Message reply, object correlationState)
         {
-
+            var stream = new MemoryStream(reply.Fault.Detail);
+            var serializer = new NetDataContractSerializer();
+            var exeption = (Exception)serializer.Deserialize(stream);
+            throw exeption;
         }
     }
 
@@ -125,7 +135,7 @@ namespace NDceRpc.ServiceModel.Tests
         public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
         {
             Counter++;
-           
+
         }
     }
 }

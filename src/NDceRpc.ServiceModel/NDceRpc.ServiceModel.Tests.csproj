@@ -83,6 +83,7 @@
     <Compile Include="EndpointMapperTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ErrorHandlingTests.cs" />
     <Compile Include="HostTests.cs" />
     <Compile Include="ServiceEndpointBehavioursTests.cs" />
     <Compile Include="Services.cs" />
@@ -103,7 +104,7 @@
       <Project>{628323B0-1142-45E2-AE24-7A86BDE1010D}</Project>
       <Name>NDceRpc.TestsSupport</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NDceRpc\NDceRpc.Microsoft.csproj">
+    <ProjectReference Include="..\NDceRpc.Microsoft\NDceRpc.Microsoft.csproj">
       <Project>{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}</Project>
       <Name>NDceRpc.Microsoft</Name>
     </ProjectReference>

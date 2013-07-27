@@ -13,7 +13,7 @@ namespace NDceRpc.Mono
 		public static void Main (string[] args)
 		{
 			var wcf = new InsideWcf ();
-			wcf.CreateMessage_givenNotSerializableObjectAndDefaults_error ();
+			wcf.CreateMessageFault_isFault ();
 			Console.ReadKey ();
 		}
 	}
@@ -43,6 +43,16 @@ namespace NDceRpc.Mono
 		[ExpectedException(typeof(InvalidDataContractException))]
 		public void CreateMessage_givenNotSerializableObjectAndDefaults_error(){
 			var msg = Message.CreateMessage(MessageVersion.Default,"urn:DoStuff",new MyClrData(0));
+			var content = msg.ToString ();
+		}
+
+		[Test]
+		public void CreateMessageFault_isFault(){
+			var fault = MessageFault.CreateFault (new FaultCode ("Sender"), new FaultReason ("Dummy"));
+			var msg = Message.CreateMessage(MessageVersion.Default,fault,"urn:DoFault");
+			Assert.IsTrue (msg.IsFault);
+			var type = msg.GetType();
+		
 			var content = msg.ToString ();
 		}
 	}

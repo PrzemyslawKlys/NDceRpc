@@ -30,10 +30,10 @@
     <ClInclude Include="DceRpcIdlClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DceRpc.Idl\Dummy_h.h">
+    <ClInclude Include="..\DceRpcIdl\Dummy_h.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DceRpc.Idl\ExplicitWithCallbacks_h.h">
+    <ClInclude Include="..\DceRpcIdl\ExplicitWithCallbacks_h.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,10 +47,10 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\DceRpc.Idl\Dummy_c.c">
+    <ClCompile Include="..\DceRpcIdl\Dummy_c.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\DceRpc.Idl\ExplicitWithCallbacks_c.c">
+    <ClCompile Include="..\DceRpcIdl\ExplicitWithCallbacks_c.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

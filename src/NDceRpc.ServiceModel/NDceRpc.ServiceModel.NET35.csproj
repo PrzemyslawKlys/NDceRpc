@@ -72,11 +72,13 @@
     <Compile Include="Serialization\ProtobufObjectSerializer.cs" />
     <Compile Include="ServiceModel\Binding.cs" />
     <Compile Include="ServiceModel\CallbackServiceHost.cs" />
+    <Compile Include="ServiceModel\ChannelDispatcher.cs" />
     <Compile Include="ServiceModel\ChannelFactory.cs" />
     <Compile Include="ServiceModel\ChannelFactoryGeneric.cs" />
     <Compile Include="ServiceModel\Channels\MessageVersion.cs" />
     <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
     <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
+    <Compile Include="ServiceModel\ClientRuntime.cs" />
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Custom\PipeServer.cs" />
     <Compile Include="ServiceModel\Description\IEndpointBehavior.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="ServiceModel\DispatchTableFactory.cs" />
     <Compile Include="ServiceModel\DuplexChannelFactory.cs" />
     <Compile Include="ServiceModel\EndpointAddress.cs" />
+    <Compile Include="ServiceModel\EndpointDispatcher.cs" />
     <Compile Include="ServiceModel\EndpointMapper.cs" />
     <Compile Include="ServiceModel\ExceptionHandler.cs" />
     <Compile Include="ServiceModel\FaultException.cs" />
@@ -94,17 +97,14 @@
     <Compile Include="ServiceModel\LocalBinding.cs" />
     <Compile Include="ServiceModel\NetNamedPipeBinding.cs" />
     <Compile Include="ServiceModel\NetTcpBinding.cs" />
-    <Compile Include="ServiceModel\ObsoleteErrorHandler.cs" />
     <Compile Include="ServiceModel\OperationContext.cs" />
     <Compile Include="ServiceModel\OperationDispatch.cs" />
     <Compile Include="ServiceModel\OperationDispatchBase.cs" />
     <Compile Include="ServiceModel\ParameterDispatch.cs" />
     <Compile Include="ServiceModel\ProxyEmit.cs" />
     <Compile Include="ServiceModel\RpcCallbackChannelFactory.cs" />
-    <Compile Include="ServiceModel\RpcProxyRouter.cs" />
-    <Compile Include="ServiceModel\RpcServerStub.cs" />
+    <Compile Include="ServiceModel\RpcEndpointDispatcher.cs" />
     <Compile Include="ServiceModel\RpcServiceDefaults.cs" />
-    <Compile Include="ServiceModel\RpcStub.cs" />
     <Compile Include="ServiceModel\RpcTrace.cs" />
     <Compile Include="ServiceModel\ServiceEndpoint.cs" />
     <Compile Include="ServiceModel\ServiceHost.cs" />
@@ -124,7 +124,7 @@
       <Project>{E696D2D6-6662-4098-A759-A4D27BDEBE80}</Project>
       <Name>NDceRpc.ServiceModel.Protobuf.NET35</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NDceRpc\NDceRpc.Microsoft.NET35.csproj">
+    <ProjectReference Include="..\NDceRpc.Microsoft\NDceRpc.Microsoft.NET35.csproj">
       <Project>{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}</Project>
       <Name>NDceRpc.Microsoft.NET35</Name>
     </ProjectReference>

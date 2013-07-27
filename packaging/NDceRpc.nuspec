@@ -5,7 +5,7 @@
     <version>0.0.9.1</version>
     <authors>Dzmitry Lahoda</authors>
     <owners>dzmitry_lahoda</owners>
-    <licenseUrl>http://opensource.org/licenses/BSD-3-Clause</licenseUrl>
+    <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>
     <projectUrl>https://github.com/asd-and-Rizzo/NDceRpc</projectUrl>
     <iconUrl>https://raw.github.com/asd-and-Rizzo/NDceRpc/master/doc/NDceRpc.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

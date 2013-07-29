@@ -157,6 +157,8 @@ Possibily to precompile serializers/proxy/stub is must for start up and performa
 * Add some another Binary serializer compatible with C++ (e.g. Thrift).
 * Improve start perfomance
 * Improve runtime prefromace
+* Ensure that thowing exception in one way operation (in worker thread) does not crashes processes and behaves like WCF.
+* Ensure that error description can be handled by native code.
 
 ### Related
 

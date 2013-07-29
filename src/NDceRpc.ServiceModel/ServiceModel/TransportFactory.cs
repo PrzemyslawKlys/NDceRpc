@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using NDceRpc.ExplicitBytes;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 using ProtoBuf.Meta;
 
 namespace NDceRpc.ServiceModel
@@ -47,19 +47,19 @@ namespace NDceRpc.ServiceModel
             var client = new ExplicitBytesClient(uuid, bindingInfo);
             
             //NOTE: applying any authentication on local IPC greatly slows down start up of many simulatanious service
-            bool skipAuthentication = binding.Authentication == RpcAuthentication.RPC_C_AUTHN_NONE && bindingInfo.Protseq == RpcProtseq.ncalrpc;
+            bool skipAuthentication = binding.Authentication == RPC_C_AUTHN.RPC_C_AUTHN_NONE && bindingInfo.Protseq == RpcProtseq.ncalrpc;
             if (skipAuthentication)
             {
                 client.AuthenticateAsNone();
             }
             else
             {
-                client.AuthenticateAs(null, binding.Authentication == RpcAuthentication.RPC_C_AUTHN_NONE
+                client.AuthenticateAs(null, binding.Authentication == RPC_C_AUTHN.RPC_C_AUTHN_NONE
                                                                   ? ExplicitBytesClient.Anonymous
                                                                   : ExplicitBytesClient.Self,
-                                                              binding.Authentication == RpcAuthentication.RPC_C_AUTHN_NONE
-                                                                  ? RpcProtectionLevel.RPC_C_PROTECT_LEVEL_NONE
-                                                                  : RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY,
+                                                              binding.Authentication == RPC_C_AUTHN.RPC_C_AUTHN_NONE
+                                                                  ? RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_NONE
+                                                                  : RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
                                                               binding.Authentication);
             }
          

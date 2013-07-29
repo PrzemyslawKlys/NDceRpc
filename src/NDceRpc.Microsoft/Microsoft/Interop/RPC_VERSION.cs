@@ -1,9 +1,6 @@
-﻿
+﻿using System.Runtime.InteropServices;
 
-using System;
-using System.Runtime.InteropServices;
-
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct RPC_VERSION

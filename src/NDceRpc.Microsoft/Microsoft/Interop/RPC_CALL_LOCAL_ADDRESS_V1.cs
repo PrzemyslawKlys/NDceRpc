@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     internal struct RPC_CALL_LOCAL_ADDRESS_V1
     {

@@ -13,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using NDceRpc.ExplicitBytes;
-using NDceRpc.Interop;
 using NDceRpc.Serialization;
 using NDceRpc.ServiceModel.Channels;
 using NDceRpc.ServiceModel.Custom;

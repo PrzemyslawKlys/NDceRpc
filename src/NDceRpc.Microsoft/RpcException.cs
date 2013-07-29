@@ -1,6 +1,6 @@
 ﻿
 using System;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc
 {

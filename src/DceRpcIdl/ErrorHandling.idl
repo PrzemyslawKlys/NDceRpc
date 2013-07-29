@@ -5,5 +5,5 @@
 ] 
 interface ErrorHandling
 {
-  void Do([in] handle_t hBinding,[out] error_status_t* comm_s,[out] error_status_t* fault_s);
+  error_status_t Do([in] handle_t hBinding,[out] error_status_t* fault_s);
 }

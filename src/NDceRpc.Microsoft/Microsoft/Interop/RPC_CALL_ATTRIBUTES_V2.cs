@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct RPC_CALL_ATTRIBUTES_V2
@@ -12,8 +12,8 @@ namespace NDceRpc.Interop
         public IntPtr ServerPrincipalName;
         public int ClientPrincipalNameBufferLength;
         public IntPtr ClientPrincipalName;
-        public RpcProtectionLevel AuthenticationLevel;
-        public RpcAuthentication AuthenticationService;
+        public RPC_C_AUTHN_LEVEL AuthenticationLevel;
+        public RPC_C_AUTHN AuthenticationService;
         public bool NullSession;
         public bool KernelMode;
         public RpcProtoseqType ProtocolSequence;

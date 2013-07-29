@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NDceRpc.ExplicitBytes;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 
 
 namespace NDceRpc.Sample

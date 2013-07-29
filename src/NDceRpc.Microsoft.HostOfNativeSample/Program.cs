@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 using NDceRpc.Native;
 
 namespace NDceRpc.HostOfNativeSample

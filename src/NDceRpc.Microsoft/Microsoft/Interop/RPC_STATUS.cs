@@ -1,4 +1,4 @@
-﻿namespace NDceRpc.Interop
+﻿namespace NDceRpc.Microsoft.Interop
 {
     /// <summary> WIN32 RPC Error Codes </summary>
     /// <seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms681386.aspx"/>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     internal delegate IntPtr LocalAlloc(uint size);
 

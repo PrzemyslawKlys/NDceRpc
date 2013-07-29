@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Runtime.InteropServices;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc
 {
@@ -124,14 +124,14 @@ namespace NDceRpc
         /// </summary>
         public void AuthenticateAs(string serverPrincipalName, NetworkCredential credentials)
         {
-            var types = new [] { RpcAuthentication.RPC_C_AUTHN_GSS_NEGOTIATE, RpcAuthentication.RPC_C_AUTHN_WINNT };
-            var protect = RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY;
+            var types = new [] { RPC_C_AUTHN.RPC_C_AUTHN_GSS_NEGOTIATE, RPC_C_AUTHN.RPC_C_AUTHN_WINNT };
+            var protect = RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY;
 
             bool isAnon = (credentials != null && credentials.UserName == Anonymous.UserName && credentials.Domain == Anonymous.Domain);
             if (isAnon)
             {
-                protect = RpcProtectionLevel.RPC_C_PROTECT_LEVEL_DEFAULT;
-                types = new RpcAuthentication[] { RpcAuthentication.RPC_C_AUTHN_NONE };
+                protect = RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_DEFAULT;
+                types = new RPC_C_AUTHN[] { RPC_C_AUTHN.RPC_C_AUTHN_NONE };
             }
 
             AuthenticateAs(serverPrincipalName, credentials, protect, types);
@@ -150,7 +150,7 @@ namespace NDceRpc
         /// or RPC_C_AUTHN_WINNT if that fails.  If credentials is null, or is the Anonymous
         /// user, RPC_C_PROTECT_LEVEL_DEFAULT and RPC_C_AUTHN_NONE are used instead.
         /// </summary>
-        public void AuthenticateAs(string serverPrincipalName, NetworkCredential credentials, RpcProtectionLevel level, params RpcAuthentication[] authTypes)
+        public void AuthenticateAs(string serverPrincipalName, NetworkCredential credentials, RPC_C_AUTHN_LEVEL level, params RPC_C_AUTHN[] authTypes)
         {
             if (!_authenticated)
             {
@@ -164,12 +164,12 @@ namespace NDceRpc
 
 
 
-        private static void bindingSetAuthInfo(RpcProtectionLevel level, RpcAuthentication[] authTypes,
+        private static void bindingSetAuthInfo(RPC_C_AUTHN_LEVEL level, RPC_C_AUTHN[] authTypes,
                                                RpcHandle handle, string serverPrincipalName, NetworkCredential credentails)
         {
             if (credentails == null)
             {
-                foreach (RpcAuthentication atype in authTypes)
+                foreach (RPC_C_AUTHN atype in authTypes)
                 {
                     RPC_STATUS result = NativeMethods.RpcBindingSetAuthInfo2(handle.Handle, serverPrincipalName, level, atype, IntPtr.Zero, 0);
                     if (result != RPC_STATUS.RPC_S_OK)
@@ -179,7 +179,7 @@ namespace NDceRpc
             else
             {
                 SEC_WINNT_AUTH_IDENTITY pSecInfo = new SEC_WINNT_AUTH_IDENTITY(credentails);
-                foreach (RpcAuthentication atype in authTypes)
+                foreach (RPC_C_AUTHN atype in authTypes)
                 {
                     RPC_STATUS result = NativeMethods.RpcBindingSetAuthInfo(handle.Handle, serverPrincipalName, level, atype, ref pSecInfo, 0);
                     if (result != RPC_STATUS.RPC_S_OK)

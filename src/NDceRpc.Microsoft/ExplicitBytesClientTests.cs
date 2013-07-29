@@ -2,7 +2,7 @@
 
 using System;
 using NDceRpc.ExplicitBytes;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 using NUnit.Framework;
 
 namespace NDceRpc.Test
@@ -26,7 +26,7 @@ namespace NDceRpc.Test
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
             {
                 server.AddProtocol(RpcProtseq.ncalrpc, "lrpctest", 5);
-                server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_WINNT);
+                server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
                 server.StartListening();
                 server.OnExecute +=
                     delegate(IRpcCallInfo client, byte[] arg)
@@ -35,7 +35,7 @@ namespace NDceRpc.Test
                 {
                     var endpoingBinding = new EndpointBindingInfo(RpcProtseq.ncalrpc, null, "lrpctest");
                     ExplicitBytesClient client = new ExplicitBytesClient(iid, endpoingBinding);
-                    client.AuthenticateAs(null, ExplicitBytesClient.Self, RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY, RpcAuthentication.RPC_C_AUTHN_WINNT);
+                    client.AuthenticateAs(null, ExplicitBytesClient.Self, RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY, RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
                     client.Execute(new byte[0]);
                     client = null;
                 }

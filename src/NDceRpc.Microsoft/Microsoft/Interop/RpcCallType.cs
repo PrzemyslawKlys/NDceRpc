@@ -1,4 +1,4 @@
-﻿namespace NDceRpc.Interop
+﻿namespace NDceRpc.Microsoft.Interop
 {
     public enum RpcCallType : uint
     {

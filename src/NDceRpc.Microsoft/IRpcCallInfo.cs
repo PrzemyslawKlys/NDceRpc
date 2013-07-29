@@ -1,7 +1,7 @@
 ﻿
 using System;
 using System.Security.Principal;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc
 {
@@ -26,11 +26,11 @@ namespace NDceRpc
         /// <summary>
         /// Returns the packet protection level of the communications
         /// </summary>
-        RpcProtectionLevel ProtectionLevel { get; }
+        RPC_C_AUTHN_LEVEL ProtectionLevel { get; }
         /// <summary>
         /// Returns the authentication level of the connection
         /// </summary>
-        RpcAuthentication AuthenticationLevel { get; }
+        RPC_C_AUTHN AuthenticationLevel { get; }
         /// <summary>
         /// Returns the ProcessId of the LRPC caller, may not be valid on all platforms
         /// </summary>

@@ -1,11 +1,11 @@
-﻿using NDceRpc.Interop;
+﻿using NDceRpc.Microsoft.Interop;
 using NDceRpc.Serialization;
 
 namespace NDceRpc.ServiceModel
 {
     public class NetTcpBinding : Binding
     {
-        private RpcAuthentication _authentication = RpcAuthentication.RPC_C_AUTHN_WINNT;
+        private RPC_C_AUTHN _authentication = RPC_C_AUTHN.RPC_C_AUTHN_WINNT;
         private BinaryObjectSerializer _serializer = new ProtobufObjectSerializer();
 
         internal override RpcProtseq ProtocolTransport
@@ -13,7 +13,7 @@ namespace NDceRpc.ServiceModel
             get { return RpcProtseq.ncacn_ip_tcp; }
         }
 
-        public override RpcAuthentication Authentication
+        public override RPC_C_AUTHN Authentication
         {
             get { return _authentication; }
             set { _authentication = value; }

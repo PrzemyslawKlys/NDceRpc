@@ -73,14 +73,12 @@
     <Compile Include="Microsoft\Interop\NativeMethods.cs" />
     <Compile Include="Microsoft\Interop\Ptr.cs" />
     <Compile Include="Microsoft\Interop\RpcAsync.cs" />
-    <Compile Include="Microsoft\Interop\RpcAuthentication.cs" />
     <Compile Include="Microsoft\Interop\RpcCallClientLocality.cs" />
     <Compile Include="Microsoft\Interop\RpcCallInfo.cs" />
     <Compile Include="Microsoft\Interop\RpcCallStatus.cs" />
     <Compile Include="Microsoft\Interop\RpcCallType.cs" />
     <Compile Include="Microsoft\Interop\RpcHandle.cs" />
     <Compile Include="Microsoft\Interop\RpcLocalAddressFormat.cs" />
-    <Compile Include="Microsoft\Interop\RpcProtectionLevel.cs" />
     <Compile Include="Microsoft\Interop\RpcProtoseqType.cs" />
     <Compile Include="Microsoft\Interop\RpcProtseq.cs" />
     <Compile Include="Microsoft\Interop\RpcRuntime.cs" />
@@ -88,6 +86,9 @@
     <Compile Include="Microsoft\Interop\RPC_CALL_ATTRIBUTES_V2.cs" />
     <Compile Include="Microsoft\Interop\RPC_CALL_LOCAL_ADDRESS_V1.cs" />
     <Compile Include="Microsoft\Interop\RPC_CLIENT_INTERFACE.cs" />
+    <Compile Include="Microsoft\Interop\RPC_C_AUTHN.cs" />
+    <Compile Include="Microsoft\Interop\RPC_C_AUTHN_LEVEL.cs" />
+    <Compile Include="Microsoft\Interop\RPC_C_AUTHZ.cs" />
     <Compile Include="Microsoft\Interop\RPC_DISPATCH_TABLE.cs" />
     <Compile Include="Microsoft\Interop\RPC_DISPATCH_TABLE_Entry.cs" />
     <Compile Include="Microsoft\Interop\RPC_IF_CALLBACK_FN.cs" />

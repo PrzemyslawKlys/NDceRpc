@@ -1,4 +1,4 @@
-﻿namespace NDceRpc.Interop
+﻿namespace NDceRpc.Microsoft.Interop
 {
     /// Return Type: RPC_STATUS->int  
     ///InterfaceUuid: RPC_IF_HANDLE->void*  

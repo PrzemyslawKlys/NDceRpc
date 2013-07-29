@@ -1,4 +1,4 @@
-﻿namespace NDceRpc.Interop
+﻿namespace NDceRpc.Microsoft.Interop
 {
     internal enum RpcLocalAddressFormat : uint
     {

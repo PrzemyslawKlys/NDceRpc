@@ -1,5 +1,5 @@
 ﻿using System;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc
 {
@@ -59,14 +59,14 @@ namespace NDceRpc
         /// <summary>
         /// Adds a type of authentication sequence that will be allowed for RPC connections to this process.
         /// </summary>
-        public bool AddAuthentication(RpcAuthentication type)
+        public bool AddAuthentication(RPC_C_AUTHN type)
         {
             return AddAuthentication(type, null);
         }
         /// <summary>
         /// Adds a type of authentication sequence that will be allowed for RPC connections to this process.
         /// </summary>
-        public bool AddAuthentication(RpcAuthentication type, string serverPrincipalName)
+        public bool AddAuthentication(RPC_C_AUTHN type, string serverPrincipalName)
         {
             return serverRegisterAuthInfo(type, serverPrincipalName);
         }
@@ -106,7 +106,7 @@ namespace NDceRpc
         }
 
 
-        private static bool serverRegisterAuthInfo(RpcAuthentication auth, string serverPrincName)
+        private static bool serverRegisterAuthInfo(RPC_C_AUTHN auth, string serverPrincName)
         {
             RpcTrace.Verbose("serverRegisterAuthInfo({0})", auth);
             RPC_STATUS response = NativeMethods.RpcServerRegisterAuthInfo(serverPrincName, (uint)auth, IntPtr.Zero, IntPtr.Zero);

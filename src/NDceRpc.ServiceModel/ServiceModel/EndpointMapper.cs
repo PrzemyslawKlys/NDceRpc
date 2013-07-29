@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc.ServiceModel
 {

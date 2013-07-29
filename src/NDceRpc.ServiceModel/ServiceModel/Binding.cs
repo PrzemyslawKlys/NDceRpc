@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 using NDceRpc.Serialization;
 
 namespace NDceRpc.ServiceModel
@@ -18,7 +18,7 @@ namespace NDceRpc.ServiceModel
             set { _maxConnections = value; }
         }
 
-        public abstract RpcAuthentication Authentication { get; set; }
+        public abstract RPC_C_AUTHN Authentication { get; set; }
 
         public abstract BinaryObjectSerializer Serializer { get; set; }
         public TimeSpan CloseTimeout

@@ -1,6 +1,6 @@
 using System;
 
-namespace NDceRpc.Interop.Async
+namespace NDceRpc.Microsoft.Interop.Async
 {
     public enum RPC_NOTIFICATION_TYPES:uint
     {

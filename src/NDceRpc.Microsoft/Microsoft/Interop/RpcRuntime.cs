@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
 
     internal static class RpcRuntime

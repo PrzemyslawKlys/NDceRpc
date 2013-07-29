@@ -3,5 +3,5 @@ explicit_handle
 ]
 interface ErrorHandling
 {
-  Do([comm_status]  comm_s,[fault_status]  fault_s);
+   [comm_status]  Do([fault_status]  fault_s);
 }

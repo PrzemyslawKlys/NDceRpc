@@ -1,4 +1,4 @@
-﻿using NDceRpc.Interop;
+﻿using NDceRpc.Microsoft.Interop;
 using NDceRpc.Serialization;
 
 namespace NDceRpc.ServiceModel
@@ -8,7 +8,7 @@ namespace NDceRpc.ServiceModel
     /// </summary>
     public class NetNamedPipeBinding : Binding
     {
-        private RpcAuthentication _authentication = RpcAuthentication.RPC_C_AUTHN_NONE;
+        private RPC_C_AUTHN _authentication = RPC_C_AUTHN.RPC_C_AUTHN_NONE;
         private BinaryObjectSerializer _serializer = new ProtobufObjectSerializer();
 
         internal override RpcProtseq ProtocolTransport
@@ -16,7 +16,7 @@ namespace NDceRpc.ServiceModel
             get { return RpcProtseq.ncacn_np; }
         }
 
-        public override RpcAuthentication Authentication
+        public override RPC_C_AUTHN Authentication
         {
             get { return _authentication; }
             set { _authentication = value; }

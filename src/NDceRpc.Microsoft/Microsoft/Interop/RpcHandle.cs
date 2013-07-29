@@ -1,10 +1,8 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     /// <summary>
     /// Is thread safe.

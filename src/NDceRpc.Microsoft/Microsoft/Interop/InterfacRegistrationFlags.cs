@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     /// <summary>
     /// http://msdn.microsoft.com/en-us/library/windows/desktop/aa373954.aspx

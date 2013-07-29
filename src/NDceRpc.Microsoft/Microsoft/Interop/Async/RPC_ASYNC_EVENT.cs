@@ -1,4 +1,4 @@
-namespace NDceRpc.Interop.Async
+namespace NDceRpc.Microsoft.Interop.Async
 {
     /// <summary>
     /// The enumerated type describes the asynchronous notification events that an RPC application can receive.

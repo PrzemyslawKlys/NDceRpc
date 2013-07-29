@@ -95,6 +95,7 @@
   <ItemGroup>
     <ClInclude Include="Dummy_h.h" />
     <ClInclude Include="ErrorHandling_h.h" />
+    <ClInclude Include="ExplicitBytes_h.h" />
     <ClInclude Include="ExplicitWithCallbacks_h.h" />
     <ClInclude Include="Exports.h" />
     <ClInclude Include="Helper.h" />

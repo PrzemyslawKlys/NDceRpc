@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 7.00.0555 */
-/* at Sat Jul 27 21:10:19 2013
+/* at Mon Jul 29 14:36:59 2013
  */
 /* Compiler settings for ErrorHandling.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
@@ -52,9 +52,8 @@ extern "C"{
 /* interface ErrorHandling */
 /* [explicit_handle][version][uuid] */ 
 
-void Do( 
+/* [comm_status] */ error_status_t Do( 
     /* [in] */ handle_t hBinding,
-    /* [comm_status][out] */ error_status_t *comm_s,
     /* [fault_status][out] */ error_status_t *fault_s);
 
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     [Flags]
     public enum RPC_CALL_ATTRIBUTES_FLAGS : int

@@ -1,4 +1,4 @@
-﻿namespace NDceRpc.Interop
+﻿namespace NDceRpc.Microsoft.Interop
 {
     /// <summary>
     /// Defines the type of protocol the client is connected with

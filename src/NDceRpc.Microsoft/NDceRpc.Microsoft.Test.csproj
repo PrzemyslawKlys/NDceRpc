@@ -80,6 +80,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NativeMethodsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExplicitBytesClientTests.cs" />
     <Compile Include="RpcClientInfoTests.cs" />

@@ -1,5 +1,5 @@
 ﻿using System;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 using NUnit.Framework;
 
 namespace NDceRpc.ServiceModel.Test

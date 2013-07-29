@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 using NDceRpc.ExplicitBytes;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 using NUnit.Framework;
 
 namespace NDceRpc.Test
@@ -19,31 +19,31 @@ namespace NDceRpc.Test
         public void TcpIpTest()
         {
             ReversePingTest(RpcProtseq.ncacn_ip_tcp, LocalNames, "18080", 
-                RpcAuthentication.RPC_C_AUTHN_WINNT, RpcAuthentication.RPC_C_AUTHN_GSS_NEGOTIATE);
+                RPC_C_AUTHN.RPC_C_AUTHN_WINNT, RPC_C_AUTHN.RPC_C_AUTHN_GSS_NEGOTIATE);
         }
 
         [Test]
         public void NamedPipeTest()
         {
             ReversePingTest(RpcProtseq.ncacn_np, LocalNames, @"\pipe\testpipename", 
-                RpcAuthentication.RPC_C_AUTHN_NONE, RpcAuthentication.RPC_C_AUTHN_WINNT, RpcAuthentication.RPC_C_AUTHN_GSS_NEGOTIATE);
+                RPC_C_AUTHN.RPC_C_AUTHN_NONE, RPC_C_AUTHN.RPC_C_AUTHN_WINNT, RPC_C_AUTHN.RPC_C_AUTHN_GSS_NEGOTIATE);
         }
 
         [Test]
         public void LocalRpcTest()
         {
             ReversePingTest(RpcProtseq.ncalrpc, new string[] { null }, @"testsomename", 
-                RpcAuthentication.RPC_C_AUTHN_NONE, RpcAuthentication.RPC_C_AUTHN_WINNT, RpcAuthentication.RPC_C_AUTHN_GSS_NEGOTIATE);
+                RPC_C_AUTHN.RPC_C_AUTHN_NONE, RPC_C_AUTHN.RPC_C_AUTHN_WINNT, RPC_C_AUTHN.RPC_C_AUTHN_GSS_NEGOTIATE);
         }
 
 
-        static void ReversePingTest(RpcProtseq protocol, string[] hostNames, string endpoint, params RpcAuthentication[] authTypes)
+        static void ReversePingTest(RpcProtseq protocol, string[] hostNames, string endpoint, params RPC_C_AUTHN[] authTypes)
         {
-            foreach (RpcAuthentication auth in authTypes)
+            foreach (RPC_C_AUTHN auth in authTypes)
                 ReversePingTest(protocol, hostNames, endpoint, auth);
         }
 
-        static void ReversePingTest(RpcProtseq protocol, string[] hostNames, string endpoint, RpcAuthentication auth)
+        static void ReversePingTest(RpcProtseq protocol, string[] hostNames, string endpoint, RPC_C_AUTHN auth)
         {
             Guid iid = Guid.NewGuid();
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
@@ -66,12 +66,12 @@ namespace NDceRpc.Test
                 {
                     using (ExplicitBytesClient client = new ExplicitBytesClient(iid, new EndpointBindingInfo(protocol, hostName, endpoint)))
                     {
-                        client.AuthenticateAs(null, auth == RpcAuthentication.RPC_C_AUTHN_NONE
+                        client.AuthenticateAs(null, auth == RPC_C_AUTHN.RPC_C_AUTHN_NONE
                                                       ? ExplicitBytesClient.Anonymous
                                                       : ExplicitBytesClient.Self, 
-                                                  auth == RpcAuthentication.RPC_C_AUTHN_NONE
-                                                      ? RpcProtectionLevel.RPC_C_PROTECT_LEVEL_NONE
-                                                      : RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY,
+                                                  auth == RPC_C_AUTHN.RPC_C_AUTHN_NONE
+                                                      ? RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_NONE
+                                                      : RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
                                                   auth);
 
                         Assert.AreEqual(expect, client.Execute(input));

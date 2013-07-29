@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     /// <summary>
     /// 
@@ -34,18 +35,61 @@ CharSet = CharSet.Unicode, SetLastError = true)]
     CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcBindingFromStringBinding(String bindingString, out IntPtr lpBinding);
 
+        /// <summary>
+        /// The function sets a binding handle's authentication and authorization information.
+        /// </summary>
+        /// <param name="Binding"></param>
+        /// <param name="ServerPrincName"></param>
+        /// <param name="AuthnLevel"></param>
+        /// <param name="AuthnSvc">Authentication service to use. </param>
+        /// <param name="AuthIdentity"></param>
+        /// <param name="AuthzService">Authorization service implemented by the server for the interface of interest. </param>
+        /// <returns></returns>
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingSetAuthInfoW", CallingConvention = CallingConvention.StdCall,
     CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcBindingSetAuthInfo(IntPtr Binding, String ServerPrincName,
-                                                             RpcProtectionLevel AuthnLevel, RpcAuthentication AuthnSvc,
+                                                             RPC_C_AUTHN_LEVEL AuthnLevel, RPC_C_AUTHN AuthnSvc,
                                                              [In] ref SEC_WINNT_AUTH_IDENTITY AuthIdentity,
-                                                             uint AuthzSvc);
+                                                             RPC_C_AUTHZ AuthzService);
 
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingSetAuthInfoW", CallingConvention = CallingConvention.StdCall,
             CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcBindingSetAuthInfo2(IntPtr Binding, String ServerPrincName,
-                                                              RpcProtectionLevel AuthnLevel, RpcAuthentication AuthnSvc,
-                                                              IntPtr p, uint AuthzSvc);
+                                                              RPC_C_AUTHN_LEVEL AuthnLevel, RPC_C_AUTHN AuthnSvc,
+                                                              IntPtr p, RPC_C_AUTHZ AuthzService);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ClientBinding"></param>
+        /// <param name="Privs">Returns a pointer to a handle to the privileged information for the client application that made the remote procedure call on the ClientBinding binding handle. For ncalrpc calls, Privs contains a string with the client's principal name.</param>
+        /// <param name="ServerPrincName"></param>
+        /// <param name="AuthnLevel"></param>
+        /// <param name="AuthnSvc"></param>
+        /// <param name="AuthzSvc"></param>
+        /// <returns></returns>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingInqAuthClientW", CallingConvention = CallingConvention.StdCall,
+            CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcBindingInqAuthClient(
+            IntPtr ClientBinding,
+
+            ref IntPtr Privs,
+            StringBuilder ServerPrincName,
+            ref RPC_C_AUTHN_LEVEL AuthnLevel,
+            ref RPC_C_AUTHN AuthnSvc,
+            ref RPC_C_AUTHZ AuthzSvc);
+
+
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingInqAuthInfoW", CallingConvention = CallingConvention.StdCall,
+    CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcBindingInqAuthInfo(
+            IntPtr Binding,
+            StringBuilder ServerPrincName,
+            ref RPC_C_AUTHN_LEVEL AuthnLevel,
+            ref RPC_C_AUTHN AuthnSvc,
+               ref     IntPtr AuthIdentity,
+            ref RPC_C_AUTHZ AuthzSvc);
+
 
         [DllImport("Rpcrt4.dll", EntryPoint = "NdrClientCall2", CallingConvention = CallingConvention.Cdecl,
     CharSet = CharSet.Unicode, SetLastError = true)]
@@ -112,10 +156,11 @@ CharSet = CharSet.Unicode, SetLastError = true)]
 
 
         ///<summary>
-        ///http://msdn.microsoft.com/en-us/library/aa373623.aspx
-        ///unsigned long StatusToConvert,
-        ///unsigned char *ErrorText
+        /// The  function returns the message text for a status code.
         /// </summary>
+        /// <param name="ErrorText">Returns the text corresponding to the error code.</param>
+        /// <param name="StatusToConvert">Status code to convert to a text string.</param>
+        /// <seealso href="http://msdn.microsoft.com/en-us/library/aa373623.aspx"/>
         [DllImport("Rpcrt4.dll", EntryPoint = "DceErrorInqText", CallingConvention = CallingConvention.StdCall,
 CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS DceErrorInqText(uint StatusToConvert, out string ErrorText);

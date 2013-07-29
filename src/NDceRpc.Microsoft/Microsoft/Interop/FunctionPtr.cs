@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     public class FunctionPtr<T> : IDisposable
         //where T : Delegate

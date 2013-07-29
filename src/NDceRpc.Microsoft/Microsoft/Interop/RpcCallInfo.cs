@@ -1,10 +1,8 @@
-﻿
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
     internal class RpcCallInfo : IRpcCallInfo, IDisposable
     {
@@ -103,7 +101,7 @@ namespace NDceRpc.Interop
 
         public bool IsAuthenticated
         {
-            get { return GetCallInfo().AuthenticationService != RpcAuthentication.RPC_C_AUTHN_NONE || _isAuthenticated; }
+            get { return GetCallInfo().AuthenticationService != RPC_C_AUTHN.RPC_C_AUTHN_NONE || _isAuthenticated; }
         }
 
         public bool IsClientLocal
@@ -120,12 +118,12 @@ namespace NDceRpc.Interop
             get { return GetCallInfo().ProtocolSequence; }
         }
 
-        public RpcProtectionLevel ProtectionLevel
+        public RPC_C_AUTHN_LEVEL ProtectionLevel
         {
             get { return GetCallInfo().AuthenticationLevel; }
         }
 
-        public RpcAuthentication AuthenticationLevel
+        public RPC_C_AUTHN AuthenticationLevel
         {
             get { return GetCallInfo().AuthenticationService; }
         }

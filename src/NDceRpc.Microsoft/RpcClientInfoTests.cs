@@ -2,7 +2,7 @@
 
 using System;
 using NDceRpc.ExplicitBytes;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 using NUnit.Framework;
 
 namespace NDceRpc.Test
@@ -18,14 +18,14 @@ namespace NDceRpc.Test
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
             {
                 server.AddProtocol(RpcProtseq.ncalrpc, "lrpctest", 5);
-                server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_WINNT);
+                server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
                 server.StartListening();
                 server.OnExecute +=
                     delegate(IRpcCallInfo client, byte[] arg)
                         {
                             Assert.AreEqual(0, arg.Length);
-                            Assert.AreEqual(RpcAuthentication.RPC_C_AUTHN_WINNT, client.AuthenticationLevel);
-                            Assert.AreEqual(RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY, client.ProtectionLevel);
+                            Assert.AreEqual(RPC_C_AUTHN.RPC_C_AUTHN_WINNT, client.AuthenticationLevel);
+                            Assert.AreEqual(RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY, client.ProtectionLevel);
                             Assert.AreEqual(RpcProtoseqType.LRPC, client.ProtocolType);
                             Assert.AreEqual(new byte[0], client.ClientAddress);
                             Assert.AreEqual(System.Diagnostics.Process.GetCurrentProcess().Id, client.ClientPid.ToInt32());
@@ -55,14 +55,14 @@ namespace NDceRpc.Test
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
             {
                 server.AddProtocol(RpcProtseq.ncacn_np, @"\pipe\testpipename", 5);
-                server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_WINNT);
+                server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
                 server.StartListening();
                 server.OnExecute +=
                     delegate(IRpcCallInfo client, byte[] arg)
                     {
                         Assert.AreEqual(0, arg.Length);
-                        Assert.AreEqual(RpcAuthentication.RPC_C_AUTHN_WINNT, client.AuthenticationLevel);
-                        Assert.AreEqual(RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY, client.ProtectionLevel);
+                        Assert.AreEqual(RPC_C_AUTHN.RPC_C_AUTHN_WINNT, client.AuthenticationLevel);
+                        Assert.AreEqual(RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY, client.ProtectionLevel);
                         Assert.AreEqual(RpcProtoseqType.NMP, client.ProtocolType);
                         Assert.AreEqual(new byte[0], client.ClientAddress);
                         Assert.AreEqual(0, client.ClientPid.ToInt32());
@@ -93,14 +93,14 @@ namespace NDceRpc.Test
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
             {
                 server.AddProtocol(RpcProtseq.ncacn_np, @"\pipe\testpipename", 5);
-                server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_NONE);
+                server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_NONE);
                 server.StartListening();
                 server.OnExecute +=
                     delegate(IRpcCallInfo client, byte[] arg)
                     {
                         Assert.AreEqual(0, arg.Length);
-                        Assert.AreEqual(RpcAuthentication.RPC_C_AUTHN_NONE, client.AuthenticationLevel);
-                        Assert.AreEqual(RpcProtectionLevel.RPC_C_PROTECT_LEVEL_NONE, client.ProtectionLevel);
+                        Assert.AreEqual(RPC_C_AUTHN.RPC_C_AUTHN_NONE, client.AuthenticationLevel);
+                        Assert.AreEqual(RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_NONE, client.ProtectionLevel);
                         Assert.AreEqual(RpcProtoseqType.NMP, client.ProtocolType);
                         Assert.AreEqual(new byte[0], client.ClientAddress);
                         Assert.AreEqual(0, client.ClientPid.ToInt32());
@@ -133,14 +133,14 @@ namespace NDceRpc.Test
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
             {
                 server.AddProtocol(RpcProtseq.ncacn_ip_tcp, @"18081", 5);
-                server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_WINNT);
+                server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
                 server.StartListening();
                 server.OnExecute +=
                     delegate(IRpcCallInfo client, byte[] arg)
                     {
                         Assert.AreEqual(0, arg.Length);
-                        Assert.AreEqual(RpcAuthentication.RPC_C_AUTHN_WINNT, client.AuthenticationLevel);
-                        Assert.AreEqual(RpcProtectionLevel.RPC_C_PROTECT_LEVEL_PKT_PRIVACY, client.ProtectionLevel);
+                        Assert.AreEqual(RPC_C_AUTHN.RPC_C_AUTHN_WINNT, client.AuthenticationLevel);
+                        Assert.AreEqual(RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY, client.ProtectionLevel);
                         Assert.AreEqual(RpcProtoseqType.TCP, client.ProtocolType);
                         Assert.AreEqual(16, client.ClientAddress.Length);
                         Assert.AreEqual(0, client.ClientPid.ToInt32());
@@ -170,7 +170,7 @@ namespace NDceRpc.Test
             using (ExplicitBytesServer server = new ExplicitBytesServer(iid))
             {
                 server.AddProtocol(RpcProtseq.ncacn_np, @"\pipe\testpipename", 5);
-                server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_WINNT);
+                server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
                 server.StartListening();
                 server.OnExecute +=
                     delegate(IRpcCallInfo client, byte[] arg)

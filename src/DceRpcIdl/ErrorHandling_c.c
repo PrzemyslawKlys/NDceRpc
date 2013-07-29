@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 7.00.0555 */
-/* at Sat Jul 27 21:10:19 2013
+/* at Mon Jul 29 14:36:59 2013
  */
 /* Compiler settings for ErrorHandling.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
@@ -95,16 +95,18 @@ extern const MIDL_STUB_DESC ErrorHandling_StubDesc;
 static RPC_BINDING_HANDLE ErrorHandling__MIDL_AutoBindHandle;
 
 
-void Do( 
+/* [comm_status] */ error_status_t Do( 
     /* [in] */ handle_t hBinding,
-    /* [comm_status][out] */ error_status_t *comm_s,
     /* [fault_status][out] */ error_status_t *fault_s)
 {
 
-    NdrClientCall2(
+    CLIENT_CALL_RETURN _RetVal;
+
+    _RetVal = NdrClientCall2(
                   ( PMIDL_STUB_DESC  )&ErrorHandling_StubDesc,
                   (PFORMAT_STRING) &ErrorHandling__MIDL_ProcFormatString.Format[0],
                   ( unsigned char * )&hBinding);
+    return ( error_status_t  )_RetVal.Simple;
     
 }
 
@@ -137,8 +139,8 @@ static const ErrorHandling_MIDL_PROC_FORMAT_STRING ErrorHandling__MIDL_ProcForma
 			0x0,		/* 0 */
 /* 12 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
 /* 14 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 16 */	NdrFcShort( 0x38 ),	/* 56 */
-/* 18 */	0x40,		/* Oi2 Flags:  has ext, */
+/* 16 */	NdrFcShort( 0x24 ),	/* 36 */
+/* 18 */	0x44,		/* Oi2 Flags:  has return, has ext, */
 			0x2,		/* 2 */
 /* 20 */	0x8,		/* 8 */
 			0x1,		/* Ext Flags:  new corr desc, */
@@ -153,9 +155,9 @@ static const ErrorHandling_MIDL_PROC_FORMAT_STRING ErrorHandling__MIDL_ProcForma
 /* 32 */	0x10,		/* FC_ERROR_STATUS_T */
 			0x0,		/* 0 */
 
-	/* Parameter comm_s */
+	/* Parameter fault_s */
 
-/* 34 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 34 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
 /* 36 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
 /* 38 */	0x10,		/* FC_ERROR_STATUS_T */
 			0x0,		/* 0 */
@@ -186,7 +188,7 @@ static const unsigned short ErrorHandling_FormatStringOffsetTable[] =
 
 static const COMM_FAULT_OFFSETS ErrorHandling_CommFaultOffsets[] = 
 {
-	{ 4, 8 } 	/* x86 Offsets for Do */
+	{ -1, 4 } 	/* x86 Offsets for Do */
 };
 
 

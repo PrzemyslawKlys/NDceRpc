@@ -1,7 +1,5 @@
 ﻿
-using System.Runtime.InteropServices;
-
-namespace NDceRpc.Interop
+namespace NDceRpc.Microsoft.Interop
 {
 #pragma warning disable 1591
     /// <summary>

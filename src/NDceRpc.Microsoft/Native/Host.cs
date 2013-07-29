@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NDceRpc.Interop;
+using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc.Native
 {
@@ -12,7 +12,7 @@ namespace NDceRpc.Native
         public static NativeServer StartServer(EndpointBindingInfo info, IntPtr dummyPtr)
         {
             var server = new NativeServer(dummyPtr);
-            server.AddAuthentication(RpcAuthentication.RPC_C_AUTHN_NONE);
+            server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_NONE);
             server.AddProtocol(info.Protseq,info.EndPoint,NativeServer.MAX_CALL_LIMIT);
             server.StartListening();
             return server;

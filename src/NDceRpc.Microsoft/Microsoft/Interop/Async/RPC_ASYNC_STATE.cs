@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NDceRpc.Interop.Async
+namespace NDceRpc.Microsoft.Interop.Async
 {
     /// <summary>
     /// The structure holds the state of an asynchronous remote procedure call. Used to wait for, query, reply to, or cancel asynchronous calls.
@@ -16,11 +16,11 @@ namespace NDceRpc.Interop.Async
         /// </summary>
         ushort Size;
         /// <summary>
-        /// The run-time environment sets this member when <see cref="Interop.Async.NativeMethods.RpcAsyncInitializeHandle"/> is called. Do not modify this member.
+        /// The run-time environment sets this member when <see cref="NDceRpc.NativeMethodscInitializeHandle"/> is called. Do not modify this member.
         /// </summary>
         uint Signature;
         /// <summary>
-        /// The run-time environment sets this member when <see cref="Interop.Async.NativeMethods.RpcAsyncInitializeHandle"/> is called. Do not modify this member.
+        /// The run-time environment sets this member when <see cref="NDceRpc.NativeMethodscInitializeHandle"/> is called. Do not modify this member.
         /// </summary>
         int Lock;
 

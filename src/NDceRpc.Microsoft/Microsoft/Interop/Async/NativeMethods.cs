@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
-namespace NDceRpc.Interop.Async
+namespace NDceRpc.Microsoft.Interop.Async
 {
     public static class NativeMethods
     {

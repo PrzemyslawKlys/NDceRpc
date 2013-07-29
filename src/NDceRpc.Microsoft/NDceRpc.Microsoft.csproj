@@ -92,6 +92,7 @@
     <Compile Include="ExplicitBytes\ServerInterfaceFactory.cs" />
     <Compile Include="Microsoft\Interop\SYNTAX.cs" />
     <Compile Include="Native\NativeClient.cs" />
+    <Compile Include="Ndr\NdrConverter.cs" />
     <Compile Include="UsageCounter.cs" />
     <Compile Include="Microsoft\Interop\RpcRuntime.cs" />
     <Compile Include="IRpcCallInfo.cs" />

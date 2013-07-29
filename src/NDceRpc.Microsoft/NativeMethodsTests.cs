@@ -11,11 +11,12 @@ namespace NDceRpc.Test
     public class NativeMethodsTests
     {
         [Test]
-        public void Authenticaion()
+        public void RpcBindingSetAuthInfo_null_notOk()
         {
-            SEC_WINNT_AUTH_IDENTITY identity = new SEC_WINNT_AUTH_IDENTITY();
-var status =             NativeMethods.RpcBindingSetAuthInfo(IntPtr.Zero, "", RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_NONE,
-                                                RPC_C_AUTHN.RPC_C_AUTHN_NONE,ref identity,0);
+            var identity = new SEC_WINNT_AUTH_IDENTITY();
+            var status = NativeMethods.RpcBindingSetAuthInfo(IntPtr.Zero, "", RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_NONE,
+                                                            RPC_C_AUTHN.RPC_C_AUTHN_NONE, ref identity, 0);
+            Assert.AreNotEqual(RPC_STATUS.RPC_S_OK,status);
         }
     }
 }

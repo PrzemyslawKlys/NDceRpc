@@ -19,7 +19,7 @@ namespace NDceRpc.ExplicitBytes
             server.InterfaceId = new RPC_SYNTAX_IDENTIFIER() { SyntaxGUID = iid, SyntaxVersion = ExplicitBytesConstants.INTERFACE_VERSION };
             server.TransferSyntax = new RPC_SYNTAX_IDENTIFIER() { SyntaxGUID = SYNTAX.SYNTAX_IID, SyntaxVersion = SYNTAX.SYNTAX_VERSION };
 
-            RPC_DISPATCH_TABLE fnTable = new RPC_DISPATCH_TABLE();
+            var fnTable = new RPC_DISPATCH_TABLE();
             fnTable.DispatchTableCount = 1;
             fnTable.DispatchTable =
                 handle.Pin(new RPC_DISPATCH_TABLE_Entry() { DispatchMethod = RpcRuntime.ServerEntry.Handle, Zero = IntPtr.Zero });

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NDceRpc</id>
-    <version>0.0.9.1</version>
+    <version>0.0.10.0</version>
     <authors>Dzmitry Lahoda</authors>
     <owners>dzmitry_lahoda</owners>
     <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>

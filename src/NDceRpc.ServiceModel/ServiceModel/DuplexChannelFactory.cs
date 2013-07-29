@@ -34,5 +34,11 @@ namespace NDceRpc.ServiceModel
         {
             _client.Dispose();
         }
+
+        public ServiceEndpoint Endpoint
+        {
+            get { return _endpoint; }
+            private set { _endpoint = value; }
+        }
     }
 }

@@ -11,6 +11,46 @@ namespace NDceRpc.Microsoft.Interop
     {
 
         /// <summary>
+        /// The function registers an object-inquiry function. A null value turns off a previously registered object-inquiry function.
+        /// </summary>
+        /// <param name="InquiryFn"></param>
+        /// <returns></returns>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcObjectSetInqFn",
+CallingConvention = CallingConvention.StdCall,
+CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcObjectSetInqFn(RPC_OBJECT_INQ_FN InquiryFn);
+
+
+        ///<summary>
+        /// The function sets the object UUID value in a binding handle.
+        /// </summary>
+        /// <param name="Binding">Server binding into which the ObjectUuid is set.</param>
+        /// <param name="ObjectUuid">
+        /// Pointer to the UUID of the object serviced by the server specified in the Binding parameter. 
+        /// ObjectUuid is a unique identifier of an object to which a remote procedure call can be made.
+        /// </param>
+        /// <seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa375609.aspx"/>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingSetObject",
+CallingConvention = CallingConvention.StdCall,
+CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcBindingSetObject(IntPtr Binding, ref Guid ObjectUuid);
+
+        /// <summary>
+        /// The RpcObjectSetType function assigns the type of an object.
+        /// </summary>
+        /// <param name="ObjUuid">Pointer to an object UUID to associate with the type UUID in the TypeUuid parameter.</param>
+        /// <param name="TypeUuid">
+        /// Pointer to the type UUID of the ObjUuid parameter. 
+        /// Specify a parameter value of NULL or a nil UUID to reset the object type to the default association of object UUID/nil-type UUID.
+        /// </param>
+        /// <returns></returns>
+        /// <seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa378427.aspx"/>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcObjectSetType",
+CallingConvention = CallingConvention.StdCall,
+CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcObjectSetType(ref Guid ObjUuid, ref Guid TypeUuid);
+
+        /// <summary>
         /// The RpcBindingReset function resets a binding handle so that the host is specified but the server on that host is unspecified.
         /// </summary>
         /// <param name="Binding">Server binding handle to reset.</param>

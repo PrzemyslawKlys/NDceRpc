@@ -2,12 +2,11 @@
 
 namespace NDceRpc.Microsoft.Interop
 {
-
-    internal static class RpcRuntime
+    public static class RpcRuntime
     {
         internal static readonly bool Is64BitProcess;
-        internal static readonly byte[] TYPE_FORMAT;
-        internal static readonly byte[] FUNC_FORMAT;
+        public static readonly byte[] TYPE_FORMAT;
+        public static readonly byte[] FUNC_FORMAT;
         internal static readonly Ptr<Byte[]> FUNC_FORMAT_PTR;
 
         static RpcRuntime()

@@ -48,6 +48,7 @@
     <DocumentationFile />
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Optimize>True</Optimize>

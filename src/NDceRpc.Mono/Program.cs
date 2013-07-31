@@ -8,15 +8,7 @@ using System.Runtime.Serialization;
 
 namespace NDceRpc.Mono
 {
-	class MainClass
-	{
-		public static void Main (string[] args)
-		{
-			var wcf = new InsideWcf ();
-			wcf.CreateMessageFault_isFault ();
-			Console.ReadKey ();
-		}
-	}
+
 
 	[NUnit.Framework.TestFixture]
 	public class InsideWcf
@@ -47,12 +39,13 @@ namespace NDceRpc.Mono
 		}
 
 		[Test]
-		public void CreateMessageFault_isFault(){
-			var fault = MessageFault.CreateFault (new FaultCode ("Sender"), new FaultReason ("Dummy"));
+		public void CreateMessageFault_isFaultAndCanGetFaultOutOfMessage(){
+			var fault = MessageFault.CreateFault (new FaultCode ("Sender"), new FaultReason ("Dummy"),"detail");
 			var msg = Message.CreateMessage(MessageVersion.Default,fault,"urn:DoFault");
 			Assert.IsTrue (msg.IsFault);
 			var type = msg.GetType();
-		
+			var faultOfMessage = MessageFault.CreateFault (msg, 4096);
+			var detailOfFault = faultOfMessage.GetDetail<string>();
 			var content = msg.ToString ();
 		}
 	}

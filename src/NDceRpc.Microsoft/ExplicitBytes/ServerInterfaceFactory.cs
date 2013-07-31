@@ -12,7 +12,7 @@ namespace NDceRpc.ExplicitBytes
 
 
 
-        public static RPC_SERVER_INTERFACE CreateExplicitBytesServer(RpcHandle handle, Ptr<MIDL_SERVER_INFO> pServer, Guid iid)
+        private static RPC_SERVER_INTERFACE CreateExplicitBytesServer(RpcHandle handle, Ptr<MIDL_SERVER_INFO> pServer, Guid iid)
         {
             var server = new RPC_SERVER_INTERFACE();
             server.Length = (uint)Marshal.SizeOf(typeof(RPC_SERVER_INTERFACE));
@@ -34,7 +34,7 @@ namespace NDceRpc.ExplicitBytes
             return server;
         }
 
-        internal static Ptr<RPC_SERVER_INTERFACE> Create(RpcHandle handle, Guid iid, Byte[] formatTypes,
+        public static Ptr<RPC_SERVER_INTERFACE> Create(RpcHandle handle, Guid iid, Byte[] formatTypes,
                                                       Byte[] formatProc,
                                                       ExplicitBytesExecute fnExecute)
         {

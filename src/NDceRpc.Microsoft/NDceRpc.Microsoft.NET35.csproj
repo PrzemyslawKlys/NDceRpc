@@ -64,6 +64,7 @@
     <Compile Include="Microsoft\Interop\Async\RPC_ASYNC_NOTIFICATION_INFO.cs" />
     <Compile Include="Microsoft\Interop\Async\RPC_ASYNC_STATE.cs" />
     <Compile Include="Microsoft\Interop\Async\RPC_NOTIFICATION_TYPES.cs" />
+    <Compile Include="Microsoft\Interop\CLIENT_CALL_RETURN.cs" />
     <Compile Include="Microsoft\Interop\COMM_FAULT_OFFSETS.cs" />
     <Compile Include="Microsoft\Interop\CONSTANTS.cs" />
     <Compile Include="Microsoft\Interop\FunctionPtr.cs" />
@@ -92,6 +93,8 @@
     <Compile Include="Microsoft\Interop\RPC_DISPATCH_TABLE.cs" />
     <Compile Include="Microsoft\Interop\RPC_DISPATCH_TABLE_Entry.cs" />
     <Compile Include="Microsoft\Interop\RPC_IF_CALLBACK_FN.cs" />
+    <Compile Include="Microsoft\Interop\RPC_IF_ID.cs" />
+    <Compile Include="Microsoft\Interop\RPC_OBJECT_INQ_FN.cs" />
     <Compile Include="Microsoft\Interop\RPC_PROTSEQ_ENDPOINT.cs" />
     <Compile Include="Microsoft\Interop\RPC_SERVER_INTERFACE.cs" />
     <Compile Include="Microsoft\Interop\RPC_STATUS.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="Native\Host.cs" />
     <Compile Include="Native\NativeClient.cs" />
     <Compile Include="Native\NativeServer.cs" />
+    <Compile Include="Ndr\NdrConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RpcException.cs" />
     <Compile Include="RpcTrace.cs" />

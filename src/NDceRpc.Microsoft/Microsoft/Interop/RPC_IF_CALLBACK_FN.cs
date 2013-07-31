@@ -4,5 +4,5 @@
     ///InterfaceUuid: RPC_IF_HANDLE->void*  
     ///Context: void*  
     [System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute(System.Runtime.InteropServices.CallingConvention.StdCall)]
-    public delegate RPC_STATUS RPC_IF_CALLBACK_FN(System.IntPtr InterfaceUuid, System.IntPtr Context);
+    public delegate RPC_STATUS RPC_IF_CALLBACK_FN(System.IntPtr Interface, System.IntPtr Context);
 }

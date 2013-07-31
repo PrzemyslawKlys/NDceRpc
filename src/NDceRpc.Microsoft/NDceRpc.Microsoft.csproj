@@ -68,6 +68,8 @@
     <Compile Include="Microsoft\Interop\RPC_CLIENT_INTERFACE.cs" />
     <Compile Include="Microsoft\Interop\FunctionPtr.cs" />
     <Compile Include="Microsoft\Interop\RPC_C_AUTHZ.cs" />
+    <Compile Include="Microsoft\Interop\RPC_IF_ID.cs" />
+    <Compile Include="Microsoft\Interop\RPC_OBJECT_INQ_FN.cs" />
     <Compile Include="Microsoft\Interop\RPC_SERVER_INTERFACE.cs" />
     <Compile Include="ExplicitBytes\IExplicitBytesClient.cs" />
     <Compile Include="ExplicitBytes\IExplicitBytesServer.cs" />

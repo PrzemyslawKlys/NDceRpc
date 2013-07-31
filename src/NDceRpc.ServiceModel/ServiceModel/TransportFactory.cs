@@ -146,8 +146,9 @@ namespace NDceRpc.ServiceModel
         private static string CanonizeEndpoint(EndpointBindingInfo endpointBinding)
         {
            var endpoint = endpointBinding.EndPoint;
-            // Windows XP has restiction on names of local transpor
+            // Windows XP has restiction on names of local transport
            //  RPC_S_STRING_TOO_LONG is thrown on XP, but not 7
+		   // http://msdn.microsoft.com/en-us/library/windows/desktop/aa367115.aspx
            //so generating GUID for each 
             if (endpointBinding.Protseq == RpcProtseq.ncalrpc 
                 && Environment.OSVersion.Platform == PlatformID.Win32NT

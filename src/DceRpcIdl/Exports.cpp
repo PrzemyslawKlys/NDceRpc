@@ -15,7 +15,7 @@ HANDLE g_callbackEvent;
 
 //simulates web  requests
 DWORD WINAPI WebRequest(PVOID pvParam) {
-	
+	 
 	while(true){
 	  Sleep(1000);
 	  SetEvent(g_callbackEvent);

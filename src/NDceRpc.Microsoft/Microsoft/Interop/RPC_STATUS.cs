@@ -27,7 +27,9 @@
         /// </summary>
         RPC_S_INVALID_BINDING = 1702,// (0x6A6)
 
-
+        /// <summary>
+        /// The object universal unique identifier (UUID) has already been registered.
+        /// </summary>
         RPC_S_ALREADY_REGISTERED = 1711,
         RPC_S_TYPE_ALREADY_REGISTERED = 1712,
         RPC_S_ALREADY_LISTENING = 1713,
@@ -43,6 +45,13 @@
         /// The string is too long.
         /// </summary>
         RPC_S_STRING_TOO_LONG = 1743,
+
+
+        /// <summary>
+        /// The object universal unique identifier (UUID) is the nil UUID.
+        /// </summary>
+        RPC_S_INVALID_OBJECT = 1900,
+
         RPC_E_FAIL = 0x80004005u
     }
 }

@@ -162,6 +162,7 @@ Possibily to precompile serializers/proxy/stub is must for start up and performa
 
 ### Related
 
+* https://www.diigo.com/list/asdandrizzo/Linux-DCE-RPC-related
 * http://code.google.com/p/csharptest-net/
 * http://code.google.com/p/protobuf-csharp-rpc/
 * https://github.com/mono/mono/tree/master/mcs/class/System.ServiceModel

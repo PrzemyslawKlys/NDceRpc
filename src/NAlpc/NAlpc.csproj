@@ -56,11 +56,15 @@
     <Compile Include="PORT_MESSAGE.cs" />
     <Compile Include="PORT_MESSAGE_TYPES.cs" />
     <Compile Include="PORT_VIEW.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="REMOTE_PORT_VIEW.cs" />
     <Compile Include="SECURITY_DESCRIPTOR.cs" />
     <Compile Include="UNICODE_STRING.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\NDceRpc.snk">
+      <Link>NDceRpc.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

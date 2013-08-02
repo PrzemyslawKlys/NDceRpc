@@ -43,10 +43,15 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="CLIENT_ID.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="PortMessageType.cs" />
+    <Compile Include="PORT_MESSAGE.cs" />
+    <Compile Include="PORT_VIEW.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="REMOTE_PORT_VIEW.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

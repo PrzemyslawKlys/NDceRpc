@@ -4,7 +4,7 @@ using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc.Native
 {
-    public static class Host
+    public static class NativeHost
     {
         
         public static List<Object> _pinned = new List<object>();

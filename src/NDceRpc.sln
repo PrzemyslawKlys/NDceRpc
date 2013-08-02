@@ -28,7 +28,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF.IntegrationTests", "WCF
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdl", "DceRpcIdl\DceRpcIdl.vcxproj", "{B78DD707-29C4-456E-A501-1BD3A656E99F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.HostOfNativeSample", "NDceRpc.Microsoft.HostOfNativeSample\NDceRpc.Microsoft.HostOfNativeSample.csproj", "{C84E752E-0903-401F-81E3-1369D26F61A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.HostOfNativeSample.Win32", "NDceRpc.Microsoft.HostOfNativeSample\NDceRpc.Microsoft.HostOfNativeSample.Win32.csproj", "{C84E752E-0903-401F-81E3-1369D26F61A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B78DD707-29C4-456E-A501-1BD3A656E99F} = {B78DD707-29C4-456E-A501-1BD3A656E99F}
+		{BE7FA817-7F6E-4A42-BD67-D1E43962D5C5} = {BE7FA817-7F6E-4A42-BD67-D1E43962D5C5}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdlClient", "DceRpcIdlClient\DceRpcIdlClient.vcxproj", "{BE7FA817-7F6E-4A42-BD67-D1E43962D5C5}"
 EndProject

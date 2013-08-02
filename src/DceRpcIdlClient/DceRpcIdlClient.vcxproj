@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DceRpcIdl\Dummy_h.h" />
+    <ClInclude Include="..\DceRpcIdl\ErrorHandling_h.h" />
     <ClInclude Include="..\DceRpcIdl\ExplicitWithCallbacks_h.h" />
     <ClInclude Include="DceRpcIdlClient.h" />
     <ClInclude Include="stdafx.h" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DceRpcIdl\Dummy_c.c" />
+    <ClCompile Include="..\DceRpcIdl\ErrorHandling_c.c" />
     <ClCompile Include="..\DceRpcIdl\ExplicitWithCallbacks_c.c" />
     <ClCompile Include="DceRpcIdlClient.cpp" />
     <ClCompile Include="dllmain.cpp">

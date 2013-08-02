@@ -4,9 +4,9 @@
 
 
  /* File created by MIDL compiler version 7.00.0555 */
-/* at Fri Aug 02 10:54:05 2013
+/* at Thu Aug 01 18:59:01 2013
  */
-/* Compiler settings for ErrorHandling.idl:
+/* Compiler settings for ContextHandles.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -32,8 +32,8 @@
 #endif // __RPCNDR_H_VERSION__
 
 
-#ifndef __ErrorHandling_h_h__
-#define __ErrorHandling_h_h__
+#ifndef __ContextHandles_h_h__
+#define __ContextHandles_h_h__
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)
 #pragma once
@@ -46,26 +46,38 @@ extern "C"{
 #endif 
 
 
-#ifndef __ErrorHandling_INTERFACE_DEFINED__
-#define __ErrorHandling_INTERFACE_DEFINED__
+#ifndef __ContextHandles_INTERFACE_DEFINED__
+#define __ContextHandles_INTERFACE_DEFINED__
 
-/* interface ErrorHandling */
-/* [explicit_handle][version][uuid] */ 
+/* interface ContextHandles */
+/* [version][uuid] */ 
 
-/* [comm_status] */ error_status_t DoReturnErrors( 
-    /* [in] */ handle_t hBinding,
-    /* [fault_status][out] */ error_status_t *fault_s);
+typedef /* [context_handle] */ void *PCONTEXT_HANDLE_TYPE;
 
-void DoThrowCppException( 
-    /* [in] */ handle_t hBinding);
+typedef /* [ref] */ PCONTEXT_HANDLE_TYPE *PPCONTEXT_HANDLE_TYPE;
+
+short RemoteOpen( 
+    /* [out] */ PPCONTEXT_HANDLE_TYPE pphContext,
+    /* [string][in] */ unsigned char *pszFile);
+
+void RemoteRead( 
+    /* [in] */ PCONTEXT_HANDLE_TYPE phContext,
+    /* [in] */ int cbBuf,
+    /* [size_is][out] */ unsigned char achBuf[  ],
+    /* [out][in] */ short *pcbBuf);
+
+short RemoteClose( 
+    /* [out][in] */ PPCONTEXT_HANDLE_TYPE pphContext);
 
 
 
-extern RPC_IF_HANDLE ErrorHandling_v0_1_c_ifspec;
-extern RPC_IF_HANDLE ErrorHandling_v0_1_s_ifspec;
-#endif /* __ErrorHandling_INTERFACE_DEFINED__ */
+extern RPC_IF_HANDLE ContextHandles_v0_1_c_ifspec;
+extern RPC_IF_HANDLE ContextHandles_v0_1_s_ifspec;
+#endif /* __ContextHandles_INTERFACE_DEFINED__ */
 
 /* Additional Prototypes for ALL interfaces */
+
+void __RPC_USER PCONTEXT_HANDLE_TYPE_rundown( PCONTEXT_HANDLE_TYPE );
 
 /* end of Additional Prototypes */
 

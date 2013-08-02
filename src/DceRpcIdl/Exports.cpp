@@ -15,7 +15,6 @@ HANDLE g_callbackEvent;
 
 //simulates web  requests
 DWORD WINAPI WebRequest(PVOID pvParam) {
-	 
 	while(true){
 	  Sleep(1000);
 	  SetEvent(g_callbackEvent);
@@ -49,12 +48,12 @@ wprintf(szOutput);
 printf("\n");
 }
 
-DceRpcIdl_API void* GetDummyServer(){
+DceRpcIdl_API void* __stdcall GetDummyServer(){
 	return Dummy_v0_1_s_ifspec;
 }
 
 
-DceRpcIdl_API void* GetExplicitWithCallbacksServer(){
+DceRpcIdl_API void* __stdcall GetExplicitWithCallbacksServer(){
 	return ExplicitWithCallbacks_v0_1_s_ifspec;
 }
 

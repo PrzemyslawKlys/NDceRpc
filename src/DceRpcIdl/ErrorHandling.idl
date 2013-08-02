@@ -5,5 +5,6 @@
 ] 
 interface ErrorHandling
 {
-  error_status_t Do([in] handle_t hBinding,[out] error_status_t* fault_s);
+  error_status_t DoReturnErrors([in] handle_t hBinding,[out] error_status_t* fault_s);
+  void DoThrowCppException([in] handle_t hBinding);
 }

@@ -36,6 +36,9 @@
     <ClInclude Include="..\DceRpcIdl\ExplicitWithCallbacks_h.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\DceRpcIdl\ErrorHandling_h.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\DceRpcIdl\ExplicitWithCallbacks_c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DceRpcIdl\ErrorHandling_c.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

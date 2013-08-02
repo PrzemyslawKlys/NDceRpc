@@ -8,9 +8,12 @@
 #include <wchar.h>
 #include <tchar.h>
 #include <WinBase.h>
-#include "DceRpcIdlClient.h"
-#include "..\DceRpcIdl\Dummy_h.h"
 #include <stdlib.h>
+
+#include "DceRpcIdlClient.h"
+
+#include "..\DceRpcIdl\Dummy_h.h"
+#include "..\DceRpcIdl\ErrorHandling_h.h"
 #include "..\DceRpcIdl\ExplicitWithCallbacks_h.h"
 
 DCERPCIDLCLIENT_API void STDAPICALLTYPE CallDummyServer(void* bindingHandle)
@@ -77,6 +80,20 @@ DCERPCIDLCLIENT_API  void* STDAPICALLTYPE GetDummyClient()
 void* __RPC_USER midl_user_allocate(size_t size)
 {
 	return malloc(size);
+}
+
+DCERPCIDLCLIENT_API void __stdcall CallErrorHandlingServer(void* binding){
+	error_status_t fault = RPC_S_OK;
+    auto comm = DoReturnErrors(binding,&fault);
+}
+
+DCERPCIDLCLIENT_API void __stdcall CallErrorThrowingServer(void* binding){
+
+	 DoThrowCppException(binding);
+}
+
+DCERPCIDLCLIENT_API void* __stdcall GetErrorHandlingClient(){
+	return ErrorHandling_v0_1_c_ifspec;
 }
 
 

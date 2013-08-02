@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using NDceRpc.Microsoft.Interop.Async;
 
 namespace NDceRpc.Microsoft.Interop
 {
@@ -64,6 +65,15 @@ CallingConvention = CallingConvention.StdCall,
 CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcBindingReset(IntPtr Binding);
 
+        [DllImport("Rpcrt4.dll",
+CallingConvention = CallingConvention.StdCall,
+CharSet = CharSet.Unicode, SetLastError = true)]
+        public extern static RPC_STATUS RpcAsyncInitializeHandle(
+            /* PRPC_ASYNC_STATE pAsync*/
+                     ref RPC_ASYNC_STATE pAsync,
+            /* unsigned int Size*/
+         ushort Size
+       );
 
         ///<summary>
         /// Validates the format of the string binding handle and converts

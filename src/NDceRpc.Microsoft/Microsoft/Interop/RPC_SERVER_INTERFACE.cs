@@ -16,5 +16,18 @@ namespace NDceRpc.Microsoft.Interop
         public IntPtr DefaultManagerEpv;
         public IntPtr InterpreterInfo;
         public uint Flags;
+
+        public RPC_DISPATCH_TABLE? DispatchTableValue
+        {
+            get
+            {
+                if (DispatchTable == IntPtr.Zero)
+                {
+                    return null;
+                }
+                var value = (RPC_DISPATCH_TABLE)Marshal.PtrToStructure(DispatchTable, typeof(RPC_DISPATCH_TABLE));
+                return value;
+            }
+        }
     }
 }

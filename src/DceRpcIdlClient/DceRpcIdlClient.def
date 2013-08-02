@@ -2,6 +2,9 @@ LIBRARY DceRpcIdlClient
 EXPORTS
   GetDummyClient
   CallDummyServer 
+
   CallExplicitWithCallbacksServer
 
-
+  GetErrorHandlingClient
+  CallErrorHandlingServer
+  CallErrorThrowingServer

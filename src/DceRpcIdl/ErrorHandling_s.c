@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 7.00.0555 */
-/* at Wed Jul 31 13:57:57 2013
+/* at Fri Aug 02 10:54:05 2013
  */
 /* Compiler settings for ErrorHandling.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
@@ -35,7 +35,7 @@
 #include "ErrorHandling_h.h"
 
 #define TYPE_FORMAT_STRING_SIZE   7                                 
-#define PROC_FORMAT_STRING_SIZE   41                                
+#define PROC_FORMAT_STRING_SIZE   69                                
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   0            
@@ -108,7 +108,7 @@ static const ErrorHandling_MIDL_PROC_FORMAT_STRING ErrorHandling__MIDL_ProcForma
         0,
         {
 
-	/* Procedure Do */
+	/* Procedure DoReturnErrors */
 
 			0x0,		/* 0 */
 			0x68,		/* Old Flags:  comm or fault/decode */
@@ -142,6 +142,29 @@ static const ErrorHandling_MIDL_PROC_FORMAT_STRING ErrorHandling__MIDL_ProcForma
 /* 38 */	0x10,		/* FC_ERROR_STATUS_T */
 			0x0,		/* 0 */
 
+	/* Procedure DoThrowCppException */
+
+
+	/* Return value */
+
+/* 40 */	0x0,		/* 0 */
+			0x48,		/* Old Flags:  */
+/* 42 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 46 */	NdrFcShort( 0x1 ),	/* 1 */
+/* 48 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/* 50 */	0x32,		/* FC_BIND_PRIMITIVE */
+			0x0,		/* 0 */
+/* 52 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
+/* 54 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 56 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 58 */	0x40,		/* Oi2 Flags:  has ext, */
+			0x0,		/* 0 */
+/* 60 */	0x8,		/* 8 */
+			0x1,		/* Ext Flags:  new corr desc, */
+/* 62 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 64 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 66 */	NdrFcShort( 0x0 ),	/* 0 */
+
 			0x0
         }
     };
@@ -162,7 +185,8 @@ static const ErrorHandling_MIDL_TYPE_FORMAT_STRING ErrorHandling__MIDL_TypeForma
 
 static const unsigned short ErrorHandling_FormatStringOffsetTable[] =
     {
-    0
+    0,
+    40
     };
 
 
@@ -193,17 +217,19 @@ static const MIDL_STUB_DESC ErrorHandling_StubDesc =
 static const RPC_DISPATCH_FUNCTION ErrorHandling_table[] =
     {
     NdrServerCall2,
+    NdrServerCall2,
     0
     };
 static const RPC_DISPATCH_TABLE ErrorHandling_v0_1_DispatchTable = 
     {
-    1,
+    2,
     (RPC_DISPATCH_FUNCTION*)ErrorHandling_table
     };
 
 static const SERVER_ROUTINE ErrorHandling_ServerRoutineTable[] = 
     {
-    (SERVER_ROUTINE)Do
+    (SERVER_ROUTINE)DoReturnErrors,
+    (SERVER_ROUTINE)DoThrowCppException
     };
 
 static const MIDL_SERVER_INFO ErrorHandling_ServerInfo = 

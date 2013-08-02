@@ -137,9 +137,11 @@ namespace NDceRpc.Microsoft.Interop
         {
             if (_callAttrs.Version != 0)
                 return _callAttrs;
-            RPC_CALL_ATTRIBUTES_V2 attrs = new RPC_CALL_ATTRIBUTES_V2();
-            attrs.Version = 2;
-            attrs.Flags = RPC_CALL_ATTRIBUTES_FLAGS.RPC_QUERY_NO_AUTH_REQUIRED;
+            var attrs = new RPC_CALL_ATTRIBUTES_V2
+                {
+                    Version = 2,
+                    Flags = RPC_CALL_ATTRIBUTES_FLAGS.RPC_QUERY_NO_AUTH_REQUIRED
+                };
             RPC_STATUS err = NativeMethods.RpcServerInqCallAttributes(_clientHandle, ref attrs);
 
             if (err == RPC_STATUS.RPC_S_INVALID_ARG) //may not support v2 on early edditions of XP/SP3
@@ -170,16 +172,14 @@ namespace NDceRpc.Microsoft.Interop
                 {
                     using (Ptr<byte[]> callerAddress = new Ptr<byte[]>(new byte[1024]))
                     {
-                        RPC_CALL_LOCAL_ADDRESS_V1 localAddress = new RPC_CALL_LOCAL_ADDRESS_V1();
+                        var localAddress = new RPC_CALL_LOCAL_ADDRESS_V1();
                         localAddress.Version = 1;
                         localAddress.Buffer = callerAddress.Handle;
                         localAddress.BufferSize = 1024;
                         localAddress.AddressFormat = RpcLocalAddressFormat.Invalid;
                         _callAttrs = attrs;
 
-                        using (
-                            Ptr<RPC_CALL_LOCAL_ADDRESS_V1> callerAddressv1 =
-                                new Ptr<RPC_CALL_LOCAL_ADDRESS_V1>(localAddress))
+                        using (var callerAddressv1 = new Ptr<RPC_CALL_LOCAL_ADDRESS_V1>(localAddress))
                         {
                             attrs.CallLocalAddress = callerAddressv1.Handle;
                             attrs.Flags = RPC_CALL_ATTRIBUTES_FLAGS.RPC_QUERY_CALL_LOCAL_ADDRESS |

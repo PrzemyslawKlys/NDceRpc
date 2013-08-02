@@ -71,6 +71,7 @@
     <Midl />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Midl Include="ContextHandles.idl" />
     <Midl Include="Dummy.idl">
       <GenerateClientFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Stub</GenerateClientFiles>
       <GenerateServerFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Stub</GenerateServerFiles>
@@ -93,7 +94,9 @@
     <None Include="ExplicitWithCallbacks.acf" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ContextHandles_h.h" />
     <ClInclude Include="Dummy_h.h" />
+    <ClInclude Include="ErrorHandlingImpl.h" />
     <ClInclude Include="ErrorHandling_h.h" />
     <ClInclude Include="ExplicitBytes_h.h" />
     <ClInclude Include="ExplicitWithCallbacks_h.h" />
@@ -102,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dummy_s.c" />
+    <ClCompile Include="ErrorHandlingImpl.cpp" />
     <ClCompile Include="ErrorHandling_s.c" />
     <ClCompile Include="ExplicitWithCallbacks_s.c" />
     <ClCompile Include="Exports.cpp" />

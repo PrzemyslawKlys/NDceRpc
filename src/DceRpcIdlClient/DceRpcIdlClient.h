@@ -12,4 +12,9 @@
 
 DCERPCIDLCLIENT_API  void* STDAPICALLTYPE GetDummyClient();
 DCERPCIDLCLIENT_API void STDAPICALLTYPE CallDummyServer(void* bindingHandle);
+
 DCERPCIDLCLIENT_API void  STDAPICALLTYPE CallExplicitWithCallbacksServer(void* bindingHandle);
+
+DCERPCIDLCLIENT_API void __stdcall CallErrorHandlingServer(void* binding);
+DCERPCIDLCLIENT_API void* __stdcall GetErrorHandlingClient();
+DCERPCIDLCLIENT_API void __stdcall CallErrorThrowingServer(void* binding);

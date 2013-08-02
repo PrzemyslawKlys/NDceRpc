@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using NAlpc;
 
 namespace NAlpc
 {
+
+
     ///<summary>Define header for Port Message</summary>
     public struct PORT_MESSAGE
     {
@@ -42,7 +45,7 @@ namespace NAlpc
         [StructLayout(LayoutKind.Sequential)]
         public struct s2_struct
         {
-            public ushort Type;
+            public PORT_MESSAGE_TYPES Types;
             public ushort DataInfoOffset;
         }
 
@@ -66,7 +69,6 @@ namespace NAlpc
             public ulong CallbackId;
         }
 
-      
 
         /// <summary>
         /// Macro for initializing the message header
@@ -74,14 +76,14 @@ namespace NAlpc
         /// <param name="ph"></param>
         /// <param name="l"></param>
         /// <param name="t"></param>
-        public static void InitializeMessageHeader(PORT_MESSAGE ph, ushort l, ushort t)
+        public static void InitializeMessageHeader(PORT_MESSAGE ph, ushort l, PORT_MESSAGE_TYPES t)
         {
             (ph).u1.s1.TotalLength = (ushort)(l);
             unsafe
             {
                 (ph).u1.s1.DataLength = (ushort)(l - sizeof(PORT_MESSAGE));
             }
-            (ph).u2.s2.Type = (ushort)(t);
+            (ph).u2.s2.Types = t;
             (ph).u2.s2.DataInfoOffset = 0;
 
 

@@ -1,9 +1,6 @@
 ﻿namespace NAlpc
 {
-    /// <summary>
-    ///  Valid values for PORT_MESSAGE::u2::s2::Type
-    /// </summary>
-    public enum PortMessageType : int
+    public enum PORT_MESSAGE_TYPES : ushort
     {
 
         LPC_REQUEST = 1,

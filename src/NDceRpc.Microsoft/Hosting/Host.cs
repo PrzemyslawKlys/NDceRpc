@@ -11,7 +11,12 @@ namespace NDceRpc.Native
 
         public static NativeServer StartServer(EndpointBindingInfo info, IntPtr dummyPtr)
         {
-            var server = new NativeServer(dummyPtr);
+            return StartServer(info, dummyPtr, IntPtr.Zero,  IntPtr.Zero);
+        }
+
+        public static NativeServer StartServer(EndpointBindingInfo info, IntPtr dummyPtr, IntPtr mgrTypeUuid, IntPtr mgrEpv)
+        {
+            var server = new NativeServer(dummyPtr, mgrTypeUuid, mgrEpv);
             server.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_NONE);
             server.AddProtocol(info.Protseq,info.EndPoint,NativeServer.MAX_CALL_LIMIT);
             server.StartListening();

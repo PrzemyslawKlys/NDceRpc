@@ -7,9 +7,13 @@ namespace NDceRpc.Native
     /// </summary>
     public class NativeServer:Server
     {
-        public NativeServer(IntPtr sIfHandle)
+        public NativeServer(IntPtr sIfHandle) :this(sIfHandle, IntPtr.Zero, IntPtr.Zero)
         {
-            base.ServerRegisterInterface(sIfHandle, _handle);
+        }
+
+        public NativeServer(IntPtr sIfHandle, IntPtr mgrTypeUuid, IntPtr mgrEpv)
+        {
+            base.ServerRegisterInterface(sIfHandle, _handle, mgrTypeUuid, mgrEpv);
         }
     }
 }

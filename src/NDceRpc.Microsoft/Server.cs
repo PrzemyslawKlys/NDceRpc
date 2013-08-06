@@ -41,12 +41,18 @@ namespace NDceRpc
 
         protected  void ServerRegisterInterface(IntPtr sIfHandle, RpcHandle handle)
         {
+            ServerRegisterInterface(sIfHandle, handle, IntPtr.Zero, IntPtr.Zero);
+        }
+
+        protected void ServerRegisterInterface(IntPtr sIfHandle, RpcHandle handle, IntPtr mgrTypeUuid, IntPtr mgrEpv)
+        {
             //TODO: make server isolated of other process services, make it not static as possible
-            Guard.Assert(NativeMethods.RpcServerRegisterIf(sIfHandle, IntPtr.Zero, IntPtr.Zero));
+            Guard.Assert(NativeMethods.RpcServerRegisterIf(sIfHandle, mgrTypeUuid, mgrEpv));
             //RPC_IF_CALLBACK_FN security = null;
             // Guard.Assert(NativeMethods.RpcServerRegisterIfEx(sIf.Handle, IntPtr.Zero, IntPtr.Zero,  InterfacRegistrationFlags.RPC_IF_AUTOLISTEN, MAX_CALL_LIMIT, ref security));
             handle.Handle = sIfHandle;
         }
+        
         /// <summary>
         /// Used to ensure that the server is listening with a specific protocol type.  
         /// </summary>

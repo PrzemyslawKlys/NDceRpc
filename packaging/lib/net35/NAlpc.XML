@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NAlpc</name>
+    </assembly>
+    <members>
+        <member name="F:NAlpc.Constants.MAX_LPC_DATA">
+            <summary>
+            Maximum number of bytes that can be copied through LPC
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtCreatePort(System.IntPtr@,NAlpc.OBJECT_ATTRIBUTES@,System.UInt32,System.UInt32,System.UInt32)" -->
+        <member name="T:NAlpc.PORT_MESSAGE">
+            <summary>Define header for Port Message</summary>
+        </member>
+        <member name="M:NAlpc.PORT_MESSAGE.InitializeMessageHeader(NAlpc.PORT_MESSAGE,System.UInt16,NAlpc.PORT_MESSAGE_TYPES)">
+            <summary>
+            Macro for initializing the message header
+            </summary>
+            <param name="ph"></param>
+            <param name="l"></param>
+            <param name="t"></param>
+        </member>
+        <member name="F:NAlpc.PORT_MESSAGE.s1_struct.DataLength">
+            <summary>
+            Length of data following the header (bytes)
+            </summary>
+        </member>
+        <member name="F:NAlpc.PORT_MESSAGE.s1_struct.TotalLength">
+            <summary>
+             Length of data + sizeof(PORT_MESSAGE)
+            </summary>
+        </member>
+        <member name="T:NAlpc.PORT_VIEW">
+            <summary>
+            Define structure for initializing shared memory on the caller's side of the port
+            </summary>
+        </member>
+        <member name="T:NAlpc.REMOTE_PORT_VIEW">
+            <summary>
+            Define structure for shared memory coming from remote side of the port
+            </summary>
+        </member>
+    </members>
+</doc>

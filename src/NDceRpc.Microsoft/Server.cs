@@ -155,5 +155,23 @@ namespace NDceRpc
                 RpcTrace.Warning("RpcMgmtWaitServerListen result = {0}", result);
             }
         }
+
+        protected bool Equals(Server other)
+        {
+            return Equals(_handle, other._handle);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Server) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_handle != null ? _handle.GetHashCode() : 0);
+        }
     }
 }

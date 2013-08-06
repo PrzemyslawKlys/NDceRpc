@@ -11,6 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Integration of WCF and .NET with MS-RPC and binary serialization. </description>
     <releaseNotes>
+	* 0.0.10.0
+	- added more of local ipc (alpc)
+	- added better integration with native rpc
 	* 0.0.9.1
 	- added exception handling like in WCF
 	</releaseNotes>

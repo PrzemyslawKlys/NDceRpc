@@ -98,5 +98,24 @@ namespace NDceRpc.Microsoft.Interop
         }
 
         protected abstract void DisposeHandle(ref IntPtr handle);
+
+        protected bool Equals(RpcHandle other)
+        {
+            return Handle.Equals(other.Handle);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            if (Handle == IntPtr.Zero) return false;// if handle not initialized we cannot state equality, better state unequlity
+            return Equals((RpcHandle) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Handle.GetHashCode();
+        }
     }
 }

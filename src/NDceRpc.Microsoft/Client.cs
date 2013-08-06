@@ -9,7 +9,7 @@ namespace NDceRpc
     /// Provides a connection-based wrapper around the RPC client
     /// </summary>
     [System.Diagnostics.DebuggerDisplay("{_handle} @{_binding}")]
-    public class Client : IDisposable
+    public class Client : IDisposable//TODO: make is serializabl to propagate throug app domains (use only ptr and methods to get all data from ptr)
     {
 
         protected bool _authenticated;
@@ -188,6 +188,22 @@ namespace NDceRpc
             }
         }
 
+        protected bool Equals(Client other)
+        {
+            return Equals(_handle, other._handle);
+        }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Client) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_handle != null ? _handle.GetHashCode() : 0);
+        }
     }
 }

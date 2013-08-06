@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 7.00.0555 */
-/* at Wed Jul 31 13:57:57 2013
+/* at Tue Aug 06 11:12:34 2013
  */
 /* Compiler settings for Dummy.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 

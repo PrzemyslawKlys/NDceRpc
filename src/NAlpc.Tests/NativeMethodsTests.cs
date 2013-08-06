@@ -22,5 +22,18 @@ namespace NAlpc.Tests
             Assert.AreNotEqual(IntPtr.Zero, handle);
             NativeMethods.NtClose(handle);
         }
+
+      
+
+        struct TRANSFERRED_MESSAGE
+        {
+            PORT_MESSAGE Header;
+
+            uint Command;
+            char[] MessageText; //48
+
+
+
+        }
     }
 }

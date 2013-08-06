@@ -39,7 +39,47 @@ namespace NAlpc
         [DllImport("ntdll.dll", EntryPoint = "NtClose", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int NtClose(IntPtr Handle);
 
-        ///*++
+
+
+        ///<summary>
+        ///    Listens on a port for a connection request message on the server side.
+        ///    PortHandle - A handle to a port object. The handle doesn't need to grant any specific access.
+        ///    ConnectionRequest - Points to a caller-allocated buffer or variable that receives the connect message sent to the port.
+        /// </summary>
+        [DllImport("ntdll.dll", EntryPoint = "NtListenPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int NtListenPort(out IntPtr PortHandle, ref PORT_MESSAGE RequestMessage);
+
+
+
+        ///<summary>
+        ///    Accepts or rejects a connection request on the server side.
+
+        ///    PortHandle - Points to a variable that will receive the port object
+        ///        handle if the call is successful.
+
+        ///   PortContext - A numeric identifier to be associated with the port.
+
+        ///    ConnectionRequest - Points to a caller-allocated buffer or variable
+        ///        that identifies the connection request and contains any connect
+        ///        data that should be returned to requestor of the connection
+
+        ///    AcceptConnection - Specifies whether the connection should
+        ///        be accepted or not
+
+        ///    ServerView - Optionally points to a structure describing
+        ///        the shared memory region used to send large amounts of data to the
+        ///        requestor; if the call is successful, this will be updated
+
+        ///    ClientView - Optionally points to a caller-allocated buffer
+        ///        or variable that receives information on the shared memory
+        ///        region used by the requestor to send large amounts of data to the
+        ///        caller
+
+        /// </summary>
+        [DllImport("ntdll.dll", EntryPoint = "NtAcceptConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int NtAcceptConnectPort(out IntPtr PortHandle, IntPtr PortContext, ref PORT_MESSAGE ConnectionRequest, bool AcceptConnection, out  PORT_VIEW ServerView, out REMOTE_PORT_VIEW ClientView);
+
+
 
         //    NtConnectPort
         //    =============
@@ -91,79 +131,6 @@ namespace NAlpc
         //    IN  OUT PVOID ConnectionInformation OPTIONAL,
         //    IN  OUT PULONG ConnectionInformationLength OPTIONAL
         //    );
-
-
-
-
-
-        ///*++
-
-        //    NtListenPort
-        //    ============
-
-        //    Listens on a port for a connection request message on the server side.
-
-        //    PortHandle - A handle to a port object. The handle doesn't need 
-        //        to grant any specific access.
-
-        //    ConnectionRequest - Points to a caller-allocated buffer
-        //        or variable that receives the connect message sent to
-        //        the port.
-
-        //--*/
-
-
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtListenPort(
-        //    IN  HANDLE PortHandle,
-        //    OUT PPORT_MESSAGE RequestMessage
-        //    );
-
-        ///*++
-
-        //    NtAcceptConnectPort
-        //    ===================
-
-        //    Accepts or rejects a connection request on the server side.
-
-        //    PortHandle - Points to a variable that will receive the port object
-        //        handle if the call is successful.
-
-        //    PortContext - A numeric identifier to be associated with the port.
-
-        //    ConnectionRequest - Points to a caller-allocated buffer or variable
-        //        that identifies the connection request and contains any connect
-        //        data that should be returned to requestor of the connection
-
-        //    AcceptConnection - Specifies whether the connection should
-        //        be accepted or not
-
-        //    ServerView - Optionally points to a structure describing
-        //        the shared memory region used to send large amounts of data to the
-        //        requestor; if the call is successful, this will be updated
-
-        //    ClientView - Optionally points to a caller-allocated buffer
-        //        or variable that receives information on the shared memory
-        //        region used by the requestor to send large amounts of data to the
-        //        caller
-
-        //--*/
-
-
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtAcceptConnectPort(
-        //    OUT PHANDLE PortHandle,
-        //    IN  PVOID PortContext OPTIONAL,
-        //    IN  PPORT_MESSAGE ConnectionRequest,
-        //    IN  BOOLEAN AcceptConnection,
-        //    IN  OUT PPORT_VIEW ServerView OPTIONAL,
-        //    OUT PREMOTE_PORT_VIEW ClientView OPTIONAL
-        //    );
-
 
         ///*++
 

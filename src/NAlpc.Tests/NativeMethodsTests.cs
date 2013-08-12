@@ -31,9 +31,6 @@ namespace NAlpc.Tests
 
             uint Command;
             char[] MessageText; //48
-
-
-
         }
     }
 }

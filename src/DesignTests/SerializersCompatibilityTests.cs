@@ -60,7 +60,7 @@ namespace DesignTests
             meta.UseConstructor = false;//makes Protobuf behace as DataContractSerializer for DataContractAttribute classes
 
             proto.CompileInPlace();
-      
+
             var xml = new DataContractSerializer(typeof(EventMessage));
             var xmlStream = new MemoryStream();
             xml.WriteObject(xmlStream, msg);
@@ -79,18 +79,21 @@ namespace DesignTests
 
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
+        //[ExpectedException(typeof(InvalidOperationException))]
         [Description("Default behaviour of Protobuf serializers does not handles Exception")]
         public void SerializeException()
         {
             var stream = new MemoryStream();
             var ex = new Exception("serializable exception");
-            var info = new SerializationInfo(typeof(Exception),new FormatterConverter());
-            var context = new StreamingContext(StreamingContextStates.CrossProcess);
-             ex.GetObjectData(info,context);
-             Serializer.Serialize(info, context, ex);
-           
-
+            var model = TypeModel.Create();
+            model.Add(typeof (Exception), true);
+            model.Serialize(stream, ex);
+            stream.Position = 0;
+            var deserialized = model.Deserialize(stream, null, typeof (Exception));
+            //var info = new SerializationInfo(typeof(Exception), new FormatterConverter());
+            //var context = new StreamingContext(StreamingContextStates.CrossProcess);
+            //ex.GetObjectData(info, context);
+            //Serializer.Serialize(info, context, ex);
         }
     }
 }

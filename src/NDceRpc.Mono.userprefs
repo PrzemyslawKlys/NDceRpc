@@ -1,14 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="NDceRpc.Mono\Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="NDceRpc.Mono\InsideWcfChannels.cs">
     <Files>
-      <File FileName="NDceRpc.Mono\Program.cs" Line="11" Column="1" />
+      <File FileName="NDceRpc.Mono\InsideWcfMessage.cs" Line="1" Column="1" />
+      <File FileName="NDceRpc.Mono\InsideWcfChannels.cs" Line="24" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="NDceRpc.Mono" expanded="True" selected="True">
+          <Node name="NDceRpc.Mono" expanded="True">
             <Node name="References" expanded="True" />
+            <Node name="InsideWcfChannels.cs" selected="True" />
           </Node>
         </State>
       </Pad>
@@ -22,7 +24,17 @@
         </State>
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="NDceRpc.Mono" expanded="True">
+            <Node name="NDceRpc" expanded="True">
+              <Node name="Mono" expanded="True">
+                <Node name="InsideWcf" expanded="True">
+                  <Node name="CreateMessage_CopyMessage_CopiedState" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

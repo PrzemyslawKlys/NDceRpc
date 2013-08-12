@@ -44,11 +44,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AlpcTransport.cs" />
     <Compile Include="CLIENT_ID.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="NativeMethods.cs" />

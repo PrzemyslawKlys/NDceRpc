@@ -159,6 +159,8 @@ Possibily to precompile serializers/proxy/stub is must for start up and performa
 * Improve runtime prefromace
 * Ensure that thowing exception in one way operation (in worker thread) does not crashes processes and behaves like WCF.
 * Ensure that error description can be handled by native code.
+* Do not copy message twice, use header and contat
+* Add Alpc transport to WCF
 
 ### Related
 

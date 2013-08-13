@@ -62,7 +62,9 @@
     <Compile Include="PORT_VIEW.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="REMOTE_PORT_VIEW.cs" />
+    <Compile Include="SECTION.cs" />
     <Compile Include="SECURITY_DESCRIPTOR.cs" />
+    <Compile Include="SECURITY_QUALITY_OF_SERVICE.cs" />
     <Compile Include="UNICODE_STRING.cs" />
   </ItemGroup>
   <ItemGroup>

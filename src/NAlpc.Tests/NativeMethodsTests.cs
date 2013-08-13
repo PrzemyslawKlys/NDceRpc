@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace NAlpc.Tests
@@ -27,12 +29,47 @@ namespace NAlpc.Tests
             Assert.IsTrue(handle.IsClosed);
         }
 
-        struct TRANSFERRED_MESSAGE
+        [Test]
+        public void NtCreatePort_NtListenPort()
         {
-            PORT_MESSAGE Header;
+            var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
+            NAlpc.AplcPortHandle handle = null;
+            var attributes = new OBJECT_ATTRIBUTES(name, 0);
+            NativeMethods.NtCreatePort(out handle, ref attributes, 100, 100, 50);
+            var msg = new MY_TRANSFERRED_MESSAGE();
+            var wait = Task.Factory.StartNew(() =>
+                {
+                    var status = NativeMethods.NtListenPort(handle, ref msg.Header);
+                    Assert.AreNotEqual(0,status);
+                });
+            var listenBlocksThread = wait.Wait(100);
+            Assert.IsFalse(listenBlocksThread);
+            handle.Dispose();
 
-            uint Command;
-            char[] MessageText; //48
+        }
+
+        [Test]
+        public void NtListenPort()
+        {
+           var handle = new AplcPortHandle();
+            var msg = new MY_TRANSFERRED_MESSAGE();
+            var wait = Task.Factory.StartNew(() =>
+            {
+                var status = NativeMethods.NtListenPort(handle, ref msg.Header);
+                Assert.AreNotEqual(0, status);
+            });
+            var listenBlocksThread = wait.Wait(100);
+            Assert.IsTrue(listenBlocksThread);
+  
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct MY_TRANSFERRED_MESSAGE
+        {
+            public PORT_MESSAGE Header;
+
+            public uint Command;
+            public char[] MessageText; //48
         }
     }
 }

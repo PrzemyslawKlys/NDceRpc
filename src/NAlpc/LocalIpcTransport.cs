@@ -9,22 +9,25 @@ using System.Threading.Tasks;
 
 namespace NAlpc
 {
-    public class AlpcTransport : System.ServiceModel.Channels.CommunicationObject
+    ///ALPC for Windows
+    ///TODO: Domain Sockets for UNIX
+    public class LocalIpcTransport : System.ServiceModel.Channels.CommunicationObject
     {
         private string _portName;
         private AplcPortHandle _handle;
 
-        public AlpcTransport(string portName)
+        public LocalIpcTransport(string portName)
         {
             _portName = portName;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
         struct ChunkCarrierMessage
         {
-            PORT_MESSAGE Header;
+            public PORT_MESSAGE Header;
 
-            uint Command;
-            byte[] Chunk;
+            public uint Command;
+            public byte[] Chunk;
         }
 
         protected override TimeSpan DefaultCloseTimeout

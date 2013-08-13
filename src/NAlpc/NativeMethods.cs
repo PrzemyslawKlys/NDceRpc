@@ -47,7 +47,7 @@ namespace NAlpc
         ///    ConnectionRequest - Points to a caller-allocated buffer or variable that receives the connect message sent to the port.
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtListenPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtListenPort(out AplcPortHandle PortHandle, ref PORT_MESSAGE RequestMessage);
+        public static extern int NtListenPort(AplcPortHandle PortHandle, ref PORT_MESSAGE RequestMessage);
 
 
 

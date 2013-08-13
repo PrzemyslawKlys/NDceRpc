@@ -45,10 +45,10 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="AlpcTransport.cs" />
     <Compile Include="AplcPortHandle.cs" />
     <Compile Include="CLIENT_ID.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="LocalIpcTransport.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="OBJECT_ATTRIBUTES.cs" />
     <Compile Include="PORT_MESSAGE.cs" />

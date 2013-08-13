@@ -14,8 +14,10 @@ namespace NAlpc.Tests
         [Test]
         public void Create()
         {
-            var transport = new AlpcTransport();
+            var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
+            var transport = new AlpcTransport(name);
             transport.Open();
+            transport.Close();
         }
     }
 }

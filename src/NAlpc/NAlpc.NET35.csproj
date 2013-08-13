@@ -46,6 +46,7 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="AlpcTransport.cs" />
+    <Compile Include="AplcPortHandle.cs" />
     <Compile Include="CLIENT_ID.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="NativeMethods.cs" />

@@ -34,7 +34,7 @@ namespace NAlpc
         ///    ZwCreatePort verifies that (MaxDataSize &lt;= 0x104) and (MaxMessageSize &lt;= 0x148).
         ///</summary>
         [DllImport("ntdll.dll", EntryPoint = "NtCreatePort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtCreatePort(out IntPtr PortHandle, ref OBJECT_ATTRIBUTES ObjectAttributes, uint MaxConnectionInfoLength, uint MaxMessageLength, uint MaxPoolUsage);
+        public static extern int NtCreatePort(out NAlpc.AplcPortHandle PortHandle, ref OBJECT_ATTRIBUTES ObjectAttributes, uint MaxConnectionInfoLength, uint MaxMessageLength, uint MaxPoolUsage);
 
         [DllImport("ntdll.dll", EntryPoint = "NtClose", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int NtClose(IntPtr Handle);
@@ -47,7 +47,7 @@ namespace NAlpc
         ///    ConnectionRequest - Points to a caller-allocated buffer or variable that receives the connect message sent to the port.
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtListenPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtListenPort(out IntPtr PortHandle, ref PORT_MESSAGE RequestMessage);
+        public static extern int NtListenPort(out AplcPortHandle PortHandle, ref PORT_MESSAGE RequestMessage);
 
 
 
@@ -77,84 +77,63 @@ namespace NAlpc
 
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtAcceptConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtAcceptConnectPort(out IntPtr PortHandle, IntPtr PortContext, ref PORT_MESSAGE ConnectionRequest, bool AcceptConnection, out  PORT_VIEW ServerView, out REMOTE_PORT_VIEW ClientView);
+        public static extern int NtAcceptConnectPort(out AplcPortHandle PortHandle, IntPtr PortContext, ref PORT_MESSAGE ConnectionRequest, bool AcceptConnection, out  PORT_VIEW ServerView, out REMOTE_PORT_VIEW ClientView);
 
 
+        ///<summary>
+        /// Creates a port connected to a named port (cliend side).
 
-        //    NtConnectPort
-        //    =============
+        ///    PortHandle - A pointer to a variable that will receive the client
+        ///        communication port object handle value.
 
-        //    Creates a port connected to a named port (cliend side).
+        ///    PortName - Points to a structure that specifies the name
+        ///        of the port to connect to.
 
-        //    PortHandle - A pointer to a variable that will receive the client
-        //        communication port object handle value.
+        ///    SecurityQos - Points to a structure that specifies the level
+        ///        of impersonation available to the port listener.
 
-        //    PortName - Points to a structure that specifies the name
-        //        of the port to connect to.
+        ///    ClientView - Optionally points to a structure describing
+        ///        the shared memory region used to send large amounts of data
+        ///        to the listener; if the call is successful, this will be updated.
 
-        //    SecurityQos - Points to a structure that specifies the level
-        //        of impersonation available to the port listener.
+        ///    ServerView - Optionally points to a caller-allocated buffer
+        ///        or variable that receives information on the shared memory region
+        ///        used by the listener to send large amounts of data to the
+        ///        caller.
 
-        //    ClientView - Optionally points to a structure describing
-        //        the shared memory region used to send large amounts of data
-        //        to the listener; if the call is successful, this will be updated.
+        ///    MaxMessageLength - Optionally points to a variable that receives the size,
+        ///        in bytes, of the largest message that can be sent through the port.
 
-        //    ServerView - Optionally points to a caller-allocated buffer
-        //        or variable that receives information on the shared memory region
-        //        used by the listener to send large amounts of data to the
-        //        caller.
+        ///    ConnectionInformation - Optionally points to a caller-allocated
+        ///        buffer or variable that specifies connect data to send to the listener,
+        ///        and receives connect data sent by the listener.
 
-        //    MaxMessageLength - Optionally points to a variable that receives the size,
-        //        in bytes, of the largest message that can be sent through the port.
+        ///    ConnectionInformationLength - Optionally points to a variable that
+        ///        specifies the size, in bytes, of the connect data to send
+        ///        to the listener, and receives the size of the connect data
+        ///        sent by the listener.
+        /// </summary>
+        [DllImport("ntdll.dll", EntryPoint = "NtConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int NtConnectPort(
+              out AplcPortHandle PortHandle,
+                string PortName,
+               IntPtr SecurityQos,
+              out PORT_VIEW ClientView,
+              out REMOTE_PORT_VIEW ServerView,
+              out IntPtr MaxMessageLength,
 
-        //    ConnectionInformation - Optionally points to a caller-allocated
-        //        buffer or variable that specifies connect data to send to the listener,
-        //        and receives connect data sent by the listener.
+                  out IntPtr ConnectionInformation,
+                out UInt32 ConnectionInformationLength
+              );
 
-        //    ConnectionInformationLength - Optionally points to a variable that
-        //        specifies the size, in bytes, of the connect data to send
-        //        to the listener, and receives the size of the connect data
-        //        sent by the listener.
+        ///<summary>
+        ///    Completes the port connection process on the server side.
+        ///    PortHandle - A handle to a port object. The handle doesn't need 
+        ///        to grant any specific access.
+        /// </summary>
+       public static extern int NtCompleteConnectPort(AplcPortHandle  PortHandle );
 
-        //--*/
-
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtConnectPort(
-        //    OUT PHANDLE PortHandle,
-        //    IN  PUNICODE_STRING PortName,
-        //    IN  PSECURITY_QUALITY_OF_SERVICE SecurityQos,
-        //    IN  OUT PPORT_VIEW ClientView OPTIONAL,
-        //    OUT PREMOTE_PORT_VIEW ServerView OPTIONAL,
-        //    OUT PULONG MaxMessageLength OPTIONAL,
-        //    IN  OUT PVOID ConnectionInformation OPTIONAL,
-        //    IN  OUT PULONG ConnectionInformationLength OPTIONAL
-        //    );
-
-        ///*++
-
-        //    NtCompleteConnectPort
-        //    =====================
-
-        //    Completes the port connection process on the server side.
-
-        //    PortHandle - A handle to a port object. The handle doesn't need 
-        //        to grant any specific access.
-
-        //--*/
-
-
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtCompleteConnectPort(
-        //    IN  HANDLE PortHandle
-        //    );
-
-
-
-
+        
         ///*++
 
         //    NtRequestPort

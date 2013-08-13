@@ -15,15 +15,17 @@ namespace NAlpc.Tests
         public void NtCreatePort()
         {
             var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
-            IntPtr handle = IntPtr.Zero;
+            NAlpc.AplcPortHandle handle = null;
             var attributes = new OBJECT_ATTRIBUTES(name, 0);
             int status = NativeMethods.NtCreatePort(out handle, ref attributes, 100, 100, 50);
             Assert.AreEqual(Constants.S_OK, status);
-            Assert.AreNotEqual(IntPtr.Zero, handle);
-            NativeMethods.NtClose(handle);
+            IntPtr realPointer = handle.DangerousGetHandle();
+            Assert.AreNotEqual(IntPtr.Zero, realPointer);
+            Assert.IsFalse(handle.IsInvalid);
+            Assert.IsFalse(handle.IsClosed);
+            handle.Dispose();
+            Assert.IsTrue(handle.IsClosed);
         }
-
-      
 
         struct TRANSFERRED_MESSAGE
         {

@@ -120,8 +120,7 @@ namespace NAlpc
                IntPtr SecurityQos,
               out PORT_VIEW ClientView,
               out REMOTE_PORT_VIEW ServerView,
-              out IntPtr MaxMessageLength,
-
+              out UInt32 MaxMessageLength,
                   out IntPtr ConnectionInformation,
                 out UInt32 ConnectionInformationLength
               );
@@ -131,144 +130,139 @@ namespace NAlpc
         ///    PortHandle - A handle to a port object. The handle doesn't need 
         ///        to grant any specific access.
         /// </summary>
-       public static extern int NtCompleteConnectPort(AplcPortHandle  PortHandle );
+        [DllImport("ntdll.dll", EntryPoint = "NtCompleteConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int NtCompleteConnectPort(AplcPortHandle PortHandle);
 
-        
-        ///*++
 
-        //    NtRequestPort
-        //    =============
+        ///<summary>
 
-        //    Sends a request message to a port (client side)
+        ///    NtRequestPort
+        ///    =============
 
-        //    PortHandle - A handle to a port object. The handle doesn't need 
-        //        to grant any specific access.
+        ///    Sends a request message to a port (client side)
 
-        //    RequestMessage - Points to a caller-allocated buffer or variable
-        //        that specifies the request message to send to the port.
+        ///    PortHandle - A handle to a port object. The handle doesn't need 
+        ///        to grant any specific access.
 
-        //--*/
+        ///    RequestMessage - Points to a caller-allocated buffer or variable
+        ///        that specifies the request message to send to the port.
 
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtRequestPort (
-        //    IN  HANDLE PortHandle,
-        //    IN  PPORT_MESSAGE RequestMessage
-        //    );
+        ///</summary>
+        [DllImport("ntdll.dll", EntryPoint = "NtRequestPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int
+        NtRequestPort(
+            AplcPortHandle PortHandle,
+            ref PORT_MESSAGE RequestMessage
+            );
 
-        ///*++
+        ///<summary>
 
-        //    NtRequestWaitReplyPort
-        //    ======================
+        ///    NtRequestWaitReplyPort
+        ///    ======================
 
-        //    Sends a request message to a port and waits for a reply (client side)
+        ///    Sends a request message to a port and waits for a reply (client side)
 
-        //    PortHandle - A handle to a port object. The handle doesn't need 
-        //        to grant any specific access.
+        ///    PortHandle - A handle to a port object. The handle doesn't need 
+        ///        to grant any specific access.
 
-        //    RequestMessage - Points to a caller-allocated buffer or variable
-        //        that specifies the request message to send to the port.
+        ///    RequestMessage - Points to a caller-allocated buffer or variable
+        ///        that specifies the request message to send to the port.
 
-        //    ReplyMessage - Points to a caller-allocated buffer or variable
-        //        that receives the reply message sent to the port.
+        ///    ReplyMessage - Points to a caller-allocated buffer or variable
+        ///        that receives the reply message sent to the port.
 
-        //--*/
+        ///</summary>
 
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtRequestWaitReplyPort(
-        //    IN  HANDLE PortHandle,
-        //    IN  PPORT_MESSAGE RequestMessage,
-        //    OUT PPORT_MESSAGE ReplyMessage
-        //    );
+        [DllImport("ntdll.dll", EntryPoint = "NtRequestWaitReplyPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int
+        NtRequestWaitReplyPort(
+                 AplcPortHandle PortHandle,
+        ref PORT_MESSAGE RequestMessage,
+        out PORT_MESSAGE ReplyMessage
+            );
 
 
 
 
-        ///*++
+        ///<summary>
 
-        //    NtReplyPort
-        //    ===========
+        ///    NtReplyPort
+        ///    ===========
 
-        //    Sends a reply message to a port (Server side)
+        ///    Sends a reply message to a port (Server side)
 
-        //    PortHandle - A handle to a port object. The handle doesn't need 
-        //        to grant any specific access.
+        ///    PortHandle - A handle to a port object. The handle doesn't need 
+        ///        to grant any specific access.
 
-        //    ReplyMessage - Points to a caller-allocated buffer or variable
-        //        that specifies the reply message to send to the port.
+        ///    ReplyMessage - Points to a caller-allocated buffer or variable
+        ///        that specifies the reply message to send to the port.
 
-        //--*/
-
-
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtReplyPort(
-        //    IN  HANDLE PortHandle,
-        //    IN  PPORT_MESSAGE ReplyMessage
-        //    );
+        ///</summary>
 
 
-
-        ///*++
-
-        //    NtReplyWaitReplyPort
-        //    ====================
-
-        //    Sends a reply message to a port and waits for a reply message
-
-        //    PortHandle - A handle to a port object. The handle doesn't need 
-        //        to grant any specific access.
-
-        //    ReplyMessage - Points to a caller-allocated buffer or variable
-        //        that specifies the reply message to send to the port.
-
-        //--*/
-
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtReplyWaitReplyPort(
-        //    IN  HANDLE PortHandle,
-        //    IN  OUT PPORT_MESSAGE ReplyMessage
-        //    );
+        [DllImport("ntdll.dll", EntryPoint = "NtReplyPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int
+        NtReplyPort(
+AplcPortHandle PortHandle,
+       ref PORT_MESSAGE ReplyMessage
+            );
 
 
 
-        ///*++
+        ///<summary>
 
-        //    NtReplyWaitReceivePort
-        //    ======================
+        ///    NtReplyWaitReplyPort
+        ///    ====================
 
-        //    Optionally sends a reply message to a port and waits for a
-        //    message
+        ///    Sends a reply message to a port and waits for a reply message
 
-        //    PortHandle - A handle to a port object. The handle doesn't need 
-        //        to grant any specific access.
+        ///    PortHandle - A handle to a port object. The handle doesn't need 
+        ///        to grant any specific access.
 
-        //    PortContext - Optionally points to a variable that receives
-        //        a numeric identifier associated with the port.
+        ///    ReplyMessage - Points to a caller-allocated buffer or variable
+        ///        that specifies the reply message to send to the port.
 
-        //    ReplyMessage - Optionally points to a caller-allocated buffer
-        //        or variable that specifies the reply message to send to the port.
+        ///</summary>
 
-        //    ReceiveMessage - Points to a caller-allocated buffer or variable
-        //        that receives the message sent to the port.
+        [DllImport("ntdll.dll", EntryPoint = "NtReplyWaitReplyPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int
+        NtReplyWaitReplyPort(
+    AplcPortHandle PortHandle,
+        out PORT_MESSAGE ReplyMessage
+            );
 
-        //--*/
 
-        //NTSYSAPI
-        //NTSTATUS
-        //NTAPI
-        //NtReplyWaitReceivePort(
-        //    IN  HANDLE PortHandle,
-        //    OUT PVOID *PortContext OPTIONAL,
-        //    IN  PPORT_MESSAGE ReplyMessage OPTIONAL,
-        //    OUT PPORT_MESSAGE ReceiveMessage
-        //    );
+
+        ///<summary>
+
+        ///    NtReplyWaitReceivePort
+        ///    ======================
+
+        ///    Optionally sends a reply message to a port and waits for a
+        ///    message
+
+        ///    PortHandle - A handle to a port object. The handle doesn't need 
+        ///        to grant any specific access.
+
+        ///    PortContext - Optionally points to a variable that receives
+        ///        a numeric identifier associated with the port.
+
+        ///    ReplyMessage - Optionally points to a caller-allocated buffer
+        ///        or variable that specifies the reply message to send to the port.
+
+        ///    ReceiveMessage - Points to a caller-allocated buffer or variable
+        ///        that receives the message sent to the port.
+
+        ///</summary>
+
+        [DllImport("ntdll.dll", EntryPoint = "NtReplyWaitReceivePort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int
+        NtReplyWaitReceivePort(
+        AplcPortHandle PortHandle,
+        out IntPtr PortContext,
+        ref PORT_MESSAGE ReplyMessage,
+        out PORT_MESSAGE ReceiveMessage
+            );
 
 
     }

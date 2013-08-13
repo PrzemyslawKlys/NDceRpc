@@ -5,7 +5,7 @@ Currently there is no good managed RPC for local IPC(Inter Process Communication
 
 This project is trying to close this gap on Windows.
 
-Unix also has Dce/Rpc implemnte compatible in main use cases with MS Windows. Hence can try to use the same approach on Unix with Mono.
+Unix also has Dce/Rpc implementation compatible in main use cases with MS Windows. Hence can try to use the same approach on Unix with Mono. 
 
 ### Design
 
@@ -160,7 +160,8 @@ Possibily to precompile serializers/proxy/stub is must for start up and performa
 * Ensure that thowing exception in one way operation (in worker thread) does not crashes processes and behaves like WCF.
 * Ensure that error description can be handled by native code.
 * Do not copy message twice, use header and contat
-* Add Alpc transport to WCF
+* Add Alpc transport to WCF.
+* Add Domain Socket to WCF in UNIX
 
 ### Related
 

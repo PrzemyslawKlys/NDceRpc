@@ -48,6 +48,11 @@ namespace NDceRpc
             return value;
         }
 
+        [System.Diagnostics.DebuggerNonUserCode]
+        internal static void Assert(long rawError)
+        {
+            Assert((RPC_STATUS)rawError);
+        }
    
         [System.Diagnostics.DebuggerNonUserCode]
         internal static void Assert(int rawError)

@@ -52,7 +52,7 @@ namespace NDceRpc.ExplicitBytes
             }
             int szResponse = 0;
             IntPtr response, result;
-
+            
             using (Ptr<byte[]> pInputBuffer = new Ptr<byte[]>(input))
             {
                 if (RpcRuntime.Is64BitProcess)
@@ -101,8 +101,24 @@ namespace NDceRpc.ExplicitBytes
                 }
                 GC.KeepAlive(pInputBuffer);
             }
-            Guard.Assert(result.ToInt32());
-            RpcTrace.Verbose("InvokeRpc.InvokeRpc response on {0}, recieved {1} bytes", handle.Handle, szResponse);
+
+            // on local machine
+            // if 32 bit server just throws Exception in server side handler 
+            // then 32 bits client can see "-2147467259" debug view of pointer result
+            // then 64 bits client can see "2147500037" debug view of pointer result
+            // then 32 bits client can do ToInt32 and things work fine
+            // then 64 bits client can do ToInt32 and get arithmetic overflow exception
+            // hence using ToInt64 for 64 bits client
+            if (IntPtr.Size == 8)
+            {
+                Guard.Assert(result.ToInt64());    
+            }
+            else
+            {
+                Guard.Assert(result.ToInt32());   
+            }
+            
+            RpcTrace.Verbose("InvokeRpc.InvokeRpc response on {0}, received {1} bytes", handle.Handle, szResponse);
             byte[] output = new byte[szResponse];
             if (szResponse > 0 && response != IntPtr.Zero)
             {

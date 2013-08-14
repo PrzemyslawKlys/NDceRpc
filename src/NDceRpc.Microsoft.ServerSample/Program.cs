@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using NDceRpc.ExplicitBytes;
 using NDceRpc.Microsoft.Interop;
 
-
-namespace NDceRpc.Sample
+namespace NDceRpc.Microsoft.ServerSample
 {
     class Program
     {
@@ -20,7 +15,10 @@ namespace NDceRpc.Sample
             server.AddProtocol(RpcProtseq.ncacn_np, "\\pipe\\testnamedpipe" + iid, byte.MaxValue);
             server.OnExecute += (client, data) =>
                 {
+                    var request = Encoding.Unicode.GetString(data);
                     Console.WriteLine(Encoding.Unicode.GetString(data));
+                    if (request == "Throw Client request")
+                        throw new Exception();
                     return Encoding.Unicode.GetBytes("Server response");
                 };
             server.StartListening();

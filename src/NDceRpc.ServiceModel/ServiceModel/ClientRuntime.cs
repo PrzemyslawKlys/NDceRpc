@@ -232,46 +232,38 @@ namespace NDceRpc.ServiceModel
                     else if (op.Operation.IsOneWay)
                     {
                         Debug.Assert(op.MethodInfo.ReturnType == typeof(void));
-
-                        Task task = Tasks.Factory.StartNew(() =>
+                        try
                         {
+                            _router._operationPending.Reset();
+
+                            byte[] result = null;
+
+
+                            result = ExecuteRequest(rData);
+
+                            var reply = (Message)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(Message));
+
                             try
                             {
-                                _router._operationPending.Reset();
-
-                                byte[] result = null;
-
-
-                                result = ExecuteRequest(rData);
-
-                                var reply = (Message)ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(result), typeof(Message));
-
-                                try
-                                {
-                                    applyReplyProcessing(reply);
-                                }
-                                catch (Exception ex)
-                                {
-                                    return new ReturnMessage(ex, input);
-                                }
-                            }
-                            catch (ExternalException ex)
-                            {
-                                throw HandleCommunicationError(ex);
+                                applyReplyProcessing(reply);
                             }
                             catch (Exception ex)
                             {
-                                    throw;
+                                return new ReturnMessage(ex, input);
                             }
-                            finally
-                            {
-                                _router._operationPending.Set();
-                            }
-                            return new ReturnMessage(null, null, 0, null, input);
                         }
-                        );
-                        //TODO: do exception handling like in WCF
-                        task.ContinueWith(x => RpcTrace.Error(x.Exception), TaskContinuationOptions.OnlyOnFaulted);
+                        catch (ExternalException ex)
+                        {
+                            throw HandleCommunicationError(ex);
+                        }
+                        catch (Exception ex)
+                        {
+                                throw;
+                        }
+                        finally
+                        {
+                            _router._operationPending.Set();
+                        }
                         return new ReturnMessage(null, null, 0, null, input);
                     }
 

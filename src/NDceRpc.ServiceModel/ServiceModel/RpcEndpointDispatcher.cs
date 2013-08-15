@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.Threading;
+using System.Threading.Tasks;
 using NDceRpc.ExplicitBytes;
 using NDceRpc.ServiceModel.Channels;
 using NDceRpc.ServiceModel.Custom;
@@ -38,46 +39,71 @@ namespace NDceRpc.ServiceModel
 
         private Message InvokeContract(IRpcCallInfo call, MessageRequest request, Type contractType)
         {
-            SetupOperationConext(call, request, contractType);
-
-            OperationDispatchBase operation = _operations[request.Operation];
-
-            var args = deserializeMessageArguments(request, operation);
-            if (operation is AsyncOperationDispatch)
-            {
-                args.Add(null);//AsyncCallback
-                args.Add(null);//object asyncState
-            }
-            var response = new Message();
-            try
-            {
-                var result = invokeServerMethod(operation, args);
-                EnrichResponseWithReturn(operation, result, response);
-            }
-            catch (Exception ex)
-            {
-                var error = ex.ToString();
-                var detail = new MemoryStream();
-                ProtobufMessageEncodingBindingElement.WriteObject(detail, error);
-                //TODO: make fault with details only in case of IncludeExceptionDetailsInFaults
-                response.Fault = new FaultData() { Code = ex.GetType().GUID.ToString(), Reason = ex.Message, Detail = detail.ToArray(), Name = ex.GetType().FullName, Node = _endpoint._address };
-
-                foreach (var errorHandler in _channelDispatcher.ErrorHandlers)
-                {
-                    if (errorHandler.HandleError(ex))
-                    {
-                        errorHandler.ProvideFault(ex, MessageVersion.WcfProtoRpc1, ref response);
-                    }
-                }
-
-            }
-            finally
-            {
-                OperationContext.Current = _noOp;
-            }
-
-            return response;
+			OperationDispatchBase operation = _operations[request.Operation];
+			OperationContext operationContext = SetupOperationConext(call, request, contractType);
+	        Func<Message> invokeAction = () =>
+		        {
+					OperationContext.Current = operationContext;
+					if (_concurrency == ConcurrencyMode.Single)
+					{
+						lock (this)
+						{
+							return InvokeContract(operation, request);
+						}
+					}
+					return InvokeContract(operation, request);
+		        };
+			if (operation.Operation.IsOneWay)
+			{
+				Task task = Tasks.Factory.StartNew(invokeAction);
+				task.ContinueWith(x => RpcTrace.Error(x.Exception), TaskContinuationOptions.OnlyOnFaulted);
+				return new Message();
+			}
+			else
+			{
+				return invokeAction();
+			}
         }
+
+		private Message InvokeContract(OperationDispatchBase operation, MessageRequest request)
+		 {
+			 var args = deserializeMessageArguments(request, operation);
+			 if (operation is AsyncOperationDispatch)
+			 {
+				 args.Add(null);//AsyncCallback
+				 args.Add(null);//object asyncState
+			 }
+			 var response = new Message();
+			 try
+			 {
+				 var result = invokeServerMethod(operation, args);
+				 EnrichResponseWithReturn(operation, result, response);
+			 }
+			 catch (Exception ex)
+			 {
+				 var error = ex.ToString();
+				 var detail = new MemoryStream();
+				 ProtobufMessageEncodingBindingElement.WriteObject(detail, error);
+				 //TODO: make fault with details only in case of IncludeExceptionDetailsInFaults
+				 response.Fault = new FaultData() { Code = ex.GetType().GUID.ToString(), Reason = ex.Message, Detail = detail.ToArray(), Name = ex.GetType().FullName, Node = _endpoint._address };
+
+				 foreach (var errorHandler in _channelDispatcher.ErrorHandlers)
+				 {
+					 if (errorHandler.HandleError(ex))
+					 {
+						 errorHandler.ProvideFault(ex, MessageVersion.WcfProtoRpc1, ref response);
+					 }
+				 }
+
+			 }
+			 finally
+			 {
+				 OperationContext.Current = _noOp;
+			 }
+
+			 return response;
+		 }
+
 
         internal void Open(ConcurrencyMode concurrency)
         {
@@ -92,9 +118,9 @@ namespace NDceRpc.ServiceModel
                             delegate(IRpcCallInfo client, byte[] arg)
                             {
                                 if (_concurrency == ConcurrencyMode.Single)
-                                {
-                                    lock (this)
-                                    {
+								{
+									//lock (this)
+									//{
                                         _operationPending.Reset();
                                         try
                                         {
@@ -104,7 +130,7 @@ namespace NDceRpc.ServiceModel
                                         {
                                             _operationPending.Set();
                                         }
-                                    }
+                                    //}
                                 }
                                 if (_concurrency == ConcurrencyMode.Multiple)
                                 {
@@ -207,9 +233,9 @@ namespace NDceRpc.ServiceModel
             return args;
         }
 
-        private void SetupOperationConext(IRpcCallInfo call, MessageRequest request, Type contractType)
+        private OperationContext SetupOperationConext(IRpcCallInfo call, MessageRequest request, Type contractType)
         {
-            OperationContext.Current = new OperationContext { SessionId = request.Session };
+            OperationContext operationContext = new OperationContext { SessionId = request.Session };
 
             if (request.Session != null)
             {
@@ -237,10 +263,11 @@ namespace NDceRpc.ServiceModel
                         }
 
                         callbackBindingInfo.EndPoint += request.Session.Replace("-", "");
-                        OperationContext.Current.SetGetter(_clients[request.Session], EndpointMapper.RpcToWcf(callbackBindingInfo));
+                        operationContext.SetGetter(_clients[request.Session], EndpointMapper.RpcToWcf(callbackBindingInfo));
                     }
                 }
             }
+            return operationContext;
         }
 
         internal void Dispose(TimeSpan CloseTimeout)

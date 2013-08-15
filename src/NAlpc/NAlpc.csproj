@@ -50,7 +50,7 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="AlpcStream.cs" />
-    <Compile Include="LocalIpcTransport.cs" />
+    <Compile Include="AlpcTransport.cs" />
     <Compile Include="AplcPortHandle.cs" />
     <Compile Include="CLIENT_ID.cs" />
     <Compile Include="Constants.cs" />

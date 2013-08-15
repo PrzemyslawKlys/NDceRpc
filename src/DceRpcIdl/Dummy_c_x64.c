@@ -1,6 +1,6 @@
 
 
-/* this ALWAYS GENERATED file contains the RPC server stubs */
+/* this ALWAYS GENERATED file contains the RPC client stubs */
 
 
  /* File created by MIDL compiler version 7.00.0555 */
@@ -29,6 +29,7 @@
 #pragma warning( disable: 4024 )  /* array to pointer mapping*/
 
 #include <string.h>
+
 #include "Dummy_h.h"
 
 #define TYPE_FORMAT_STRING_SIZE   3                                 
@@ -59,33 +60,48 @@ typedef struct _Dummy_MIDL_EXPR_FORMAT_STRING
 static const RPC_SYNTAX_IDENTIFIER  _RpcTransferSyntax = 
 {{0x8A885D04,0x1CEB,0x11C9,{0x9F,0xE8,0x08,0x00,0x2B,0x10,0x48,0x60}},{2,0}};
 
+
 extern const Dummy_MIDL_TYPE_FORMAT_STRING Dummy__MIDL_TypeFormatString;
 extern const Dummy_MIDL_PROC_FORMAT_STRING Dummy__MIDL_ProcFormatString;
 extern const Dummy_MIDL_EXPR_FORMAT_STRING Dummy__MIDL_ExprFormatString;
+
+#define GENERIC_BINDING_TABLE_SIZE   0            
+
 
 /* Standard interface: Dummy, ver. 0.1,
    GUID={0x3D3E6558,0xA499,0x4190,{0x81,0x4A,0x7C,0x9D,0x58,0xE2,0xB8,0xC1}} */
 
 
-extern const MIDL_SERVER_INFO Dummy_ServerInfo;
 
-extern const RPC_DISPATCH_TABLE Dummy_v0_1_DispatchTable;
-
-static const RPC_SERVER_INTERFACE Dummy___RpcServerInterface =
+static const RPC_CLIENT_INTERFACE Dummy___RpcClientInterface =
     {
-    sizeof(RPC_SERVER_INTERFACE),
+    sizeof(RPC_CLIENT_INTERFACE),
     {{0x3D3E6558,0xA499,0x4190,{0x81,0x4A,0x7C,0x9D,0x58,0xE2,0xB8,0xC1}},{0,1}},
     {{0x8A885D04,0x1CEB,0x11C9,{0x9F,0xE8,0x08,0x00,0x2B,0x10,0x48,0x60}},{2,0}},
-    (RPC_DISPATCH_TABLE*)&Dummy_v0_1_DispatchTable,
     0,
     0,
     0,
-    &Dummy_ServerInfo,
-    0x04000000
+    0,
+    0,
+    0x00000000
     };
-RPC_IF_HANDLE Dummy_v0_1_s_ifspec = (RPC_IF_HANDLE)& Dummy___RpcServerInterface;
+RPC_IF_HANDLE Dummy_v0_1_c_ifspec = (RPC_IF_HANDLE)& Dummy___RpcClientInterface;
 
 extern const MIDL_STUB_DESC Dummy_StubDesc;
+
+static RPC_BINDING_HANDLE Dummy__MIDL_AutoBindHandle;
+
+
+void Do( 
+    /* [in] */ handle_t hBinding)
+{
+
+    NdrClientCall2(
+                  ( PMIDL_STUB_DESC  )&Dummy_StubDesc,
+                  (PFORMAT_STRING) &Dummy__MIDL_ProcFormatString.Format[0],
+                  hBinding);
+    
+}
 
 
 #if !defined(__RPC_WIN64__)
@@ -140,10 +156,10 @@ static const unsigned short Dummy_FormatStringOffsetTable[] =
 
 static const MIDL_STUB_DESC Dummy_StubDesc = 
     {
-    (void *)& Dummy___RpcServerInterface,
+    (void *)& Dummy___RpcClientInterface,
     MIDL_user_allocate,
     MIDL_user_free,
-    0,
+    &Dummy__MIDL_AutoBindHandle,
     0,
     0,
     0,
@@ -161,33 +177,6 @@ static const MIDL_STUB_DESC Dummy_StubDesc =
     0,   /* proxy/server info */
     0
     };
-
-static const RPC_DISPATCH_FUNCTION Dummy_table[] =
-    {
-    NdrServerCall2,
-    0
-    };
-static const RPC_DISPATCH_TABLE Dummy_v0_1_DispatchTable = 
-    {
-    1,
-    (RPC_DISPATCH_FUNCTION*)Dummy_table
-    };
-
-static const SERVER_ROUTINE Dummy_ServerRoutineTable[] = 
-    {
-    (SERVER_ROUTINE)Do
-    };
-
-static const MIDL_SERVER_INFO Dummy_ServerInfo = 
-    {
-    &Dummy_StubDesc,
-    Dummy_ServerRoutineTable,
-    Dummy__MIDL_ProcFormatString.Format,
-    Dummy_FormatStringOffsetTable,
-    0,
-    0,
-    0,
-    0};
 #if _MSC_VER >= 1200
 #pragma warning(pop)
 #endif

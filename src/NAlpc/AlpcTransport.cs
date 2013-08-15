@@ -10,13 +10,12 @@ using System.Threading.Tasks;
 namespace NAlpc
 {
     ///ALPC for Windows
-    ///TODO: Domain Sockets for UNIX
-    public class LocalIpcTransport : System.ServiceModel.Channels.CommunicationObject
+    public class AlpcTransport : System.ServiceModel.Channels.CommunicationObject
     {
         private string _portName;
         private AplcPortHandle _handle;
 
-        public LocalIpcTransport(string portName)
+        public AlpcTransport(string portName)
         {
             _portName = portName;
         }

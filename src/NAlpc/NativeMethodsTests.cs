@@ -17,9 +17,10 @@ namespace NAlpc.Tests
         public void NtCreatePort()
         {
             var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
-            NAlpc.AplcPortHandle handle = null;
+            NAlpc.AlpcPortHandle handle = null;
             var attributes = new OBJECT_ATTRIBUTES(name, 0);
             int status = NativeMethods.NtCreatePort(out handle, ref attributes, 100, 100, 50);
+            var underlyingObject = handle.DebugView;
             Assert.AreEqual(Constants.S_OK, status);
             IntPtr realPointer = handle.DangerousGetHandle();
             Assert.AreNotEqual(IntPtr.Zero, realPointer);
@@ -33,7 +34,7 @@ namespace NAlpc.Tests
         public void NtCreatePort_NtListenPort()
         {
             var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
-            NAlpc.AplcPortHandle handle = null;
+            NAlpc.AlpcPortHandle handle = null;
             var attributes = new OBJECT_ATTRIBUTES(name, 0);
             NativeMethods.NtCreatePort(out handle, ref attributes, 100, 100, 50);
             var msg = new MY_TRANSFERRED_MESSAGE();
@@ -52,15 +53,15 @@ namespace NAlpc.Tests
         public void NtCreatePort_NtAcceptConnectPort()
         {
             var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
-            NAlpc.AplcPortHandle handle = null;
+            NAlpc.AlpcPortHandle handle = null;
             var attributes = new OBJECT_ATTRIBUTES(name, 0);
             NativeMethods.NtCreatePort(out handle, ref attributes, 100, 100, 50);
             var msg = new MY_TRANSFERRED_MESSAGE();
 
-            NAlpc.AplcPortHandle serverHandle = null;
+            NAlpc.AlpcPortHandle serverCommunicationPort = null;
 
             IntPtr optional = IntPtr.Zero;
-            int status = NativeMethods.NtAcceptConnectPort(out serverHandle, optional, ref msg.Header, true, optional,
+            int status = NativeMethods.NtAcceptConnectPort(out serverCommunicationPort, optional, ref msg.Header, true, optional,
                                               optional);
             Assert.AreNotEqual(0, status);
             handle.Dispose();
@@ -71,7 +72,7 @@ namespace NAlpc.Tests
         [Test]
         public void NtConnectPort()
         {
-            var handle = new AplcPortHandle();
+            var handle = new AlpcPortHandle();
             var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
             IntPtr optional = IntPtr.Zero;
             uint maxMessageLenght = 100;
@@ -86,22 +87,22 @@ namespace NAlpc.Tests
         public void NtCreate_Listen_AcceptConnect_Connect()
         {
             var name = "\\" + this.GetType().Name + MethodBase.GetCurrentMethod().Name;
-            NAlpc.AplcPortHandle handle = null;
+            NAlpc.AlpcPortHandle serverConnectionPort = null;
             var attributes = new OBJECT_ATTRIBUTES(name, 0);
             uint maxMessageLenght = 30;
-            int status0 = NativeMethods.NtCreatePort(out handle, ref attributes, 50, maxMessageLenght, 10);
+            int status0 = NativeMethods.NtCreatePort(out serverConnectionPort, ref attributes, 50, maxMessageLenght, 10);
             if (status0 != 0)
                 throw new Win32Exception(status0);
             var msg = new MY_TRANSFERRED_MESSAGE();
             var wait = Task.Factory.StartNew(() =>
             {
-                var status1 = NativeMethods.NtListenPort(handle, ref msg.Header);
+                var status1 = NativeMethods.NtListenPort(serverConnectionPort, ref msg.Header);
                 if (status0 != 0)
                     throw new Win32Exception(status1);
-                NAlpc.AplcPortHandle serverHandle = null;
+                NAlpc.AlpcPortHandle serverComuicationPort = null;
 
                 IntPtr optional1 = IntPtr.Zero;
-                int status2 = NativeMethods.NtAcceptConnectPort(out serverHandle, optional1, ref msg.Header, true, optional1,
+                int status2 = NativeMethods.NtAcceptConnectPort(out serverComuicationPort, optional1, ref msg.Header, true, optional1,
                                                   optional1);
             });
             var listenBlocksThread = wait.Wait(150);
@@ -110,14 +111,14 @@ namespace NAlpc.Tests
             IntPtr optional = IntPtr.Zero;
            
             var SecurityQos = SECURITY_QUALITY_OF_SERVICE.Create(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, false, true);
-            AplcPortHandle clientHandle;
+            AlpcPortHandle clientHandle;
 
             int status = NativeMethods.NtConnectPort(out clientHandle, name, ref SecurityQos, out optional, out optional, ref maxMessageLenght, out optional, out optional);
             var ex = new Win32Exception(status);
             var err= Marshal.GetLastWin32Error();
             var ex2 = new Win32Exception(err);
             Assert.IsFalse(listenBlocksThread);
-            handle.Dispose();
+            serverConnectionPort.Dispose();
         }
 
   
@@ -126,7 +127,7 @@ namespace NAlpc.Tests
         [Test]
         public void NtListenPort()
         {
-            var handle = new AplcPortHandle();
+            var handle = new AlpcPortHandle();
             var msg = new MY_TRANSFERRED_MESSAGE();
             var wait = Task.Factory.StartNew(() =>
             {

@@ -34,7 +34,7 @@ namespace NAlpc
         ///    ZwCreatePort verifies that (MaxDataSize &lt;= 0x104) and (MaxMessageSize &lt;= 0x148).
         ///</summary>
         [DllImport("ntdll.dll", EntryPoint = "NtCreatePort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtCreatePort(out NAlpc.AplcPortHandle PortHandle, ref OBJECT_ATTRIBUTES ObjectAttributes, uint MaxConnectionInfoLength, uint MaxMessageLength, uint MaxPoolUsage);
+        public static extern int NtCreatePort(out NAlpc.AlpcPortHandle PortHandle, ref OBJECT_ATTRIBUTES ObjectAttributes, uint MaxConnectionInfoLength, uint MaxMessageLength, uint MaxPoolUsage);
 
         [DllImport("ntdll.dll", EntryPoint = "NtClose", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int NtClose(IntPtr Handle);
@@ -47,7 +47,7 @@ namespace NAlpc
         ///    ConnectionRequest - Points to a caller-allocated buffer or variable that receives the connect message sent to the port.
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtListenPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtListenPort(AplcPortHandle PortHandle, ref PORT_MESSAGE RequestMessage);
+        public static extern int NtListenPort(AlpcPortHandle PortHandle, ref PORT_MESSAGE RequestMessage);
 
 
 
@@ -77,7 +77,7 @@ namespace NAlpc
 
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtAcceptConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtAcceptConnectPort(out AplcPortHandle PortHandle, IntPtr PortContext, ref PORT_MESSAGE ConnectionRequest, bool AcceptConnection, IntPtr /*out  PORT_VIEW*/ ServerView, IntPtr /*out   REMOTE_PORT_VIEW*/ ClientView);
+        public static extern int NtAcceptConnectPort(out AlpcPortHandle PortHandle, IntPtr PortContext, ref PORT_MESSAGE ConnectionRequest, bool AcceptConnection, IntPtr /*out  PORT_VIEW*/ ServerView, IntPtr /*out   REMOTE_PORT_VIEW*/ ClientView);
 
 
         ///<summary>
@@ -115,7 +115,7 @@ namespace NAlpc
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int NtConnectPort(
-                out NAlpc.AplcPortHandle PortHandle,
+                out NAlpc.AlpcPortHandle PortHandle,
                 string PortName,
                ref SECURITY_QUALITY_OF_SERVICE SecurityQos,
                out IntPtr /*PPORT_VIEW */ ClientView,
@@ -131,7 +131,7 @@ namespace NAlpc
         ///        to grant any specific access.
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtCompleteConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int NtCompleteConnectPort(AplcPortHandle PortHandle);
+        public static extern int NtCompleteConnectPort(AlpcPortHandle PortHandle);
 
 
         ///<summary>
@@ -151,7 +151,7 @@ namespace NAlpc
         [DllImport("ntdll.dll", EntryPoint = "NtRequestPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int
         NtRequestPort(
-            AplcPortHandle PortHandle,
+            AlpcPortHandle PortHandle,
             ref PORT_MESSAGE RequestMessage
             );
 
@@ -176,7 +176,7 @@ namespace NAlpc
         [DllImport("ntdll.dll", EntryPoint = "NtRequestWaitReplyPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int
         NtRequestWaitReplyPort(
-                 AplcPortHandle PortHandle,
+                 AlpcPortHandle PortHandle,
         ref PORT_MESSAGE RequestMessage,
         out PORT_MESSAGE ReplyMessage
             );
@@ -203,7 +203,7 @@ namespace NAlpc
         [DllImport("ntdll.dll", EntryPoint = "NtReplyPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int
         NtReplyPort(
-AplcPortHandle PortHandle,
+AlpcPortHandle PortHandle,
        ref PORT_MESSAGE ReplyMessage
             );
 
@@ -227,7 +227,7 @@ AplcPortHandle PortHandle,
         [DllImport("ntdll.dll", EntryPoint = "NtReplyWaitReplyPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int
         NtReplyWaitReplyPort(
-    AplcPortHandle PortHandle,
+    AlpcPortHandle PortHandle,
         out PORT_MESSAGE ReplyMessage
             );
 
@@ -258,7 +258,7 @@ AplcPortHandle PortHandle,
         [DllImport("ntdll.dll", EntryPoint = "NtReplyWaitReceivePort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int
         NtReplyWaitReceivePort(
-        AplcPortHandle PortHandle,
+        AlpcPortHandle PortHandle,
         out IntPtr PortContext,
         ref PORT_MESSAGE ReplyMessage,
         out PORT_MESSAGE ReceiveMessage

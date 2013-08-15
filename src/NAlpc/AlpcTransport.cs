@@ -13,7 +13,7 @@ namespace NAlpc
     public class AlpcTransport : System.ServiceModel.Channels.CommunicationObject
     {
         private string _portName;
-        private AplcPortHandle _handle;
+        private AlpcPortHandle _handle;
 
         public AlpcTransport(string portName)
         {
@@ -57,7 +57,7 @@ namespace NAlpc
             Task open = null;
             open  = Task.Factory.StartNew(x =>
                 {
-                _handle = new NAlpc.AplcPortHandle();
+                _handle = new NAlpc.AlpcPortHandle();
                 var attributes = new OBJECT_ATTRIBUTES(_portName, 0);
                 int status = NativeMethods.NtCreatePort(out _handle, ref attributes, 100, 100, 50);
                 if (status != 0)

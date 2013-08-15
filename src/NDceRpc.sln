@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.ClientSam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAlpc.Sample", "NAlpc.Sample\NAlpc.Sample.csproj", "{FFED2F1D-086B-4D6C-9ABA-448736BF8755}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -183,6 +185,10 @@ Global
 		{176019C0-2082-4177-A17F-B1CF3D0A1C6B}.Debug|Mixed Platforms.Build.0 = Debug|x64
 		{176019C0-2082-4177-A17F-B1CF3D0A1C6B}.Release|Mixed Platforms.ActiveCfg = Release|x64
 		{176019C0-2082-4177-A17F-B1CF3D0A1C6B}.Release|Mixed Platforms.Build.0 = Release|x64
+		{FFED2F1D-086B-4D6C-9ABA-448736BF8755}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FFED2F1D-086B-4D6C-9ABA-448736BF8755}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FFED2F1D-086B-4D6C-9ABA-448736BF8755}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FFED2F1D-086B-4D6C-9ABA-448736BF8755}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,5 +204,6 @@ Global
 		{E74D213C-7A4D-4774-B989-6265CAA43107} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
 		{176019C0-2082-4177-A17F-B1CF3D0A1C6B} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
 		{C5060F21-9D36-4312-8383-FD90D3528488} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
+		{FFED2F1D-086B-4D6C-9ABA-448736BF8755} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
 	EndGlobalSection
 EndGlobal

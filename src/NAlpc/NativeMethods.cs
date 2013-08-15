@@ -115,14 +115,14 @@ namespace NAlpc
         /// </summary>
         [DllImport("ntdll.dll", EntryPoint = "NtConnectPort", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int NtConnectPort(
-               out AplcPortHandle PortHandle,
+                out NAlpc.AplcPortHandle PortHandle,
                 string PortName,
                ref SECURITY_QUALITY_OF_SERVICE SecurityQos,
-               IntPtr /*out PORT_VIEW */ ClientView,
-               IntPtr /*out REMOTE_PORT_VIEW */  ServerView,
+               out IntPtr /*PPORT_VIEW */ ClientView,
+               out IntPtr /* PREMOTE_PORT_VIEW */  ServerView,
               ref UInt32 MaxMessageLength,
                   out IntPtr ConnectionInformation,
-             IntPtr /* out UInt32*/ ConnectionInformationLength
+             out IntPtr /*  UInt32*/ ConnectionInformationLength
               );
 
         ///<summary>

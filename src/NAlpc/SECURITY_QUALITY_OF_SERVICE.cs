@@ -2,22 +2,32 @@
 
 namespace NAlpc
 {
+
+    public enum SECURITY_IMPERSONATION_LEVEL
+    {
+        SecurityAnonymous,
+        SecurityIdentification,
+        SecurityImpersonation,
+        SecurityDelegation
+    }
+
+
     [StructLayout(LayoutKind.Sequential)]
     public struct SECURITY_QUALITY_OF_SERVICE
     {
         public uint Length;
-        public short ImpersonationLevel;
+        public SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
         public bool ContextTrackingMode;
         public bool EffectiveOnly;
 
-        public static SECURITY_QUALITY_OF_SERVICE Create(short SecurityImpersonation, bool EffectiveOnly, bool DynamicTracking)
+        public static SECURITY_QUALITY_OF_SERVICE Create(SECURITY_IMPERSONATION_LEVEL SecurityImpersonation, bool EffectiveOnly, bool DynamicTracking)
         {
-            SECURITY_QUALITY_OF_SERVICE SecurityQos = new SECURITY_QUALITY_OF_SERVICE();
+            var SecurityQos = new SECURITY_QUALITY_OF_SERVICE();
             unsafe
             {
-                SecurityQos.Length = (uint)sizeof(SECURITY_QUALITY_OF_SERVICE);    
+                SecurityQos.Length = (uint)sizeof(SECURITY_QUALITY_OF_SERVICE);//12 in 64 bits
             }
-            
+
             SecurityQos.ImpersonationLevel = SecurityImpersonation;
             SecurityQos.EffectiveOnly = EffectiveOnly;
             SecurityQos.ContextTrackingMode = DynamicTracking;

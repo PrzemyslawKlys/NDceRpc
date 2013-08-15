@@ -82,6 +82,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DceRpcIdlClient.x64", "DceR
 		{198223BD-F760-4DCF-84FD-06DB896ED0C4} = {198223BD-F760-4DCF-84FD-06DB896ED0C4}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.HostOfNativeSample.x64", "NDceRpc.Microsoft.HostOfNativeSample\NDceRpc.Microsoft.HostOfNativeSample.x64.csproj", "{770B9292-65D7-48B8-B431-566DD986B1C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -208,6 +210,10 @@ Global
 		{0EC6578E-2C08-465B-8410-EF8E3BDA3E7B}.Debug|Mixed Platforms.Build.0 = Debug|x64
 		{0EC6578E-2C08-465B-8410-EF8E3BDA3E7B}.Release|Mixed Platforms.ActiveCfg = Release|x64
 		{0EC6578E-2C08-465B-8410-EF8E3BDA3E7B}.Release|Mixed Platforms.Build.0 = Release|x64
+		{770B9292-65D7-48B8-B431-566DD986B1C1}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{770B9292-65D7-48B8-B431-566DD986B1C1}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{770B9292-65D7-48B8-B431-566DD986B1C1}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{770B9292-65D7-48B8-B431-566DD986B1C1}.Release|Mixed Platforms.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -226,5 +232,6 @@ Global
 		{FFED2F1D-086B-4D6C-9ABA-448736BF8755} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
 		{198223BD-F760-4DCF-84FD-06DB896ED0C4} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
 		{0EC6578E-2C08-465B-8410-EF8E3BDA3E7B} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
+		{770B9292-65D7-48B8-B431-566DD986B1C1} = {AD2DF568-8848-41E1-ACA3-DD35DF9C69C8}
 	EndGlobalSection
 EndGlobal

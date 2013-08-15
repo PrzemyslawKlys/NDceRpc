@@ -13,8 +13,13 @@ namespace NDceRpc.Microsoft.HostOfNativeSample
     public class HostingNativeTests
     {
 
-        private const string Implementer = "DceRpcIdl";
-        private const string Consumer = "DceRpcIdlClient";
+#if X64
+        private const string Implementer = "DceRpcIdl.x64.dll";
+        private const string Consumer = "DceRpcIdlClient.x64.dll";
+#else
+        private const string Implementer = "DceRpcIdl.dll";
+        private const string Consumer = "DceRpcIdlClient.dll";
+#endif
 
         [DllImport(Implementer, CallingConvention = CallingConvention.StdCall)]
         static extern IntPtr GetDummyServer();

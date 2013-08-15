@@ -1,7 +1,7 @@
 NDceRpc (.NET Distributed Computing Environment Remote Procedure Call)
 =======
 
-Currently there is no good managed RPC for local IPC(Inter Process Communication) on Windows. Dce/Rpc works out of box only for native code. WCF works for managed only out of box, and has features which makes it slower then IPC could be. COM was not designed to current multithreaded, isolated, XCOPY enviroments not integrated with Windows Message Pump.
+Currently there is no good managed RPC for local IPC(Inter Process Communication) on Windows. Dce/Rpc works out of box only for native code. WCF works for managed only out of box, and has features which makes it slower then IPC could be. COM was not designed to current multithreaded, isolated, XCOPY environments not integrated with Windows Message Pump.
 
 This project is trying to close this gap on Windows.
 
@@ -11,25 +11,31 @@ Unix also has Dce/Rpc implementation compatible in main use cases with MS Window
 
 * Like WCF with flexible interface and hooks with no public process wide methods.
 * Like Dce/Rpc compatible with native code, custom(IL based, compatible with WCF at contract, not on the wire) and existing IDL(compatible with RPC in contract and on the wire)
-* Sevaral times faster communication then WCF
-* Several times faster to start then WCF, codegeneraion during compilation is build in.
+* Several times faster communication then WCF
+* Several times faster to start then WCF, code generation during compilation is build in.
 * In the end should work on Mono/Unix using open source Dce/Rpc implementations.
 * Is gentle request to MS to create such tech which suits 
-* Binary serializaion is main target to support.
-* Is small lib, or set of small libs for separate deploument agains System.ServiceModel.dll
+* Binary serialization is main target to support.
+* Is small lib, or set of small libs for separate deployment against System.ServiceModel.dll
 
-`NOTE`: Please send me you note if you have reasons to consider such endaviour no fruitful
+`NOTE`: Please send me you note if you have reasons to consider such endeavor no fruitful
 
 #### Low level
-Mono and protobuf-net is used for replacing WCF in C# over RPC. Moving WCF toward C++ interop because RPC and protobuf are ready for C++. Mono like layer proxies service calls coding/decoding of WCF interfaces into RPC calls, data is serialized via protibuf.
-MS-PRC interop PIvokes calls are used to route data accross processes. MS-RPC can be replaced by other transport.
+Mono and protobuf-net is used for replacing WCF in C# over RPC. Moving WCF toward C++ interop because RPC and protobuf are ready for C++. Mono like layer proxies service calls coding/decoding of WCF interfaces into RPC calls, data is serialized via protobuf.
+MS-PRC interop PIvokes calls are used to route data across processes. MS-RPC can be replaced by other transport.
 
-### How tos
+### How Tos
+
+#### Build
+
+Visual Studio 2010 is used to build solution. 
+All projects (32 bit, 64 bit, any CPU) are part of single Mixed Platforms solution.
+Build NDceRpc.sln in Release mode to get production build.
 
 #### How to migrate WCF `ServiceOperation` with `DataContract`s
 
 * Mark all data objects with DataContract/DataMember(Order=X), e.g. MUST have Order defined.
-* Protobuf spec does not distinguish empty collection and null you was used from XML DataContract serialization. Your code can fail receiving null istead of empty collection.
+* Protobuf spec does not distinguish empty collection and null you was used from XML DataContract serialization. Your code can fail receiving null instead of empty collection.
 * Mark all OperationContract with DispId(Y). CLR has some method numbers encoding,but DispId provides direct user defined encoding so that native part can interpret RPC calls.
 
 Next test goes via RPC + Protobuf, very alpha version for now:
@@ -124,42 +130,42 @@ C# code can host pure C++ RPC services:
 ### Implementation considerations
 
 #### Errors
-RPC frovides 32 bit error values to identify communication and server errors leaving us to choose what means to use to propagate meaningfull service errors.
+RPC provides 32 bit error values to identify communication and server errors leaving us to choose what means to use to propagate meaningful service errors.
 COM uses composite error codes for own and user specified errors represented as 32 bit value. Also COM provides means to propagate detailed error information using specific COM interfaces implemented.
-In this solution error propagation approach similar to SOAP faults was choosen, tuned to work well with C# and C++.
+In this solution error propagation approach similar to SOAP faults was chosen, tuned to work well with C# and C++.
 
 #### Operations encoding
-WCF uses string method names to identify operations allover stack. WCF can encode this strings to numbers when creating message. WCF approach takes time in runtime. Appraoch choosen here to use numbers to identify operations everywhere.
+WCF uses string method names to identify operations allover stack. WCF can encode this strings to numbers when creating message. WCF approach takes time in runtime. Approach chosen here to use numbers to identify operations everywhere.
 
 #### Message size
 Small messages are possible (e.g. less then 256 bytes size), e.g. next operation `Subscribe("GOOG, MSFT","EARNINGS,PRICE",new byte[]{100,200,300})` on the wire is as small as possible. ASCII chars in messages are possible.
 
 #### Languages
-C like language are main target of development (C++,C#). But undrelying technologies are not limited to these only.
+C like language are main target of development (C++,C#). But underlying technologies are not limited to these only.
 
 #### Runtime
-Possibily to precompile serializers/proxy/stub is must for start up and performance reasons for local communications, hence things that WCF provides should not be copied if make precompilation hard.
+Possibly to precompile serializers/proxy/stub is must for start up and performance reasons for local communications, hence things that WCF provides should not be copied if make precompilation hard.
 
 ### TODO:
 * Use NRefactory to generate code from WCF interfaces code during compilations to speed up start up
 * Generate C++ from CS based IDL - WCF contacts.
-* Make convetional interface generation (no WCF attributes used).
+* Make conventional interface generation (no WCF attributes used).
 * Do not use System.ServiceModel.dll, copy and paste Mono WCF attributes into code (Dismiss not related parts - e.g. SOAP
 * Try IKVM.Emit to generate in runtime (better API and potentially faster) 
 * Use Mono WCF tests
 * Use Mono WCF code more
 * Add WCF tests, pull back to mono
 * Add callback and async IDL generated structs in C#
-* Add IDL parser (use one of open soruce DceRpc implementations yacc lexx defitions, F# lexx and yacc)
+* Add IDL parser (use one of open source DceRpc implementations yacc lexx definitions, F# lexx and yacc)
 * Investigate [user_marshal] to integrate protobuf into IDL.
-* Make behave like WCF with different encodings, serilizers(Thrift) and marshalers (NRD, BinaryDataContract), BSON, Fast XML, ASN, what exists at least for C# and C++ on Mono/.NET Unix/Windows.
-* Support SyncrhonizationContext of callback, "ref" params, Task/event based asycn
+* Make behave like WCF with different encodings, serializers(Thrift) and marshalers (NRD, BinaryDataContract), BSON, Fast XML, ASN, what exists at least for C# and C++ on Mono/.NET Unix/Windows.
+* Support SyncrhonizationContext of callback, "ref" params, Task/event based async
 * Add some another Binary serializer compatible with C++ (e.g. Thrift).
-* Improve start perfomance
-* Improve runtime prefromace
-* Ensure that thowing exception in one way operation (in worker thread) does not crashes processes and behaves like WCF.
+* Improve start performance
+* Improve runtime performance
+* Ensure that throwing exception in one way operation (in worker thread) does not crashes processes and behaves like WCF.
 * Ensure that error description can be handled by native code.
-* Do not copy message twice, use header and contat
+* Do not copy message twice, use header and concat
 * Add Alpc transport to WCF.
 * Add Domain Socket to WCF in UNIX
 

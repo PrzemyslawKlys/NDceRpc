@@ -13,18 +13,23 @@
   <ItemGroup>
     <Midl Include="ContextHandles.idl">
       <ServerStubFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_s_x64.c</ServerStubFile>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_h.h</HeaderFileName>
     </Midl>
     <Midl Include="Dummy.idl">
       <ServerStubFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_s_x64.c</ServerStubFile>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_h.h</HeaderFileName>
     </Midl>
     <Midl Include="ErrorHandling.idl">
       <ServerStubFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_s_x64.c</ServerStubFile>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_h.h</HeaderFileName>
     </Midl>
     <Midl Include="ExplicitBytes.idl">
       <ServerStubFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_s_x64.c</ServerStubFile>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_h.h</HeaderFileName>
     </Midl>
     <Midl Include="ExplicitWithCallbacks.idl">
       <ServerStubFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_s_x64.c</ServerStubFile>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_h.h</HeaderFileName>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -38,11 +43,9 @@
     <ClInclude Include="Helper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ContextHandles_s_x64.c" />
     <ClCompile Include="Dummy_s_x64.c" />
     <ClCompile Include="ErrorHandlingImpl.cpp" />
     <ClCompile Include="ErrorHandling_s_x64.c" />
-    <ClCompile Include="ExplicitBytes_s_x64.c" />
     <ClCompile Include="ExplicitWithCallbacks_s_x64.c" />
     <ClCompile Include="Exports.cpp" />
     <ClCompile Include="Helper.cpp" />
@@ -82,9 +85,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

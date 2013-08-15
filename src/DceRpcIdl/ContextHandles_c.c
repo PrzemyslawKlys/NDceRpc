@@ -4,10 +4,10 @@
 
 
  /* File created by MIDL compiler version 7.00.0555 */
-/* at Thu Aug 15 10:58:00 2013
+/* at Thu Aug 15 11:37:53 2013
  */
 /* Compiler settings for ContextHandles.idl:
-    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
+    Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 7.00.0555 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
     VC __declspec() decoration level: 
@@ -16,7 +16,7 @@
 */
 /* @@MIDL_FILE_HEADING(  ) */
 
-#if !defined(_M_IA64) && !defined(_M_AMD64)
+#if defined(_M_AMD64)
 
 
 #pragma warning( disable: 4049 )  /* more than 64k source lines */
@@ -27,16 +27,13 @@
 #pragma warning( disable: 4211 )  /* redefine extern to static */
 #pragma warning( disable: 4232 )  /* dllimport identity*/
 #pragma warning( disable: 4024 )  /* array to pointer mapping*/
-#pragma warning( disable: 4100 ) /* unreferenced arguments in x86 call */
-
-#pragma optimize("", off ) 
 
 #include <string.h>
 
 #include "ContextHandles_h.h"
 
 #define TYPE_FORMAT_STRING_SIZE   43                                
-#define PROC_FORMAT_STRING_SIZE   139                               
+#define PROC_FORMAT_STRING_SIZE   145                               
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   0            
@@ -105,7 +102,8 @@ short RemoteOpen(
     _RetVal = NdrClientCall2(
                   ( PMIDL_STUB_DESC  )&ContextHandles_StubDesc,
                   (PFORMAT_STRING) &ContextHandles__MIDL_ProcFormatString.Format[0],
-                  ( unsigned char * )&pphContext);
+                  pphContext,
+                  pszFile);
     return ( short  )_RetVal.Simple;
     
 }
@@ -120,8 +118,11 @@ void RemoteRead(
 
     NdrClientCall2(
                   ( PMIDL_STUB_DESC  )&ContextHandles_StubDesc,
-                  (PFORMAT_STRING) &ContextHandles__MIDL_ProcFormatString.Format[42],
-                  ( unsigned char * )&phContext);
+                  (PFORMAT_STRING) &ContextHandles__MIDL_ProcFormatString.Format[44],
+                  phContext,
+                  cbBuf,
+                  achBuf,
+                  pcbBuf);
     
 }
 
@@ -134,24 +135,16 @@ short RemoteClose(
 
     _RetVal = NdrClientCall2(
                   ( PMIDL_STUB_DESC  )&ContextHandles_StubDesc,
-                  (PFORMAT_STRING) &ContextHandles__MIDL_ProcFormatString.Format[96],
-                  ( unsigned char * )&pphContext);
+                  (PFORMAT_STRING) &ContextHandles__MIDL_ProcFormatString.Format[100],
+                  pphContext);
     return ( short  )_RetVal.Simple;
     
 }
 
 
-#if !defined(__RPC_WIN32__)
+#if !defined(__RPC_WIN64__)
 #error  Invalid build platform for this stub.
 #endif
-
-#if !(TARGET_IS_NT50_OR_LATER)
-#error You need Windows 2000 or later to run this stub because it uses these features:
-#error   /robust command line switch.
-#error However, your C/C++ compilation flags indicate you intend to run this app on earlier systems.
-#error This app will fail with the RPC_X_WRONG_STUB_VERSION error.
-#endif
-
 
 static const ContextHandles_MIDL_PROC_FORMAT_STRING ContextHandles__MIDL_ProcFormatString =
     {
@@ -164,117 +157,120 @@ static const ContextHandles_MIDL_PROC_FORMAT_STRING ContextHandles__MIDL_ProcFor
 			0x48,		/* Old Flags:  */
 /*  2 */	NdrFcLong( 0x0 ),	/* 0 */
 /*  6 */	NdrFcShort( 0x0 ),	/* 0 */
-/*  8 */	NdrFcShort( 0xc ),	/* x86 Stack size/offset = 12 */
+/*  8 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
 /* 10 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 12 */	NdrFcShort( 0x3e ),	/* 62 */
 /* 14 */	0x46,		/* Oi2 Flags:  clt must size, has return, has ext, */
 			0x3,		/* 3 */
-/* 16 */	0x8,		/* 8 */
+/* 16 */	0xa,		/* 10 */
 			0x1,		/* Ext Flags:  new corr desc, */
 /* 18 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 20 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 22 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 24 */	NdrFcShort( 0x0 ),	/* 0 */
 
 	/* Parameter pphContext */
 
-/* 24 */	NdrFcShort( 0x110 ),	/* Flags:  out, simple ref, */
-/* 26 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
-/* 28 */	NdrFcShort( 0x6 ),	/* Type Offset=6 */
+/* 26 */	NdrFcShort( 0x110 ),	/* Flags:  out, simple ref, */
+/* 28 */	NdrFcShort( 0x0 ),	/* X64 Stack size/offset = 0 */
+/* 30 */	NdrFcShort( 0x6 ),	/* Type Offset=6 */
 
 	/* Parameter pszFile */
 
-/* 30 */	NdrFcShort( 0x10b ),	/* Flags:  must size, must free, in, simple ref, */
-/* 32 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
-/* 34 */	NdrFcShort( 0xc ),	/* Type Offset=12 */
+/* 32 */	NdrFcShort( 0x10b ),	/* Flags:  must size, must free, in, simple ref, */
+/* 34 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 36 */	NdrFcShort( 0xc ),	/* Type Offset=12 */
 
 	/* Return value */
 
-/* 36 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
-/* 38 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
-/* 40 */	0x6,		/* FC_SHORT */
+/* 38 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 40 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 42 */	0x6,		/* FC_SHORT */
 			0x0,		/* 0 */
 
 	/* Procedure RemoteRead */
 
-/* 42 */	0x0,		/* 0 */
+/* 44 */	0x0,		/* 0 */
 			0x48,		/* Old Flags:  */
-/* 44 */	NdrFcLong( 0x0 ),	/* 0 */
-/* 48 */	NdrFcShort( 0x1 ),	/* 1 */
-/* 50 */	NdrFcShort( 0x10 ),	/* x86 Stack size/offset = 16 */
-/* 52 */	0x30,		/* FC_BIND_CONTEXT */
+/* 46 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 50 */	NdrFcShort( 0x1 ),	/* 1 */
+/* 52 */	NdrFcShort( 0x20 ),	/* X64 Stack size/offset = 32 */
+/* 54 */	0x30,		/* FC_BIND_CONTEXT */
 			0x40,		/* Ctxt flags:  in, */
-/* 54 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
-/* 56 */	0x0,		/* 0 */
+/* 56 */	NdrFcShort( 0x0 ),	/* X64 Stack size/offset = 0 */
+/* 58 */	0x0,		/* 0 */
 			0x0,		/* 0 */
-/* 58 */	NdrFcShort( 0x46 ),	/* 70 */
-/* 60 */	NdrFcShort( 0x1a ),	/* 26 */
-/* 62 */	0x41,		/* Oi2 Flags:  srv must size, has ext, */
+/* 60 */	NdrFcShort( 0x46 ),	/* 70 */
+/* 62 */	NdrFcShort( 0x1a ),	/* 26 */
+/* 64 */	0x41,		/* Oi2 Flags:  srv must size, has ext, */
 			0x4,		/* 4 */
-/* 64 */	0x8,		/* 8 */
+/* 66 */	0xa,		/* 10 */
 			0x3,		/* Ext Flags:  new corr desc, clt corr check, */
-/* 66 */	NdrFcShort( 0x1 ),	/* 1 */
-/* 68 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 68 */	NdrFcShort( 0x1 ),	/* 1 */
 /* 70 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 72 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 74 */	NdrFcShort( 0x0 ),	/* 0 */
 
 	/* Parameter phContext */
 
-/* 72 */	NdrFcShort( 0x8 ),	/* Flags:  in, */
-/* 74 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
-/* 76 */	NdrFcShort( 0xe ),	/* Type Offset=14 */
+/* 76 */	NdrFcShort( 0x8 ),	/* Flags:  in, */
+/* 78 */	NdrFcShort( 0x0 ),	/* X64 Stack size/offset = 0 */
+/* 80 */	NdrFcShort( 0xe ),	/* Type Offset=14 */
 
 	/* Parameter cbBuf */
 
-/* 78 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
-/* 80 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
-/* 82 */	0x8,		/* FC_LONG */
+/* 82 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 84 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 86 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
 	/* Parameter achBuf */
 
-/* 84 */	NdrFcShort( 0x13 ),	/* Flags:  must size, must free, out, */
-/* 86 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
-/* 88 */	NdrFcShort( 0x12 ),	/* Type Offset=18 */
+/* 88 */	NdrFcShort( 0x13 ),	/* Flags:  must size, must free, out, */
+/* 90 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 92 */	NdrFcShort( 0x12 ),	/* Type Offset=18 */
 
 	/* Parameter pcbBuf */
 
-/* 90 */	NdrFcShort( 0x158 ),	/* Flags:  in, out, base type, simple ref, */
-/* 92 */	NdrFcShort( 0xc ),	/* x86 Stack size/offset = 12 */
-/* 94 */	0x6,		/* FC_SHORT */
+/* 94 */	NdrFcShort( 0x158 ),	/* Flags:  in, out, base type, simple ref, */
+/* 96 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
+/* 98 */	0x6,		/* FC_SHORT */
 			0x0,		/* 0 */
 
 	/* Procedure RemoteClose */
 
-/* 96 */	0x0,		/* 0 */
+/* 100 */	0x0,		/* 0 */
 			0x48,		/* Old Flags:  */
-/* 98 */	NdrFcLong( 0x0 ),	/* 0 */
-/* 102 */	NdrFcShort( 0x2 ),	/* 2 */
-/* 104 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
-/* 106 */	0x30,		/* FC_BIND_CONTEXT */
+/* 102 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 106 */	NdrFcShort( 0x2 ),	/* 2 */
+/* 108 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 110 */	0x30,		/* FC_BIND_CONTEXT */
 			0xe0,		/* Ctxt flags:  via ptr, in, out, */
-/* 108 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
-/* 110 */	0x0,		/* 0 */
+/* 112 */	NdrFcShort( 0x0 ),	/* X64 Stack size/offset = 0 */
+/* 114 */	0x0,		/* 0 */
 			0x0,		/* 0 */
-/* 112 */	NdrFcShort( 0x38 ),	/* 56 */
-/* 114 */	NdrFcShort( 0x3e ),	/* 62 */
-/* 116 */	0x44,		/* Oi2 Flags:  has return, has ext, */
+/* 116 */	NdrFcShort( 0x38 ),	/* 56 */
+/* 118 */	NdrFcShort( 0x3e ),	/* 62 */
+/* 120 */	0x44,		/* Oi2 Flags:  has return, has ext, */
 			0x2,		/* 2 */
-/* 118 */	0x8,		/* 8 */
+/* 122 */	0xa,		/* 10 */
 			0x1,		/* Ext Flags:  new corr desc, */
-/* 120 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 122 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 124 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 126 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 128 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 130 */	NdrFcShort( 0x0 ),	/* 0 */
 
 	/* Parameter pphContext */
 
-/* 126 */	NdrFcShort( 0x118 ),	/* Flags:  in, out, simple ref, */
-/* 128 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
-/* 130 */	NdrFcShort( 0x26 ),	/* Type Offset=38 */
+/* 132 */	NdrFcShort( 0x118 ),	/* Flags:  in, out, simple ref, */
+/* 134 */	NdrFcShort( 0x0 ),	/* X64 Stack size/offset = 0 */
+/* 136 */	NdrFcShort( 0x26 ),	/* Type Offset=38 */
 
 	/* Return value */
 
-/* 132 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
-/* 134 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
-/* 136 */	0x6,		/* FC_SHORT */
+/* 138 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 140 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 142 */	0x6,		/* FC_SHORT */
 			0x0,		/* 0 */
 
 			0x0
@@ -308,7 +304,7 @@ static const ContextHandles_MIDL_TYPE_FORMAT_STRING ContextHandles__MIDL_TypeFor
 /* 20 */	NdrFcShort( 0x1 ),	/* 1 */
 /* 22 */	0x28,		/* Corr desc:  parameter, FC_LONG */
 			0x0,		/*  */
-/* 24 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/* 24 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
 /* 26 */	NdrFcShort( 0x1 ),	/* Corr flags:  early, */
 /* 28 */	0x2,		/* FC_CHAR */
 			0x5b,		/* FC_END */
@@ -331,8 +327,8 @@ static const ContextHandles_MIDL_TYPE_FORMAT_STRING ContextHandles__MIDL_TypeFor
 static const unsigned short ContextHandles_FormatStringOffsetTable[] =
     {
     0,
-    42,
-    96
+    44,
+    100
     };
 
 
@@ -359,11 +355,10 @@ static const MIDL_STUB_DESC ContextHandles_StubDesc =
     0,   /* proxy/server info */
     0
     };
-#pragma optimize("", on )
 #if _MSC_VER >= 1200
 #pragma warning(pop)
 #endif
 
 
-#endif /* !defined(_M_IA64) && !defined(_M_AMD64)*/
+#endif /* defined(_M_AMD64)*/
 

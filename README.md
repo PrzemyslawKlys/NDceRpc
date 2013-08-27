@@ -35,6 +35,7 @@ Build NDceRpc.sln in Release mode to get production build.
 #### How to migrate WCF `ServiceOperation` with `DataContract`s
 
 * Mark all data objects with DataContract/DataMember(Order=X), e.g. MUST have Order defined.
+* No parameterless constructor support as with DataContractSerializer https://code.google.com/p/protobuf-net/issues/detail?id=399
 * Protobuf spec does not distinguish empty collection and null you was used from XML DataContract serialization. Your code can fail receiving null instead of empty collection.
 * Mark all OperationContract with DispId(Y). CLR has some method numbers encoding,but DispId provides direct user defined encoding so that native part can interpret RPC calls.
 

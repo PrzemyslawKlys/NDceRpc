@@ -37,9 +37,10 @@ Build NDceRpc.sln in Release mode to get production build.
 * Mark all data objects with DataContract/DataMember(Order=X), e.g. MUST have Order defined.
 * No parameterless constructor support as with DataContractSerializer https://code.google.com/p/protobuf-net/issues/detail?id=399
 * Protobuf spec does not distinguish empty collection and null you was used from XML DataContract serialization. Your code can fail receiving null instead of empty collection.
-* Mark all OperationContract with DispId(Y). CLR has some method numbers encoding,but DispId provides direct user defined encoding so that native part can interpret RPC calls.
+* Mark all OperationContract methods with `DispId(Y)`.  Othervice operations will have some generated identifiers. DispId provides direct user defined encoding so that native part can interpret RPC calls.
+CLR has some method numbers encoding (`MemberInfo.MetadataToken`). It works only if assembly was build with the same version on the same machine. And fails if 2 assemblies of the same version with the same code contract is built on different machines. Will get different numbers on each side of communicated processes. Calls and callbacks will fail. Not used as identifier.
 
-Next test goes via RPC + Protobuf, very alpha version for now:
+Next test goes via RPC + Protobuf:
 
 ```csharp
             var address = @"net.pipe://127.0.0.1/1/test.test/test" + MethodBase.GetCurrentMethod().Name;

@@ -130,7 +130,7 @@ namespace NDceRpc.ServiceModel
                 var iid = input.MethodBase.DeclaringType;
                 if (iid == typeof(ICommunicationObject))
                 {
-                    //TODO: use somthing faster than string comparison
+                    //TODO: use something faster than string comparison
                     if (input.MethodName == "get_State")
                     {
                         return new ReturnMessage(State, null, 0, input.LogicalCallContext, input);
@@ -152,7 +152,7 @@ namespace NDceRpc.ServiceModel
                 MethodResponse methodReturn;
 
                 OperationDispatchBase op;
-                if (_router._operations.TryGetValue(OperationDispatchBase.GetIdentifier(input.MethodBase), out op))
+                if (_router._operations.TokenToOperation.TryGetValue(input.MethodBase.MetadataToken, out op))
                 {
                     var r = new MessageRequest();
                     if (_router._session != null)
@@ -313,6 +313,8 @@ namespace NDceRpc.ServiceModel
                     }
                     return new ReturnMessage(null, null, 0, null, input);
                 }
+                //var error = new ActionNotSupportedException();
+                //RpcTrace.Error();
                 throw new InvalidOperationException(string.Format("Cannot find operation {0} on service {1}", input.MethodName, _service));
 
             }
@@ -333,6 +335,11 @@ namespace NDceRpc.ServiceModel
             {
 
                 var exceptionData = ProtobufMessageEncodingBindingElement.ReadObject(new MemoryStream(fault.Detail), typeof(string));
+                //TODO: identify how to handle any CommunicationException
+                if (fault.Name == "System.ServiceModel.ActionNotSupportedException")
+                {
+                    throw new System.ServiceModel.ActionNotSupportedException(exceptionData.ToString());
+                }
                 return new FaultException(fault.Name + Environment.NewLine + exceptionData);
             }
 

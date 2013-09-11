@@ -10,12 +10,13 @@ namespace NDceRpc.ServiceModel
     internal class OperationDispatch : OperationDispatchBase
     {
 
-        public OperationDispatch(OperationContractAttribute operation,MethodInfo methodInfo):base(methodInfo)
+        public OperationDispatch(OperationContractAttribute operation, MethodInfo methodInfo, int identifier)
+            : base(methodInfo, identifier)
         {
-            Operation = operation;
+            _operation = operation;
             var allParameters = methodInfo.GetParameters();
            
-            SetIdentifier(methodInfo);
+       
 
             foreach (var p in allParameters)
             {

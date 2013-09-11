@@ -8,7 +8,7 @@
     <ProjectGuid>{E696D2D6-6662-4098-A759-A4D27BDEBE80}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NDceRpc.ServiceModel.Protobuf</RootNamespace>
+    <RootNamespace>NDceRpc.ServiceModel.Channels</RootNamespace>
     <AssemblyName>NDceRpc.ServiceModel.Protobuf</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,8 +42,9 @@
     <AssemblyOriginatorKeyFile>..\..\NDceRpc.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="protobuf-net">
-      <HintPath>..\..\packages\protobuf-net.2.0.0.640\lib\net35\protobuf-net.dll</HintPath>
+    <Reference Include="protobuf-net, Version=2.0.0.666, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\protobuf-net.2.0.0.666\lib\net35\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,12 +61,6 @@
     </Compile>
     <Compile Include="FaultData.cs" />
     <Compile Include="Message.cs" />
-    <Compile Include="Messages.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Messages.proto</DependentUpon>
-    </Compile>
     <Compile Include="Messages.proto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,20 +68,20 @@
     <None Include="..\..\NDceRpc.snk">
       <Link>NDceRpc.snk</Link>
     </None>
-    <None Include="Messages.proto">
-      <Generator>ProtoBufTool</Generator>
-      <LastGenOutput>Messages.cs</LastGenOutput>
-    </None>
     <None Include="protogen.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServiceModel\Channels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd $(ProjectDir) 
-"$(ProjectDir)..\..\tools\protobuf-net r640\ProtoGen\protogen.exe" -i:"Messages.proto" -o:"Messages.proto.cs" -p:datacontract -ns:"NDceRpc.ServiceModel.Channels"
-"$(ProjectDir)..\..\tools\protobuf-net r640\Precompile\precompile.exe" "$(TargetPath)" -o:"$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" -t:NDceRpc.ServiceModel.Channels.Messages -f:.NETFramework\v3.5\Profile\Client
-"$(ProjectDir)..\..\tools\ildasm\ILDASM.exe" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /OUTPUT="$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.il"
-copy "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.original"
-"$(ProjectDir)..\..\tools\Framework\v2.0.50727\ilasm.exe"   "$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll.il" /DLL /OUTPUT="$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" /KEY="$(ProjectDir)..\..\NDceRpc.snk"</PostBuildEvent>
+"$(ProjectDir)..\..\tools\protobuf-net\Precompile\precompile.exe" "$(TargetPath)" -o:"$(TargetDir)NDceRpc.ServiceModel.Protobuf.Serializers.dll" -t:NDceRpc.ServiceModel.Channels.Messages -f:.NETFramework\v3.5\Profile\Client -keyfile:"$(SolutionDir)..\NDceRpc.snk"
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>cd $(ProjectDir) 
+"$(ProjectDir)..\..\tools\protobuf-net\ProtoGen\protogen.exe" -i:"Messages.proto" -o:"Messages.proto.cs" -p:datacontract -ns:"NDceRpc.ServiceModel.Channels"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

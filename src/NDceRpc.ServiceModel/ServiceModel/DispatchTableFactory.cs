@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 using NDceRpc.ServiceModel.Custom;
 
@@ -16,29 +18,46 @@ namespace NDceRpc.ServiceModel
             set { _cache = value; }
         }
 
-        private static OperationDispatchBase Create(MethodInfo info)
+        private static OperationDispatchBase create(MethodInfo info, int identifier)
         {
-            //TODO: fix not null async params
-            //TODO: add all async patterns
-            //TODO: fix WCF ref params
+            //BUG: fix not null async params
+            //BUG: add all async patterns
+            //BUG: fix WCF ref params
             var operation = (OperationContractAttribute)info.GetCustomAttributes(typeof(OperationContractAttribute), false).Single();
             if (!operation.AsyncPattern)
             {
-                return new OperationDispatch(operation, info);
+                return new OperationDispatch(operation, info, identifier);
             }
             else
             {
-                return new AsyncOperationDispatch(operation,info);
+                return new AsyncOperationDispatch(operation, info, identifier);
             }
         }
 
-        private static DispatchTable CreateOperations(MethodInfo[] ops)
+        // like http://msdn.microsoft.com/en-us/library/windows/desktop/aa367040.aspx
+        private const int shift = 0x60020000;
+        private static int createIdentifier(MethodInfo info, int orderNumber)
         {
-           var operations = new DispatchTable();
-            foreach (var methodInfo in ops)
+            int identifier = shift + orderNumber;
+            var dispatchId = TypeExtensions.GetCustomAttribute<DispIdAttribute>(info);
+            if (dispatchId != null)
             {
-                OperationDispatchBase operation = DispatchTableFactory.Create(methodInfo);
-                operations[operation.Identifier] = operation;
+                identifier = dispatchId.Value;
+            }
+            return identifier;
+        }
+
+        private static DispatchTable createOperations(MethodInfo[] ops)
+        {
+           Contract.Ensures(Contract.Result<DispatchTable>().IdToOperation.Count == Contract.Result<DispatchTable>().TokenToOperation.Count);
+           var operations = new DispatchTable();
+           for (int orderNumber = 0; orderNumber < ops.Length; orderNumber++)
+            {
+                var methodInfo = ops[orderNumber];
+                var identifier = createIdentifier(methodInfo, orderNumber);
+                OperationDispatchBase operation = create(methodInfo, identifier);
+                operations.IdToOperation[identifier] = operation;
+                operations.TokenToOperation[methodInfo.MetadataToken] = operation;
             }
             return operations;
         }
@@ -50,7 +69,7 @@ namespace NDceRpc.ServiceModel
         /// <param name="type"></param>
         /// <returns></returns>
         /// <remarks>
-        /// Considers reflection costly operation and caching is optimization.  Considers types unchangable during runtime.
+        /// Considers reflection costly operation and caching is optimization.  Considers types unchangeable during runtime.
         /// </remarks>
         public static DispatchTable GetOperations(Type type)
         {
@@ -59,7 +78,7 @@ namespace NDceRpc.ServiceModel
             if (!Cache.TryGetValue(type, out table))
             {
                 var ops = TypeExtensions.GetAllServiceImplementations(type);
-                var newTable = CreateOperations(ops);
+                var newTable = createOperations(ops);
 
                 lock(Cache)
                 {

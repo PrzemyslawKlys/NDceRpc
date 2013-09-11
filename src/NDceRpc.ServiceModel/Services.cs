@@ -9,6 +9,33 @@ using System.Threading;
 
 namespace NDceRpc.ServiceModel.Test
 {
+    [ServiceContract]
+    [Guid("641BA85E-DC0C-4AAB-AC03-4F5C1AAAD595")]
+    public interface IABC
+    {
+        [OperationContract]
+        void B();
+        [OperationContract]
+        void C();
+        [OperationContract]
+        void A();
+    }
+
+    [ServiceContract]
+    [Guid("CD9A1BA0-621A-4D2A-A6CC-7B16EB79C3D3")]
+    public interface IABCD
+    {
+        [OperationContract]
+        void B();
+        [DispId(42)]
+        [OperationContract]
+        void D();
+        [OperationContract]
+        void C();
+        [OperationContract]
+        void A();
+    }
+
 
     [ServiceContract]
     public interface ISimplesService

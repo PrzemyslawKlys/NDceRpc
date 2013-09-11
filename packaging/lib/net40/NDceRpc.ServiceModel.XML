@@ -4,77 +4,15 @@
         <name>NDceRpc.ServiceModel</name>
     </assembly>
     <members>
-        <member name="T:NDceRpc.ServiceModel.LocalBinding">
+        <member name="F:NDceRpc.ServiceModel.DispatchTable.TokenToOperation">
             <summary>
-            Uses http://en.wikipedia.org/wiki/Local_Procedure_Call on Windows
+            Maps runtime CLR reflection MetadataToken to operation which should put on the wire. 
             </summary>
         </member>
-        <member name="T:NDceRpc.ServiceModel.ServiceHostBase">
+        <member name="F:NDceRpc.ServiceModel.DispatchTable.IdToOperation">
             <summary>
-            
+            Maps identifier from the wire to operation.
             </summary>
-        </member>
-        <member name="P:NDceRpc.ServiceModel.ServiceHostBase.CloseTimeout">
-            <summary>
-            Gets or sets the interval of time allowed for the service host to close.
-            </summary>
-            
-            <returns>
-            The <see cref="T:System.Timespan"/> that specifies the interval of time allowed for the service host to close.
-            </returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">The value, in milliseconds, is less than zero or is larger than <see cref="F:System.Int32.MaxValue"/> (2,147,483,647 or, in hexadecimal notation, 0X7FFFFFFF).</exception><exception cref="T:System.InvalidOperationException">The host is in an <see cref="F:System.ServiceModel.CommunicationState.Opening"/> or <see cref="F:System.ServiceModel.CommunicationState.Closing"/> state and cannot be modified.</exception><exception cref="T:System.ObjectDisposedException">The host is already in a <see cref="F:System.ServiceModel.CommunicationState.Closed"/> state and cannot be modified.</exception><exception cref="T:System.ServiceModel.CommunicationObjectFaultedException">The host is in a <see cref="F:System.ServiceModel.CommunicationState.Faulted"/> state and cannot be modified.</exception>
-        </member>
-        <member name="T:NDceRpc.ServiceModel.ParameterDispatch">
-            <summary>
-            Maps parameters binary indentifiers into <see cref="T:System.Type"/>s.
-            </summary>
-        </member>
-        <member name="T:NDceRpc.ServiceModel.NetNamedPipeBinding">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:NDceRpc.ServiceModel.OperationDispatch">
-            <summary>
-            Maps method binary identifiers into invocable entities.
-            </summary>
-        </member>
-        <member name="M:NDceRpc.ServiceModel.FaultException`1.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the Exception class with a specified error message 
-            and a reference to the inner exception that is the cause of this exception. 
-            </summary>
-            <param name="message">The error message that explains the reason for the exception.</param>
-            <param name="innerException">The exception that is the cause of the current exception, 
-            or a null reference if no inner exception is specified.</param>
-        </member>
-        <member name="M:NDceRpc.ServiceModel.FaultException`1.#ctor(`0,System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the Exception class with additional arguments, 
-            a specified error message, and a reference to the inner exception 
-            that is the cause of this exception. 
-            </summary>
-            <param name="details">The exception's additional arguments.</param>
-            <param name="message">The error message that explains the reason for the exception.</param>
-            <param name="innerException">The exception that is the cause of the current exception, 
-            or a null reference if no inner exception is specified.</param>
-        </member>
-        <member name="M:NDceRpc.ServiceModel.FaultException`1.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            When overridden in a derived class, sets the SerializationInfo with information about the exception.
-            </summary>
-            <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
-            <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
-        </member>
-        <member name="M:NDceRpc.ServiceModel.FaultException`1.Equals(System.Object)">
-            <summary>
-            Determines whether the specified Object is equal to the current Object.
-            </summary>
-            <param name="obj">The Object to compare with the current Object. </param>
-            <returns>true if the specified Object is equal to the current Object; otherwise, false.</returns>
-        </member>
-        <member name="P:NDceRpc.ServiceModel.FaultException`1.Details">
-            <summary>Returns a reference to this exception's additional arguments.</summary>
         </member>
         <member name="T:NDceRpc.ServiceModel.ExceptionHandler">
             <summary>
@@ -119,12 +57,46 @@
             A custom <see cref="T:NDceRpc.ServiceModel.ExceptionHandler"/> object that receives unhandled exceptions that occur within the global NDceRpc transports.
             </returns>
         </member>
-        <member name="T:NDceRpc.ServiceModel.RpcServiceDefaults">
-            <seealso cref="T:System.ServiceModel.ServiceDefaults"/>
-        </member>
-        <member name="T:NDceRpc.Serialization.BinaryObjectSerializer">
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.#ctor(System.String,System.Exception)">
             <summary>
-            Similar to <seealso cref="T:System.Runtime.Serialization.XmlObjectSerializer"/>
+            Initializes a new instance of the Exception class with a specified error message 
+            and a reference to the inner exception that is the cause of this exception. 
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception, 
+            or a null reference if no inner exception is specified.</param>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.#ctor(`0,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the Exception class with additional arguments, 
+            a specified error message, and a reference to the inner exception 
+            that is the cause of this exception. 
+            </summary>
+            <param name="details">The exception's additional arguments.</param>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception, 
+            or a null reference if no inner exception is specified.</param>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            When overridden in a derived class, sets the SerializationInfo with information about the exception.
+            </summary>
+            <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.FaultException`1.Equals(System.Object)">
+            <summary>
+            Determines whether the specified Object is equal to the current Object.
+            </summary>
+            <param name="obj">The Object to compare with the current Object. </param>
+            <returns>true if the specified Object is equal to the current Object; otherwise, false.</returns>
+        </member>
+        <member name="P:NDceRpc.ServiceModel.FaultException`1.Details">
+            <summary>Returns a reference to this exception's additional arguments.</summary>
+        </member>
+        <member name="T:NDceRpc.ServiceModel.LocalBinding">
+            <summary>
+            Uses http://en.wikipedia.org/wiki/Local_Procedure_Call on Windows
             </summary>
         </member>
         <member name="M:NDceRpc.ServiceModel.DispatchTableFactory.GetOperations(System.Type)">
@@ -135,7 +107,7 @@
             <param name="type"></param>
             <returns></returns>
             <remarks>
-            Considers reflection costly operation and caching is optimization.  Considers types unchangable during runtime.
+            Considers reflection costly operation and caching is optimization.  Considers types unchangeable during runtime.
             </remarks>
         </member>
         <member name="F:NDceRpc.ServiceModel.EndpointMapper.UriSchemeIpc">
@@ -150,16 +122,9 @@
             <param name="address"></param>
             <returns></returns>
         </member>
-        <member name="T:NDceRpc.ServiceModel.DuplexChannelFactory`1">
+        <member name="T:NDceRpc.Serialization.BinaryObjectSerializer">
             <summary>
-            Similar to WCF <seealso cref="T:System.ServiceModel.DuplexChannelFactory`1"/> and 
-            COM <seealso cref="T:System.Runtime.InteropServices.ComTypes.IConnectionPoint"/>
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="M:NDceRpc.ServiceModel.TransportFactory.#cctor">
-            <summary>
-            Where client should go for data
+            Similar to <seealso cref="T:System.Runtime.Serialization.XmlObjectSerializer"/>
             </summary>
         </member>
         <member name="T:NDceRpc.ServiceModel.GuidUtility">
@@ -200,6 +165,51 @@
         <member name="F:NDceRpc.ServiceModel.GuidUtility.IsoOidNamespace">
             <summary>
             The namespace for ISO OIDs (from RFC 4122, Appendix C).
+            </summary>
+        </member>
+        <member name="M:NDceRpc.ServiceModel.TransportFactory.#cctor">
+            <summary>
+            Where client should go for data
+            </summary>
+        </member>
+        <member name="T:NDceRpc.ServiceModel.RpcServiceDefaults">
+            <seealso cref="T:System.ServiceModel.ServiceDefaults"/>
+        </member>
+        <member name="T:NDceRpc.ServiceModel.OperationDispatch">
+            <summary>
+            Maps method binary identifiers into invocable entities.
+            </summary>
+        </member>
+        <member name="T:NDceRpc.ServiceModel.ServiceHostBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:NDceRpc.ServiceModel.ServiceHostBase.CloseTimeout">
+            <summary>
+            Gets or sets the interval of time allowed for the service host to close.
+            </summary>
+            
+            <returns>
+            The <see cref="T:System.Timespan"/> that specifies the interval of time allowed for the service host to close.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">The value, in milliseconds, is less than zero or is larger than <see cref="F:System.Int32.MaxValue"/> (2,147,483,647 or, in hexadecimal notation, 0X7FFFFFFF).</exception><exception cref="T:System.InvalidOperationException">The host is in an <see cref="F:System.ServiceModel.CommunicationState.Opening"/> or <see cref="F:System.ServiceModel.CommunicationState.Closing"/> state and cannot be modified.</exception><exception cref="T:System.ObjectDisposedException">The host is already in a <see cref="F:System.ServiceModel.CommunicationState.Closed"/> state and cannot be modified.</exception><exception cref="T:System.ServiceModel.CommunicationObjectFaultedException">The host is in a <see cref="F:System.ServiceModel.CommunicationState.Faulted"/> state and cannot be modified.</exception>
+        </member>
+        <member name="T:NDceRpc.ServiceModel.DuplexChannelFactory`1">
+            <summary>
+            Similar to WCF <seealso cref="T:System.ServiceModel.DuplexChannelFactory`1"/> and 
+            COM <seealso cref="T:System.Runtime.InteropServices.ComTypes.IConnectionPoint"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:NDceRpc.ServiceModel.NetNamedPipeBinding">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:NDceRpc.ServiceModel.ParameterDispatch">
+            <summary>
+            Maps parameters binary indentifiers into <see cref="T:System.Type"/>s.
             </summary>
         </member>
     </members>

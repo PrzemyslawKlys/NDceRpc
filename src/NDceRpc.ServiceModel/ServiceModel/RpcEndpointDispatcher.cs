@@ -39,70 +39,90 @@ namespace NDceRpc.ServiceModel
 
         private Message InvokeContract(IRpcCallInfo call, MessageRequest request, Type contractType)
         {
-			OperationDispatchBase operation = _operations[request.Operation];
-			OperationContext operationContext = SetupOperationConext(call, request, contractType);
-	        Func<Message> invokeAction = () =>
-		        {
-					OperationContext.Current = operationContext;
-					if (_concurrency == ConcurrencyMode.Single)
-					{
-						lock (this)
-						{
-							return InvokeContract(operation, request);
-						}
-					}
-					return InvokeContract(operation, request);
-		        };
-			if (operation.Operation.IsOneWay)
-			{
-				Task task = Tasks.Factory.StartNew(invokeAction);
-				task.ContinueWith(x => RpcTrace.Error(x.Exception), TaskContinuationOptions.OnlyOnFaulted);
-				return new Message();
-			}
-			else
-			{
-				return invokeAction();
-			}
+            OperationDispatchBase operation;
+            bool operationExists = _operations.IdToOperation.TryGetValue(request.Operation, out operation);
+            if (!operationExists)
+            {
+                var error = new ActionNotSupportedException(string.Format("Server endpoint {0} with contract {1} does not supports operation with id = {2}. Check that client and server use the same version of contract and binding. ", _endpoint._address, contractType, request.Operation));
+                var faultMessage = new Message();
+                faultMessage = makeFault(error, faultMessage);
+                return faultMessage;
+            }
+            OperationContext operationContext = SetupOperationConext(call, request, contractType);
+            Func<Message> invokeAction = () =>
+                {
+                    OperationContext.Current = operationContext;
+                    if (_concurrency == ConcurrencyMode.Single)
+                    {
+                        lock (this)
+                        {
+                            return InvokeContract(operation, request);
+                        }
+                    }
+                    return InvokeContract(operation, request);
+                };
+            if (operation.Operation.IsOneWay)
+            {
+                Task task = Tasks.Factory.StartNew(invokeAction);
+                task.ContinueWith(x => RpcTrace.Error(x.Exception), TaskContinuationOptions.OnlyOnFaulted);
+                return new Message();
+            }
+            else
+            {
+                return invokeAction();
+            }
         }
 
-		private Message InvokeContract(OperationDispatchBase operation, MessageRequest request)
-		 {
-			 var args = deserializeMessageArguments(request, operation);
-			 if (operation is AsyncOperationDispatch)
-			 {
-				 args.Add(null);//AsyncCallback
-				 args.Add(null);//object asyncState
-			 }
-			 var response = new Message();
-			 try
-			 {
-				 var result = invokeServerMethod(operation, args);
-				 EnrichResponseWithReturn(operation, result, response);
-			 }
-			 catch (Exception ex)
-			 {
-				 var error = ex.ToString();
-				 var detail = new MemoryStream();
-				 ProtobufMessageEncodingBindingElement.WriteObject(detail, error);
-				 //TODO: make fault with details only in case of IncludeExceptionDetailsInFaults
-				 response.Fault = new FaultData() { Code = ex.GetType().GUID.ToString(), Reason = ex.Message, Detail = detail.ToArray(), Name = ex.GetType().FullName, Node = _endpoint._address };
+        private Message InvokeContract(OperationDispatchBase operation, MessageRequest request)
+        {
+            var args = deserializeMessageArguments(request, operation);
+            if (operation is AsyncOperationDispatch)
+            {
+                args.Add(null);//AsyncCallback
+                args.Add(null);//object asyncState
+            }
+            var response = new Message();
+            try
+            {
+                var result = invokeServerMethod(operation, args);
+                enrichResponseWithReturn(operation, result, response);
+            }
+            catch (Exception ex)
+            {
+                response = makeFault(ex, response);
+            }
+            finally
+            {
+                OperationContext.Current = _noOp;
+            }
 
-				 foreach (var errorHandler in _channelDispatcher.ErrorHandlers)
-				 {
-					 if (errorHandler.HandleError(ex))
-					 {
-						 errorHandler.ProvideFault(ex, MessageVersion.WcfProtoRpc1, ref response);
-					 }
-				 }
+            return response;
+        }
 
-			 }
-			 finally
-			 {
-				 OperationContext.Current = _noOp;
-			 }
+        private Message makeFault(Exception ex, Message response)
+        {
+            var error = ex.ToString();
+            var detail = new MemoryStream();
+            ProtobufMessageEncodingBindingElement.WriteObject(detail, error);
+            //TODO: make fault with details only in case of IncludeExceptionDetailsInFaults
+            response.Fault = new FaultData()
+                {
+                    Code = ex.GetType().GUID.ToString(),
+                    Reason = ex.Message,
+                    Detail = detail.ToArray(),
+                    Name = ex.GetType().FullName,
+                    Node = _endpoint._address
+                };
 
-			 return response;
-		 }
+            foreach (var errorHandler in _channelDispatcher.ErrorHandlers)
+            {
+                if (errorHandler.HandleError(ex))
+                {
+                    errorHandler.ProvideFault(ex, MessageVersion.WcfProtoRpc1, ref response);
+                }
+            }
+            return response;
+        }
 
 
         internal void Open(ConcurrencyMode concurrency)
@@ -118,18 +138,18 @@ namespace NDceRpc.ServiceModel
                             delegate(IRpcCallInfo client, byte[] arg)
                             {
                                 if (_concurrency == ConcurrencyMode.Single)
-								{
-									//lock (this)
-									//{
-                                        _operationPending.Reset();
-                                        try
-                                        {
-                                            return Invoke(client, _endpoint._contractType, arg);
-                                        }
-                                        finally
-                                        {
-                                            _operationPending.Set();
-                                        }
+                                {
+                                    //lock (this)
+                                    //{
+                                    _operationPending.Reset();
+                                    try
+                                    {
+                                        return Invoke(client, _endpoint._contractType, arg);
+                                    }
+                                    finally
+                                    {
+                                        _operationPending.Set();
+                                    }
                                     //}
                                 }
                                 if (_concurrency == ConcurrencyMode.Multiple)
@@ -176,7 +196,7 @@ namespace NDceRpc.ServiceModel
             return stream.ToArray();
         }
 
-        private void EnrichResponseWithReturn(OperationDispatchBase operation, object result, Message response)
+        private void enrichResponseWithReturn(OperationDispatchBase operation, object result, Message response)
         {
             if (operation.MethodInfo.ReturnType != typeof(void) && operation.GetType() != typeof(AsyncOperationDispatch))
             {
@@ -207,7 +227,7 @@ namespace NDceRpc.ServiceModel
         {
             try
             {
-              return operation.MethodInfo.Invoke(_singletonService, BindingFlags.Public, null, args.ToArray(), null);
+                return operation.MethodInfo.Invoke(_singletonService, BindingFlags.Public, null, args.ToArray(), null);
             }
             catch (TargetInvocationException ex)
             {
@@ -235,7 +255,7 @@ namespace NDceRpc.ServiceModel
 
         private OperationContext SetupOperationConext(IRpcCallInfo call, MessageRequest request, Type contractType)
         {
-            OperationContext operationContext = new OperationContext { SessionId = request.Session };
+            var operationContext = new OperationContext { SessionId = request.Session };
 
             if (request.Session != null)
             {

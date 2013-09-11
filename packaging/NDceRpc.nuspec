@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>NDceRpc</id>
-    <version>0.0.11.0</version>
+    <version>0.1.0.0</version>
     <authors>Dzmitry Lahoda</authors>
     <owners>dzmitry_lahoda</owners>
     <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>
@@ -11,6 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Integration of WCF and .NET with MS-RPC and binary serialization. </description>
     <releaseNotes>
+    * 0.1.0.0
+	- fixed different dlls contract compatibility with clear rules of operation ids
+	- updated protobuf
 	* 0.0.11.0
 	- fixed 64 bit client error handling
 	- fixed WCF IsOneWay sematics

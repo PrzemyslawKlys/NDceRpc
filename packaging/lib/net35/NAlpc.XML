@@ -4,12 +4,36 @@
         <name>NAlpc</name>
     </assembly>
     <members>
+        <member name="T:NAlpc.AlpcTransport">
+            ALPC for Windows
+        </member>
         <member name="F:NAlpc.Constants.MAX_LPC_DATA">
             <summary>
             Maximum number of bytes that can be copied through LPC
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtCreatePort(System.IntPtr@,NAlpc.OBJECT_ATTRIBUTES@,System.UInt32,System.UInt32,System.UInt32)" -->
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtCreatePort(NAlpc.AlpcPortHandle@,NAlpc.OBJECT_ATTRIBUTES@,System.UInt32,System.UInt32,System.UInt32)" -->
+        <member name="M:NAlpc.NativeMethods.NtListenPort(NAlpc.AlpcPortHandle,NAlpc.PORT_MESSAGE@)">
+            <summary>
+                Listens on a port for a connection request message on the server side.
+                PortHandle - A handle to a port object. The handle doesn't need to grant any specific access.
+                ConnectionRequest - Points to a caller-allocated buffer or variable that receives the connect message sent to the port.
+             </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtAcceptConnectPort(NAlpc.AlpcPortHandle@,System.IntPtr,NAlpc.PORT_MESSAGE@,System.Boolean,System.IntPtr,System.IntPtr)" -->
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtConnectPort(NAlpc.AlpcPortHandle@,System.String,NAlpc.SECURITY_QUALITY_OF_SERVICE@,System.IntPtr@,System.IntPtr@,System.UInt32@,System.IntPtr@,System.IntPtr@)" -->
+        <member name="M:NAlpc.NativeMethods.NtCompleteConnectPort(NAlpc.AlpcPortHandle)">
+            <summary>
+                Completes the port connection process on the server side.
+                PortHandle - A handle to a port object. The handle doesn't need 
+                    to grant any specific access.
+             </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtRequestPort(NAlpc.AlpcPortHandle,NAlpc.PORT_MESSAGE@)" -->
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtRequestWaitReplyPort(NAlpc.AlpcPortHandle,NAlpc.PORT_MESSAGE@,NAlpc.PORT_MESSAGE@)" -->
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtReplyPort(NAlpc.AlpcPortHandle,NAlpc.PORT_MESSAGE@)" -->
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtReplyWaitReplyPort(NAlpc.AlpcPortHandle,NAlpc.PORT_MESSAGE@)" -->
+        <!-- Badly formed XML comment ignored for member "M:NAlpc.NativeMethods.NtReplyWaitReceivePort(NAlpc.AlpcPortHandle,System.IntPtr@,NAlpc.PORT_MESSAGE@,NAlpc.PORT_MESSAGE@)" -->
         <member name="T:NAlpc.PORT_MESSAGE">
             <summary>Define header for Port Message</summary>
         </member>

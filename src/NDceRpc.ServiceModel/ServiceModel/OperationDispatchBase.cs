@@ -13,35 +13,21 @@ namespace NDceRpc.ServiceModel
     {
         protected int _identifier;
         protected Dictionary<int, ParameterDispatch> _params = new Dictionary<int, ParameterDispatch>();
+        protected MethodInfo _methodInfo;
+        protected OperationContractAttribute _operation;
 
-        protected OperationDispatchBase(MethodInfo methodInfo)
+        protected OperationDispatchBase(MethodInfo methodInfo,int identifier)
         {
-            
-            MethodInfo = methodInfo;
+            _identifier = identifier;
+            _methodInfo = methodInfo;
         }
 
 
-        public static  int GetIdentifier(MethodBase methodInfo)
-        {
-            var dispatchId = TypeExtensions.GetCustomAttribute<DispIdAttribute>(methodInfo);
-            if (dispatchId == null)
-            {
-               return methodInfo.MetadataToken;
-            }
-            else
-            {
-              return dispatchId.Value;
-            }
-        }
-
-        protected void SetIdentifier(MethodInfo methodInfo)
-        {
-            _identifier = GetIdentifier(methodInfo);
-        }
 
 
-        public MethodInfo MethodInfo { get; set; }
-        public OperationContractAttribute Operation { get; set; }
+
+        public MethodInfo MethodInfo { get { return _methodInfo; } }
+        public OperationContractAttribute Operation { get { return _operation; } }
         
         
         public Dictionary<int, ParameterDispatch> Params

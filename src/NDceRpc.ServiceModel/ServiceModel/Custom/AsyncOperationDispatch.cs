@@ -6,7 +6,7 @@ using System.ServiceModel;
 
 namespace NDceRpc.ServiceModel.Custom
 {
-    public class AsyncOperationDispatch : OperationDispatchBase
+    internal class AsyncOperationDispatch : OperationDispatchBase
     {
     
  
@@ -18,10 +18,11 @@ namespace NDceRpc.ServiceModel.Custom
         }
 
 
-        public AsyncOperationDispatch(OperationContractAttribute operation, MethodInfo methodInfo):base(methodInfo)
+        public AsyncOperationDispatch(OperationContractAttribute operation, MethodInfo methodInfo, int identifier)
+            : base(methodInfo, identifier)
         {
 
-            Operation = operation;
+            _operation = operation;
             ParameterInfo[] allParameters = methodInfo.GetParameters();
             var serializedParameters = allParameters;
             if (Operation.AsyncPattern)
@@ -39,8 +40,6 @@ namespace NDceRpc.ServiceModel.Custom
                 }
                 serializedParameters = allParameters.Take(allParameters.Length - 2).ToArray();
             }
-
-            SetIdentifier(methodInfo);
            
             foreach (var p in serializedParameters)
             {

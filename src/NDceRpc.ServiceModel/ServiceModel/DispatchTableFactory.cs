@@ -11,6 +11,9 @@ namespace NDceRpc.ServiceModel
 {
     internal static class DispatchTableFactory
     {
+        /// like http://msdn.microsoft.com/en-us/library/windows/desktop/aa367040.aspx
+        private const int DEFAULT_ID_SHIFT = 0x60020000;
+
         private static Dictionary<Type, DispatchTable> _cache = new Dictionary<Type, DispatchTable>();
         private static Dictionary<Type, DispatchTable> Cache
         {
@@ -34,11 +37,11 @@ namespace NDceRpc.ServiceModel
             }
         }
 
-        // like http://msdn.microsoft.com/en-us/library/windows/desktop/aa367040.aspx
-        private const int shift = 0x60020000;
+    
+
         private static int createIdentifier(MethodInfo info, int orderNumber)
         {
-            int identifier = shift + orderNumber;
+            int identifier = DEFAULT_ID_SHIFT + orderNumber;
             var dispatchId = TypeExtensions.GetCustomAttribute<DispIdAttribute>(info);
             if (dispatchId != null)
             {

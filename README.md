@@ -18,8 +18,6 @@ Unix also has Dce/Rpc implementation compatible in main use cases with MS Window
 * Binary serialization is main target to support.
 * Is small lib, or set of small libs for separate deployment against System.ServiceModel.dll
 
-`NOTE`: Please send me you note if you have reasons to consider such endeavor no fruitful
-
 #### Low level
 Mono and protobuf-net is used for replacing WCF in C# over RPC. Moving WCF toward C++ interop because RPC and protobuf are ready for C++. Mono like layer proxies service calls coding/decoding of WCF interfaces into RPC calls, data is serialized via protobuf.
 MS-PRC interop PIvokes calls are used to route data across processes. MS-RPC can be replaced by other transport.
@@ -159,7 +157,7 @@ Possibly to precompile serializers/proxy/stub is must for start up and performan
 * Use Mono WCF code more
 * Add WCF tests, pull back to mono
 * Add callback and async IDL generated structs in C#
-* Add IDL parser (use one of open source DceRpc implementations yacc lexx definitions, F# lexx and yacc)
+* Add IDL parser (use one of open source DceRpc implementations yacc lexx definitions, F# lexx and yacc, or use midlc from cifs parser)
 * Investigate [user_marshal] to integrate protobuf into IDL.
 * Make behave like WCF with different encodings, serializers(Thrift) and marshalers (NRD, BinaryDataContract), BSON, Fast XML, ASN, what exists at least for C# and C++ on Mono/.NET Unix/Windows.
 * Support SyncrhonizationContext of callback, "ref" params, Task/event based async
@@ -174,7 +172,7 @@ Possibly to precompile serializers/proxy/stub is must for start up and performan
 
 ### Related
 
-* https://www.diigo.com/list/asdandrizzo/Linux-DCE-RPC-related
+* https://www.diigo.com/list/dzmitry_lahoda/DCE+RPC+/2issvnh1s
 * http://code.google.com/p/csharptest-net/
 * http://code.google.com/p/protobuf-csharp-rpc/
 * https://github.com/mono/mono/tree/master/mcs/class/System.ServiceModel

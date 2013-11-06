@@ -3,9 +3,8 @@ namespace NDceRpc.Microsoft.Interop
 {
 #pragma warning disable 1591
     /// <summary>
-    /// Defines the various types of protocols that are supported by Win32 RPC
+    /// Defines the various types of protocols that are supported by Win32 RPC. NCA stands for Network Computing Architecture
     /// </summary>
-   
     public enum RpcProtseq
     {
         /// <summary>

@@ -28,7 +28,7 @@ namespace NDceRpc.ServiceModel
         }
 
         public TimeSpan OpenTimeout { get; private set; }
-        public TimeSpan ReceiveTimeout { get; private set; }
+        public TimeSpan ReceiveTimeout { get; set; }
         public TimeSpan SendTimeout { get; private set; }
 
 

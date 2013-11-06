@@ -60,6 +60,7 @@
     <Compile Include="Hosting\ExplicitBytesExecute.cs" />
     <Compile Include="Microsoft\Interop\RPC_ASYNC_EVENT.cs" />
     <Compile Include="Microsoft\Interop\RPC_ASYNC_NOTIFICATION_INFO.cs" />
+    <Compile Include="Microsoft\Interop\RPC_C_BINDING_TIMEOUTS.cs" />
     <Compile Include="Microsoft\Interop\RPC_DISPATCH_FUNCTION.cs" />
     <Compile Include="Microsoft\Interop\RPC_MESSAGE.cs" />
     <Compile Include="Microsoft\Interop\RPC_NOTIFICATION_TYPES.cs" />

@@ -60,6 +60,7 @@
     <Compile Include="PerformanceTests.cs" />
     <Compile Include="MultiuserConcurrencyTests.cs" />
     <Compile Include="StartupTimeTests.cs" />
+    <Compile Include="TimeoutTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NDceRpc.ServiceModel.Protobuf\NDceRpc.ServiceModel.Protobuf.csproj">

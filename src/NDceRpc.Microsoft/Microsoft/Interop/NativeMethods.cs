@@ -11,6 +11,24 @@ namespace NDceRpc.Microsoft.Interop
     public static class NativeMethods
     {
 
+
+
+        ///<seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa375771.aspx"/>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcMgmtSetCancelTimeout", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcMgmtSetCancelTimeout(int Seconds);
+
+        ///<seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa375746.aspx"/>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcMgmtInqComTimeout", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcMgmtInqComTimeout(IntPtr Binding, out uint Timeout);
+
+
+        ///<summary>
+        /// This option is ignored for <seealso cref="RpcProtseq.ncalrpc"/>
+        /// </summary>
+        ///<seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa375779.aspx"/>
+        [DllImport("Rpcrt4.dll", EntryPoint = "RpcMgmtSetComTimeout", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern RPC_STATUS RpcMgmtSetComTimeout(IntPtr Binding, uint Timeout);
+
         /// <summary>
         /// The function registers an object-inquiry function. A null value turns off a previously registered object-inquiry function.
         /// </summary>

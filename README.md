@@ -169,6 +169,11 @@ Possibly to precompile serializers/proxy/stub is must for start up and performan
 * Do not copy message twice, use header and concat
 * Add Alpc transport to WCF.
 * Add Domain Socket to WCF in UNIX
+* Try to convert somhow Jarpack into C# (via IKVM or Sharpen)
+* Try to use midlc(open source IDL parser/generator used by Jarapack) to generate something C# compatible
+* Implement fully managed IPC COM above RPC with custom event queue (message pump)
+* Implemented fully managed C# RPC runtime
+* Implement custom C++ RPC runtime
 
 ### Related
 

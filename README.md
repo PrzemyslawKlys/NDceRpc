@@ -132,11 +132,11 @@ C# code can host pure C++ RPC services:
 
 #### Errors
 RPC provides 32 bit error values to identify communication and server errors leaving us to choose what means to use to propagate meaningful service errors.
-COM uses composite error codes for own and user specified errors represented as 32 bit value. Also COM provides means to propagate detailed error information using specific COM interfaces implemented.
+COM uses composite error codes for own and user specified errors represented as 32 bit value. Also COM provides means to propagate detailed error information using specific COM interfaces implemented [1]. 
 In this solution error propagation approach similar to SOAP faults was chosen, tuned to work well with C# and C++.
 
 #### Operations encoding
-WCF uses string method names to identify operations allover stack. WCF can encode this strings to numbers when creating message. WCF approach takes time in runtime. Approach chosen here to use numbers to identify operations everywhere.
+WCF uses string method names to identify operations all over stack. WCF can encode this strings to numbers when creating message. WCF approach takes time in runtime. Approach chosen here to use numbers to identify operations everywhere.
 
 #### Message size
 Small messages are possible (e.g. less then 256 bytes size), e.g. next operation `Subscribe("GOOG, MSFT","EARNINGS,PRICE",new byte[]{100,200,300})` on the wire is as small as possible. ASCII chars in messages are possible.
@@ -182,3 +182,6 @@ Possibly to precompile serializers/proxy/stub is must for start up and performan
 * http://code.google.com/p/protobuf-csharp-rpc/
 * https://github.com/mono/mono/tree/master/mcs/class/System.ServiceModel
 * https://github.com/asd-and-Rizzo/ipc-win
+
+
+[1]: http://msdn.microsoft.com/en-us/library/windows/desktop/ms221233.aspx

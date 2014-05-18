@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 namespace AttributesLoadDll
 {
 	
-	public class MyClass
+	public class Program
 	{
 		public static void Main(){
 			Console.WriteLine("Started");

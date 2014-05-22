@@ -48,9 +48,6 @@
     <DefineConstants>TRACE;NET40</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
     <Compile Include="Client.cs" />
     <Compile Include="Hosting\ExplicitBytesClient.cs" />
     <Compile Include="Hosting\ExplicitBytesConstants.cs" />

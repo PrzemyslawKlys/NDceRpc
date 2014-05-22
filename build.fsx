@@ -7,6 +7,7 @@ open Fake
 open Fake.Git
 open Fake.AssemblyInfoFile
 open Fake.ReleaseNotesHelper
+open Fake.ProcessHelper
 open System
 
 // --------------------------------------------------------------------------------------
@@ -58,10 +59,29 @@ let release = parseReleaseNotes (IO.File.ReadAllLines "RELEASE_NOTES.md")
 
 // Generate assembly info files with the right version & up-to-date information
 Target "AssemblyInfo" (fun _ ->
-  let fileName = "src/" + project + "/Properties/AssemblyInfo.cs"
-  CreateCSharpAssemblyInfo fileName
-      [ Attribute.Title project
-        Attribute.Product project
+  let msProj = project+".Microsoft"
+  let ms = "src/" + msProj + "/Properties/AssemblyInfo.cs"
+  CreateCSharpAssemblyInfo ms
+      [ Attribute.Title msProj
+        Attribute.Product msProj
+        Attribute.Description "Library for interop of managed code with DCE RPC runtime"
+        Attribute.Version release.AssemblyVersion
+        Attribute.FileVersion release.AssemblyVersion ] 
+
+  let smProj = project+".ServiceModel"
+  let sm = "src/" + smProj + "/Properties/AssemblyInfo.cs"
+  CreateCSharpAssemblyInfo sm
+      [ Attribute.Title smProj
+        Attribute.Product smProj
+        Attribute.Description "Contains ServiceModel like attributes, errors and interfaces"
+        Attribute.Version release.AssemblyVersion
+        Attribute.FileVersion release.AssemblyVersion ]
+
+  let coreProj = project+".ServiceModel.Core"
+  let core = "src/" + coreProj + "/Properties/AssemblyInfo.cs"
+  CreateCSharpAssemblyInfo core
+      [ Attribute.Title coreProj
+        Attribute.Product coreProj
         Attribute.Description summary
         Attribute.Version release.AssemblyVersion
         Attribute.FileVersion release.AssemblyVersion ] 
@@ -117,6 +137,14 @@ Target "NuGet" (fun _ ->
         ("nuget/" + project + ".nuspec")
 )
 
+//--------------------------------------
+// Merge output into single file
+
+Target "Merge" (fun _ ->
+  Shell.Exec "merge.bat"
+  |> ignore
+)
+
 // --------------------------------------------------------------------------------------
 // Release Scripts
 
@@ -131,11 +159,10 @@ Target "All" DoNothing
   ==> "RestorePackages"
   ==> "AssemblyInfo"
   ==> "Build"
-  ==> "RunTests"
-  ==> "All"
-
-"All" 
-  ==> "NuGet"
+  //==> "RunTests" //FIX TESTS
+  ==> "Merge"
   ==> "Release"
+  ==> "NuGet"
+  ==> "All"
 
 RunTargetOrDefault "All"

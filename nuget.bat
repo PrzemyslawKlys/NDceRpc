@@ -12,6 +12,7 @@
 .nuget\nuget.exe install Unity.Interception -Version 2.1.505.2 -ExcludeVersion -OutputDirectory packages
 .nuget\nuget.exe install NSubstitute -ExcludeVersion -OutputDirectory packages
 .nuget\nuget.exe install NUnit -ExcludeVersion -OutputDirectory packages
+.nuget\nuget.exe install NUnit.Runners  -ExcludeVersion -OutputDirectory tools
 .nuget\nuget.exe install NStopwatch -ExcludeVersion -OutputDirectory packages
 
 :: for deployment

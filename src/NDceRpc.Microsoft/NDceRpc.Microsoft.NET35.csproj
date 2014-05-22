@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}</ProjectGuid>
     <OutputType>Library</OutputType>
-	<OutputPath>bin\NET35\</OutputPath>
-	<IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
+    <OutputPath>bin\NET35\</OutputPath>
+    <IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NDceRpc</RootNamespace>
@@ -46,9 +46,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
     <Compile Include="Client.cs" />
     <Compile Include="EndpointBindingInfo.cs" />
     <Compile Include="ErrorMessages.Designer.cs" />

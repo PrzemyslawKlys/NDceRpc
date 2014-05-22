@@ -88,9 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.2.cs" />
     <Compile Include="ServiceModel\AttributesReader.cs" />
     <Compile Include="ServiceModel\ChannelDispatcher.cs" />
     <Compile Include="ServiceModel\Channels\MessageEncoder.cs" />

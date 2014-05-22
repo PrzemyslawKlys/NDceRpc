@@ -26,4 +26,10 @@
       </group>
     </dependencies>
   </metadata>
+    	<files>		
+
+	  <file src="..\bin\Release\NET40\@project@.*" target="lib\NET40\" />
+	  <file src="..\bin\Release\NET35\@project@.*" target="lib\NET35\" />
+
+	</files>
 </package>

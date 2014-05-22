@@ -21,32 +21,32 @@ open System
 
 // The name of the project 
 // (used by attributes in AssemblyInfo, name of a NuGet package and directory in 'src')
-let project = "CommonLogFacade"
+let project = "NDceRpc"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "Minimalistic interface (no GC pressure, no stack walk, no custom enums,no formatting) log facade."
+let summary = "RPC based on .NET, MS-RPC, binary serialization and WCF"
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
 let description = """
-Minimalistic interface (no GC pressure, no stack walk, no custom enums,no formatting) log facade.
+RPC based on .NET, MS-RPC, binary serialization and WCF
 """
 // List of author names (for NuGet package)
 let authors = [ "Dzmitry Lahoda" ]
 // Tags for your project (for NuGet package)
-let tags = "logging common facade"
+let tags = "dce rpc interop wcf"
 
 // File system information 
-let solutionFile  = "CommonLogFacade"
+let solutionFile  = "NDceRpc"
 // Pattern specifying assemblies to be tested using NUnit
-let testAssemblies = "tests/**/bin/Release/NET40/*Tests*.dll"
+let testAssemblies = "tests/**/bin/Release/*Tests*.dll"
 
 // Git configuration (used for publishing documentation in gh-pages branch)
 // The profile where the project is posted 
 let gitHome = "https://github.com/OpenSharp"
 // The name of the project on GitHub
-let gitName = "CommonLogFacade"
+let gitName = "NDceRpc"
 
 // --------------------------------------------------------------------------------------
 // END TODO: The rest of the file includes standard build steps 

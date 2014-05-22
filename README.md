@@ -27,18 +27,22 @@ MS-PRC interop PIvokes calls are used to route data across processes. MS-RPC can
 
 #### Build
 
-Visual Studio 2010 is used to build solution. 
-All projects (32 bit, 64 bit, any CPU) are part of single Mixed Platforms solution.
-Build NDceRpc.sln in Release mode to get production build.
+Run [build.cmd](build.cmd) which runs Nuget.exe to download dependencies and FAKE to create package
+
+Can build [NDceRpc.sln](NDceRpc.sln) with SharpDevelop 4.x when Visual C++ redistributable and Windows SKD installed 
+
 
 #### How to migrate WCF interfaces and `ServiceOperation` with `DataContract`s
 
 * Mark service interface with new generated `[Guid("YOUR_GUID_HERE")]` additionally to `[ServiceContract]`
-* Mark all data objects with DataContract/DataMember(Order=X), e.g. MUST have Order defined.
-* No parameterless constructor support as with DataContractSerializer https://code.google.com/p/protobuf-net/issues/detail?id=399
+* Mark all `OperationContract` methods with `[DispId(Y)]`.  Othervice operations will have some generated identifiers. `DispId` provides direct user defined encoding eases debugging and that native part can interpret RPC calls.
+* Catch exceptions like CommunicationException from `NDceRpc.ServiceModel` instead of `System.ServiceModel`
+* Optionally use `[NDceRpc.ServiceModel.ServiceContractAttribute]`(and others) and throw `NDceRpc.ServiceModel.FaultException` from the to [get rid of WCF](research\AttributesLoadDll\readme.md). 
+
+* Mark all data objects with `DataContract`/`DataMember(Order=X)`, MUST have `Order` defined.
+* No parameterless constructor support as with `DataContractSerializer` https://code.google.com/p/protobuf-net/issues/detail?id=399
 * Protobuf spec does not distinguish empty collection and null you was used from XML DataContract serialization. Your code can fail receiving null instead of empty collection.
-* Mark all OperationContract methods with `[DispId(Y)]`.  Othervice operations will have some generated identifiers. DispId provides direct user defined encoding so that native part can interpret RPC calls.
-CLR has some method numbers encoding (`MemberInfo.MetadataToken`). It works only if assembly was build with the same version on the same machine. And fails if 2 assemblies of the same version with the same code contract is built on different machines. Will get different numbers on each side of communicated processes. Calls and callbacks will fail. Not used as identifier.
+
 
 Next test goes via RPC + Protobuf:
 

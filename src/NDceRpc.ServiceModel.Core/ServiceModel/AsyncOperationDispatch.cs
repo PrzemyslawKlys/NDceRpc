@@ -3,8 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-
-namespace NDceRpc.ServiceModel.Custom
+namespace NDceRpc.ServiceModel
 {
     internal class AsyncOperationDispatch : OperationDispatchBase
     {

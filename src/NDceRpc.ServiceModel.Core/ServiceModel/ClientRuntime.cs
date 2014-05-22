@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using NDceRpc.ExplicitBytes;
 using NDceRpc.Serialization;
 using NDceRpc.ServiceModel.Channels;
-using NDceRpc.ServiceModel.Custom;
 using NDceRpc.ServiceModel.Dispatcher;
 using Message = NDceRpc.ServiceModel.Channels.Message;
 using MessageEncoder = NDceRpc.ServiceModel.Channels.MessageEncoder;

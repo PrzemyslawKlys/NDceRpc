@@ -1,17 +1,20 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>NDceRpc</id>
-    <version>0.1.0.0</version>
+    <id>@project@</id>
+    <version>@build.number@</version>
     <authors>Dzmitry Lahoda</authors>
     <owners>dzmitry_lahoda</owners>
     <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>
-    <projectUrl>https://github.com/asd-and-Rizzo/NDceRpc</projectUrl>
-    <iconUrl>https://raw.github.com/asd-and-Rizzo/NDceRpc/master/doc/NDceRpc.png</iconUrl>
+    <projectUrl>https://github.com/OpenSharp/NDceRpc</projectUrl>
+    <iconUrl>https://raw.github.com/OpenSharp/NDceRpc/master/docs/files/ico.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Integration of WCF and .NET with MS-RPC and binary serialization. </description>
-	<releaseNotes>@releaseNotes@</releaseNotes>
-    <tags>dce rpc interop wcf</tags>
+    	
+	<summary>@summary@</summary>
+	<description>@description@</description>
+    <releaseNotes>@releaseNotes@</releaseNotes>
+    <tags>@tags@</tags>
+	
 	<dependencies>
 	  <group targetFramework="NET40">
 		<dependency id="protobuf-net" />

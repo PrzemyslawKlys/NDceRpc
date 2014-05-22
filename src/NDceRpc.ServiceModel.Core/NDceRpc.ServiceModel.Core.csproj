@@ -72,12 +72,12 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NDceRpc.ServiceModel.Protobuf.Serializers, Version=0.0.0.0, Culture=neutral, PublicKeyToken=7ef76aa0ad6f5cef, processorArchitecture=MSIL">
+    <Reference Include="NDceRpc.ServiceModel.Protobuf.Serializers">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Debug\NET40\NDceRpc.ServiceModel.Protobuf.Serializers.dll</HintPath>
+      <HintPath>..\..\bin\$(Configuration)\NET40\NDceRpc.ServiceModel.Protobuf.Serializers.dll</HintPath>
     </Reference>
-    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\packages\protobuf-net\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -95,11 +95,10 @@
     <Compile Include="ServiceModel\ChannelDispatcher.cs" />
     <Compile Include="ServiceModel\Channels\MessageEncoder.cs" />
     <Compile Include="ServiceModel\Channels\MessageVersion.cs" />
-    <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
+    <Compile Include="ServiceModel\AsyncOperationDispatch.cs" />
     <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
     <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
     <Compile Include="ServiceModel\ChannelFactory.cs" />
-    <Compile Include="ServiceModel\Custom\PipeServer.cs" />
     <Compile Include="ServiceModel\Description\IEndpointBehavior.cs" />
     <Compile Include="ServiceModel\Dispatcher\IClientMessageInspector.cs" />
     <Compile Include="ServiceModel\DispatchTable.cs" />
@@ -154,7 +153,6 @@
     <None Include="..\..\NDceRpc.snk">
       <Link>NDceRpc.snk</Link>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

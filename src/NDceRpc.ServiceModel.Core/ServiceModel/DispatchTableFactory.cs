@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using NDceRpc.ServiceModel.Custom;
 
 namespace NDceRpc.ServiceModel
 {
@@ -36,8 +35,11 @@ namespace NDceRpc.ServiceModel
             }
         }
 
-  
 
+        //CLR has some method numbers encoding  MemberInfo.MetadataToken.
+        //It works only if assembly was build with the same version on the same machine.
+        //And fails if 2 assemblies of the same version with the same code contract is built on different machines. 
+        //Will get different numbers on each side of communicated processes. Calls and callbacks will fail. Not used as identifier.
         private static int createIdentifier(MethodInfo info, int orderNumber)
         {
             int identifier = DEFAULT_ID_SHIFT + orderNumber;

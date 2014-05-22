@@ -210,7 +210,7 @@ namespace NDceRpc.ServiceModel.Sample
         {
             string address = _base + typeOfService.Name;
             var srv = new CallbackService(new CallbackData {Data = "Hello from Server"});
-            var server = new ServiceHost(srv, address);
+            var server = new ServiceHost(srv, new Uri(address));
             server.AddServiceEndpoint(typeOfService, _binding, address);
             server.Open();
             ConsoleEx.SrvWriteLine("Server started :" + address);

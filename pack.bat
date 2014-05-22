@@ -1,1 +1,0 @@
-packages\Nuget\nuget.exe pack packaging\NDceRpc.nuspec

@@ -1,58 +1,176 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{6F44BBCF-8C7C-4902-9CCC-E011BD580C51}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E2CB913-5E64-436A-ADDD-6E3028F797F1}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NDceRpc</RootNamespace>
     <AssemblyName>NDceRpc.ServiceModel.Core</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <NoWin32Manifest>False</NoWin32Manifest>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <NoStdLib>False</NoStdLib>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <IntermediateOutputPath>obj\$(Configuration)\NET40</IntermediateOutputPath>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\NDceRpc.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkProfile />
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\NET40</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\Debug\NDceRpc.ServiceModel.Core.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\Debug\NET40\NDceRpc.ServiceModel.Core.XML</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <BaseAddress>4194304</BaseAddress>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <FileAlignment>4096</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\..\build\Debug\</OutputPath>
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>Full</DebugType>
-    <Optimize>False</Optimize>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <BaseIntermediateOutputPath>obj\NET40</BaseIntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\..\build\Release\</OutputPath>
-    <DebugSymbols>False</DebugSymbols>
-    <DebugType>None</DebugType>
-    <Optimize>True</Optimize>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseIntermediateOutputPath>obj\NET40</BaseIntermediateOutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\NET40</OutputPath>
+    <DefineConstants>TRACE;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\bin\Release\NET40\NDceRpc.ServiceModel.Core.XML</DocumentationFile>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
+    <CodeContractsSuggestEnsures>False</CodeContractsSuggestEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NDceRpc.ServiceModel.Protobuf.Serializers, Version=0.0.0.0, Culture=neutral, PublicKeyToken=7ef76aa0ad6f5cef, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Debug\NET40\NDceRpc.ServiceModel.Protobuf.Serializers.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="ServiceModel\AttributesReader.cs" />
+    <Compile Include="ServiceModel\ChannelDispatcher.cs" />
+    <Compile Include="ServiceModel\Channels\MessageEncoder.cs" />
+    <Compile Include="ServiceModel\Channels\MessageVersion.cs" />
+    <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
+    <Compile Include="ServiceModel\Channels\NdrMessageEncodingBindingElement.cs" />
+    <Compile Include="ServiceModel\Channels\ProtobufMessageEncodingBindingElement .cs" />
+    <Compile Include="ServiceModel\ChannelFactory.cs" />
+    <Compile Include="ServiceModel\Custom\PipeServer.cs" />
+    <Compile Include="ServiceModel\Description\IEndpointBehavior.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IClientMessageInspector.cs" />
+    <Compile Include="ServiceModel\DispatchTable.cs" />
+    <Compile Include="ServiceModel\ExceptionHandler.cs" />
+    <Compile Include="ServiceModel\LocalBinding.cs" />
+    <Compile Include="ServiceModel\NetTcpBinding.cs" />
+    <Compile Include="ServiceModel\OperationDispatchBase.cs" />
+    <Compile Include="ServiceModel\DispatchTableFactory.cs" />
+    <Compile Include="ServiceModel\EndpointMapper.cs" />
+    <Compile Include="ServiceModel\GuidUtility.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IErrorHandler.cs" />
+    <Compile Include="ServiceModel\RpcTrace.cs" />
+    <Compile Include="ServiceModel\Tasks.cs" />
+    <Compile Include="ServiceModel\TransportFactory.cs" />
+    <Compile Include="ServiceModel\RpcServiceDefaults.cs" />
+    <Compile Include="ServiceModel\OperationDispatch.cs" />
+    <Compile Include="ServiceModel\CompiledDispatchTable.cs" />
+    <Compile Include="ServiceModel\Binding.cs" />
+    <Compile Include="ServiceModel\RpcCallbackChannelFactory.cs" />
+    <Compile Include="ServiceModel\CallbackServiceHost.cs" />
+    <Compile Include="ServiceModel\ChannelFactoryGeneric.cs" />
+    <Compile Include="ServiceModel\DuplexChannelFactory.cs" />
+    <Compile Include="ServiceModel\InstanceContext.cs" />
+    <Compile Include="ServiceModel\NetNamedPipeBinding.cs" />
+    <Compile Include="ServiceModel\OperationContext.cs" />
+    <Compile Include="ServiceModel\ServiceEndpoint.cs" />
+    <Compile Include="ServiceModel\ServiceHost.cs" />
+    <Compile Include="ServiceModel\ParameterDispatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceModel\AllEnums.cs" />
-    <Compile Include="ServiceModel\OperationContractAttribute.cs" />
-    <Compile Include="ServiceModel\ServiceContractAttribute.cs" />
+    <Compile Include="ServiceModel\RpcEndpointDispatcher.cs" />
+    <Compile Include="ServiceModel\ClientRuntime.cs" />
+    <Compile Include="ServiceModel\ServiceHostBase.cs" />
+    <Compile Include="ServiceModel\EndpointDispatcher.cs" />
+    <Compile Include="ServiceModel\Transports.cs" />
+    <Compile Include="ServiceModel\DipatchTableHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ServiceModel" />
+    <ProjectReference Include="..\NDceRpc.Microsoft\NDceRpc.Microsoft.csproj">
+      <Project>{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}</Project>
+      <Name>NDceRpc.Microsoft</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NDceRpc.ServiceModel.Protobuf\NDceRpc.ServiceModel.Protobuf.csproj">
+      <Project>{C5FE9181-0F91-4868-A886-D573BBB4251A}</Project>
+      <Name>NDceRpc.ServiceModel.Protobuf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NDceRpc.ServiceModel\NDceRpc.ServiceModel.csproj">
+      <Project>{6F44BBCF-8C7C-4902-9CCC-E011BD580C51}</Project>
+      <Name>NDceRpc.ServiceModel</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\NDceRpc.snk">
+      <Link>NDceRpc.snk</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>::cd $(ProjectDir)
+::C:\ci\co\CommonOffice\src\NDceRpc\tools\protobuf-net-VS9\protogen.exe  -i:"$(ProjectDir)Messages.proto" -o:"$(ProjectDir)Messages.proto.cs" -p:datacontract</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

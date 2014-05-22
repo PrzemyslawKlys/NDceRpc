@@ -7,6 +7,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}</ProjectGuid>
     <OutputType>Library</OutputType>
+	<OutputPath>bin\NET35\</OutputPath>
+	<IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NDceRpc</RootNamespace>
     <AssemblyName>NDceRpc.Microsoft</AssemblyName>
@@ -17,21 +20,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\NET35\Debug\</OutputPath>
+    <OutputPath>..\..\bin\Debug\NET35\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\NET35\Debug\NDceRpc.Microsoft.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\Debug\NET35\NDceRpc.Microsoft.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\build\NET35\Release\</OutputPath>
+    <OutputPath>..\..\bin\Release\NET35\</OutputPath>
     <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\build\NET35\Release\NDceRpc.Microsoft.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\Release\NET35\NDceRpc.Microsoft.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

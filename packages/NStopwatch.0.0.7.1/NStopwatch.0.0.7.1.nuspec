@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NStopwatch</id>
+    <version>0.0.7.1</version>
+    <authors>Dzmitry Lahoda</authors>
+    <owners>Dzmitry Lahoda</owners>
+    <licenseUrl>http://creativecommons.org/publicdomain/zero/1.0/</licenseUrl>
+    <projectUrl>https://github.com/asd-and-Rizzo/NStopwatch</projectUrl>
+    <iconUrl>https://raw.github.com/asd-and-Rizzo/NStopwatch/master/doc/NStopwatch_icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>CLR library to do performance measurements and microbenchmarks in automated tests and scripts</description>
+    <releaseNotes>* 0.0.7.1
+	- rename solution (MeasureIt replaced with NStopwatch).
+	* 0.0.6.0
+	- refactored API to be clear about number of loops done
+	* 0.0.5.6
+	- AnyCPU build
+	- improvied support for expression to meaningfull string
+	- improved assertability
+	* 0.0.5.5
+    - Initial relese for ease of reuse in my other projects.</releaseNotes>
+    <tags>performance test stopwatch measurment</tags>
+    <references>
+      <reference file="NStopwatch.dll" />
+    </references>
+  </metadata>
+</package>

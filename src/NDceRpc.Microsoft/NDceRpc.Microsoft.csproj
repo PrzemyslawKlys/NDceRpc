@@ -14,10 +14,10 @@
     <FileAlignment>512</FileAlignment>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>bin\NET40\</OutputPath>
     <IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
-    <DefineConstants>NET35;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -35,14 +35,14 @@
     <Optimize>False</Optimize>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <OutputPath>..\..\build\Debug\</OutputPath>
-    <DocumentationFile>..\..\build\Debug\NDceRpc.Microsoft.xml</DocumentationFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>..\..\bin\Debug\NET40</OutputPath>
+    <DocumentationFile>..\..\bin\Debug\NET40\NDceRpc.Microsoft.xml</DocumentationFile>
+    <DefineConstants>TRACE;NET40</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Optimize>True</Optimize>
-    <OutputPath>..\..\build\Release\</OutputPath>
-    <DocumentationFile>..\..\build\Release\NDceRpc.Microsoft.xml</DocumentationFile>
+    <OutputPath>..\..\bin\Release\NET40\</OutputPath>
+    <DocumentationFile>..\..\bin\Release\NET40\NDceRpc.Microsoft.xml</DocumentationFile>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DefineConstants>TRACE;NET40</DefineConstants>

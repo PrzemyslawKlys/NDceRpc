@@ -16,3 +16,5 @@ Release
 *.zip
 *.mdf
 *.log
+test-results
+TestResutlts

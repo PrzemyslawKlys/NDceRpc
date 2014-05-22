@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NStopwatch</name>
+    </assembly>
+    <members>
+        <member name="T:NStopwatch.SpeedTestEnvironment">
+            <summary>
+            Instance of this class represents environment where test was conducted and 
+            atached to test <see cref="!:SpeedTestResult"/>.
+            </summary>
+            <remarks>
+            See <see cref="T:System.Environment"/>.
+            </remarks>
+        </member>
+        <member name="T:NStopwatch.SpeedTestResult`1">
+            <summary>
+            Rerpesent time measurment of running some method several times, incudes statistical and environment data.
+            </summary>
+            <typeparam name="TEnvironment">Stores info about environmnet of test (e.g. operatins system version).</typeparam>
+        </member>
+        <member name="M:NStopwatch.SpeedTestResult`1.#ctor(NStopwatch.SpeedTestItemInfo,System.TimeSpan,System.Int32,`0,System.Int64)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="time"></param>
+            <param name="shuffles"></param>
+            <param name="environment"></param>
+            <param name="repeats">Number of times inner loop was run, used to do right averaging</param>
+        </member>
+        <member name="T:NStopwatch.FirstCallTester">
+            <summary>
+            Good to measure scenarios start up scenarios, or when first call can be long, or cache is involved.
+            Thread unsafe.
+            </summary>
+        </member>
+        <member name="T:NStopwatch.CompositeSpeedTester">
+            <summary>
+            Runs speed bucket of test several times in order to make speed tests more statistially indpendant of random fluctioations.
+            </summary>
+        </member>
+        <member name="P:NStopwatch.CompositeSpeedTester.Entities">
+            <summary>
+            Test
+            </summary>
+        </member>
+        <member name="F:NStopwatch.SpeedTester.DEFAULT_NUMBER_OF_REPEATS">
+            <summary>
+            How many times the same action is perfromed in a loop by default.
+            </summary>
+        </member>
+        <member name="F:NStopwatch.SpeedTester.DEFAULT_NUMBER_OF_SHUFFLES">
+            <summary>
+            How many times to shuffle and run inner tests by default.
+            </summary>
+        </member>
+        <member name="T:NStopwatch.SpeedTesting">
+            <summary>
+            Runs tests shuffled several times in order to make speed tests more statistially indpendant of random fluctioations.
+            </summary>
+        </member>
+        <member name="M:NStopwatch.SpeedTesting.Do(System.IO.TextWriter,System.Int32,System.Int64,System.Linq.Expressions.Expression{NStopwatch.SpeedTestLoop}[])">
+            <summary>
+            Runs speed tests, shuffles invocation, does reports.
+            </summary>
+            <param name="output">The output where results are written after tests done.</param>
+            <param name="shuffles">The random shuffles made.</param>
+            <param name="repeats">Number for measurable iterations done by inner fast loop.</param>
+            <param name="methodsToTest">The methods to test, each method receives <paramref name="repeats"/> as argument.</param>
+            <returns>
+            An array of results.
+            </returns>
+        </member>
+        <member name="T:NStopwatch.ExpressIt">
+            <summary>
+            Creates "statically typed" automatically inferred string representations of properties,variables and methods.
+            </summary>
+            <remarks>
+            Degrades performance if called frequently.
+            </remarks>
+        </member>
+        <member name="M:NStopwatch.ExpressIt.WriteLine``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+             Writes expression as variable/property name or method representation with it's string value to console. 
+             Appends new line after.
+            </summary>
+             <example>
+             string toWriteLine = "Value";
+             ExpressIt.WriteLine(() => toWriteLine); // toWriteLine = Value
+             </example>
+        </member>
+        <member name="M:NStopwatch.ExpressIt.ToRepr``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+             Converts expression to variable/property/method representation adding it's string value.
+            </summary>
+             <example>
+             string toNameValueRepresentation = "Value";
+             ToRepr(() => toNameValueRepresentation); // "toNameValueRepresentation = Value"
+             </example>
+        </member>
+        <member name="M:NStopwatch.ExpressIt.ToReprs(System.Linq.Expressions.Expression{System.Func{System.Object}}[])">
+            <summary>
+             Converts expressions to variable/property/method representations adding its' string values.
+             Separates expressions by <see cref="F:NStopwatch.ExpressIt.DEFAULT_ITEMS_DELIMETER"/>.
+            </summary>
+        </member>
+        <member name="M:NStopwatch.ExpressIt.ToName``1(System.Linq.Expressions.Expression{System.Func{``0}})">
+            <summary>
+            Gets property, variable or method name from lambda expression.
+            </summary>
+            <param name="expression"></param>
+            <returns></returns>
+            <example>
+            var example = "some text";
+            var name = toName( () => example);  // "example"
+            </example>
+        </member>
+        <member name="M:NStopwatch.ExpressIt.GetProperties(System.Object)">
+            <summary>
+            Gets dictionary of string representation of all object's properties.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:NStopwatch.SpeedTestLoop">
+            <summary>
+            Delegate which is considered to loop <paramref name="repeats"/> times inside.
+            </summary>
+            <param name="repeats"></param>
+        </member>
+        <member name="T:NStopwatch.Reportwatch">
+             <summary>
+             
+             </summary>
+            <seealso href="http://code.google.com/p/cpp-stopwatch/"/>
+        </member>
+        <member name="T:NStopwatch.ParallelSpeedTester">
+            <summary>
+            Does speed testing running in paraller threads. Uses N-1 of hardware threads awailable by default.
+            </summary>
+        </member>
+        <member name="F:NStopwatch.ReportwatchLangs.Text">
+            <summary>
+            Default
+            </summary>
+        </member>
+        <member name="T:NStopwatch.SpeedTestItemInfo">
+            <summary>
+            User friendly desciptions of test.
+            </summary>
+        </member>
+    </members>
+</doc>

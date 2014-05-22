@@ -1,6 +1,5 @@
 :: downloads dependencies used
 
-nuget\nuget.exe install protobuf-net
 
 :: for .NET 3.5
 nuget\nuget.exe install CodeContracts.Unofficial

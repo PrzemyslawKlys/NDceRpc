@@ -17,6 +17,7 @@ Unix also has Dce/Rpc implementation compatible in main use cases with MS Window
 * Is gentle request to MS to create such tech which suits 
 * Binary serialization is main target to support.
 * Is small lib, or set of small libs for separate deployment against System.ServiceModel.dll
+* Uses URI or namespaces instead of GUIDs where possible
 
 #### Low level
 Mono and protobuf-net is used for replacing WCF in C# over RPC. Moving WCF toward C++ interop because RPC and protobuf are ready for C++. Mono like layer proxies service calls coding/decoding of WCF interfaces into RPC calls, data is serialized via protobuf.
@@ -174,6 +175,8 @@ Possibly to precompile serializers/proxy/stub is must for start up and performan
 * Implement fully managed IPC COM above RPC with custom event queue (message pump)
 * Implemented fully managed C# RPC runtime
 * Implement custom C++ RPC runtime
+* added next sample but using RPC http://blogs.msdn.com/b/changov/archive/2009/10/26/hosting-wpf-ui-cross-thread-and-cross-process.aspx
+* adde event bus sample
 
 ### Related
 

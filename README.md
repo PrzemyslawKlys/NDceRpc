@@ -27,7 +27,7 @@ MS-PRC interop PIvokes calls are used to route data across processes. MS-RPC can
 
 #### Build
 
-Run [build.cmd](build.cmd) which runs Nuget.exe to download dependencies and FAKE to create package
+Run [build.cmd Nuget](build.cmd) which runs Nuget.exe to download dependencies and FAKE to create package
 
 Can build [NDceRpc.sln](NDceRpc.sln) with SharpDevelop 4.x when Visual C++ redistributable and Windows SKD installed 
 

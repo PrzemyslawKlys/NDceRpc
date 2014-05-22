@@ -113,7 +113,7 @@
     <Compile Include="ServiceModel\Dispatcher\IErrorHandler.cs" />
     <Compile Include="ServiceModel\RpcTrace.cs" />
     <Compile Include="ServiceModel\Tasks.cs" />
-    <Compile Include="ServiceModel\TransportFactory.cs" />
+    <Compile Include="ServiceModel\RpcRequestReplyChannelFactory.cs" />
     <Compile Include="ServiceModel\RpcServiceDefaults.cs" />
     <Compile Include="ServiceModel\OperationDispatch.cs" />
     <Compile Include="ServiceModel\CompiledDispatchTable.cs" />

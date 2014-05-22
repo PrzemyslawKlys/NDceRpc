@@ -79,7 +79,6 @@
     <Compile Include="ServiceModel\ClientRuntime.cs" />
     <Compile Include="ServiceModel\CompiledDispatchTable.cs" />
     <Compile Include="ServiceModel\Custom\AsyncOperationDispatch.cs" />
-    <Compile Include="ServiceModel\Custom\PipeServer.cs" />
     <Compile Include="ServiceModel\Description\IEndpointBehavior.cs" />
     <Compile Include="ServiceModel\DipatchTableHelper.cs" />
     <Compile Include="ServiceModel\Dispatcher\IClientMessageInspector.cs" />
@@ -101,13 +100,13 @@
     <Compile Include="ServiceModel\ParameterDispatch.cs" />
     <Compile Include="ServiceModel\RpcCallbackChannelFactory.cs" />
     <Compile Include="ServiceModel\RpcEndpointDispatcher.cs" />
+    <Compile Include="ServiceModel\RpcRequestReplyChannelFactory.cs" />
     <Compile Include="ServiceModel\RpcServiceDefaults.cs" />
     <Compile Include="ServiceModel\RpcTrace.cs" />
     <Compile Include="ServiceModel\ServiceEndpoint.cs" />
     <Compile Include="ServiceModel\ServiceHost.cs" />
     <Compile Include="ServiceModel\ServiceHostBase.cs" />
     <Compile Include="ServiceModel\Tasks.cs" />
-    <Compile Include="ServiceModel\TransportFactory.cs" />
     <Compile Include="ServiceModel\Transports.cs" />
   </ItemGroup>
   <ItemGroup>

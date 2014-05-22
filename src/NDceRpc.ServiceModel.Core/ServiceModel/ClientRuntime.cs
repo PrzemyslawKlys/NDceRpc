@@ -77,7 +77,7 @@ namespace NDceRpc.ServiceModel
             //TODO: allow to be initialized with pregenerated proxy
             var realProxy = new RpcRealProxy(_typeOfService, this, _endpoint,_encoder);
             _remote = realProxy.GetTransparentProxy();
-            _client = TransportFactory.CreateClient(_binding, _uuid, _address);
+            _client = RpcRequestReplyChannelFactory.CreateClient(_binding, _uuid, _address);
             foreach (var behavior in _endpoint.Behaviors)
             {
                 behavior.ApplyClientBehavior(_endpoint, this);

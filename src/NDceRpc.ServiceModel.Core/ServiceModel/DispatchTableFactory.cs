@@ -11,7 +11,7 @@ namespace NDceRpc.ServiceModel
     internal static class DispatchTableFactory
     {
         /// like http://msdn.microsoft.com/en-us/library/windows/desktop/aa367040.aspx
-        private const int DEFAULT_ID_SHIFT = 0x60020000;
+        internal const int DEFAULT_ID_SHIFT = 0x60020000;
 
         private static Dictionary<Type, DispatchTable> _cache = new Dictionary<Type, DispatchTable>();
         private static Dictionary<Type, DispatchTable> Cache

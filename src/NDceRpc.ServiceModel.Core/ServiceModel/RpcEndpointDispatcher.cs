@@ -168,7 +168,7 @@ namespace NDceRpc.ServiceModel
                                 throw new NotImplementedException(
                                     string.Format("ConcurrencyMode {0} is note implemented", _concurrency));
                             };
-                        _host = TransportFactory.CreateHost(_endpoint._binding, _endpoint._address, _endpoint._uuid);
+                        _host = RpcRequestReplyChannelFactory.CreateHost(_endpoint._binding, _endpoint._address, _endpoint._uuid);
 
 
                         _host.OnExecute += onExecute;

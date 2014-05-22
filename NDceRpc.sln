@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.Microsoft.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Core", "src\NDceRpc.ServiceModel.Core\NDceRpc.ServiceModel.Core.csproj", "{9E2CB913-5E64-436A-ADDD-6E3028F797F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Tests", "tests\NDceRpc.ServiceModel.Tests\NDceRpc.ServiceModel.Tests.csproj", "{FE432F2C-E8E8-412B-9E36-D041C7ECE948}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Core.Tests", "tests\NDceRpc.ServiceModel.Core.Tests\NDceRpc.ServiceModel.Core.Tests.csproj", "{FE432F2C-E8E8-412B-9E36-D041C7ECE948}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF.Tests", "tests\WCF.Tests\WCF.Tests.csproj", "{26699D7B-547D-4B84-9DA8-D5753377ACCA}"
 EndProject
@@ -68,6 +68,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8E7AFB6D-B36B-4AE7-8B34-E41C6FBFD235}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.NET35", "src\NDceRpc.ServiceModel\NDceRpc.ServiceModel.NET35.csproj", "{ED8E992C-05C3-4B98-B71B-10320332BE62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NDceRpc.ServiceModel.Tests", "tests\NDceRpc.ServiceModel.Tests\NDceRpc.ServiceModel.Tests.csproj", "{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EE144BD8-AFEF-4798-ACB2-6C330200DEB2}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -379,6 +386,18 @@ Global
 		{ED8E992C-05C3-4B98-B71B-10320332BE62}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ED8E992C-05C3-4B98-B71B-10320332BE62}.Release|Win32.ActiveCfg = Release|Any CPU
 		{ED8E992C-05C3-4B98-B71B-10320332BE62}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Release|Win32.ActiveCfg = Release|Any CPU
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -401,5 +420,6 @@ Global
 		{B54F506E-35D7-4AF7-9F51-A996F4814A62} = {8E7AFB6D-B36B-4AE7-8B34-E41C6FBFD235}
 		{628323B0-1142-45E2-AE24-7A86BDE1010D} = {8E7AFB6D-B36B-4AE7-8B34-E41C6FBFD235}
 		{197601FB-7E62-47DA-8E48-B56C9AD5DF20} = {8E7AFB6D-B36B-4AE7-8B34-E41C6FBFD235}
+		{CA8A5BB0-3298-4417-9F23-5270D9B0D8C2} = {8E7AFB6D-B36B-4AE7-8B34-E41C6FBFD235}
 	EndGlobalSection
 EndGlobal

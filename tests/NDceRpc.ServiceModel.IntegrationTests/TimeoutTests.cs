@@ -31,7 +31,7 @@ namespace NDceRpc.ServiceModel.IntegrationTests
         }
 
 
-
+        // http://msdn.microsoft.com/en-gb/library/windows/desktop/aa374379.aspx
         [Test]
         public void TestTimeoutSet()
         {

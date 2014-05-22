@@ -8,7 +8,7 @@ namespace NDceRpc.ServiceModel.Core.Tests
     public class ErrorHandlingTests
     {
         [Test]
-        public void ServerAncClientExceptions()
+        public void ServerAndClientExceptions()
         {
             var address = @"net.pipe://127.0.0.1/test" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             var serv = new ExceptionService();

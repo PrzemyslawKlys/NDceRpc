@@ -35,7 +35,7 @@ namespace NDceRpc.ServiceModel
             _syncContext = syncContext;
         }
 
-        private Message InvokeContract(IRpcCallInfo call, MessageRequest request, Type contractType)
+        private Message invokeContract(IRpcCallInfo call, MessageRequest request, Type contractType)
         {
             OperationDispatchBase operation;
             bool operationExists = _operations.IdToOperation.TryGetValue(request.Operation, out operation);
@@ -54,10 +54,10 @@ namespace NDceRpc.ServiceModel
                     {
                         lock (this)
                         {
-                            return InvokeContract(operation, request);
+                            return invokeContract(operation, request);
                         }
                     }
-                    return InvokeContract(operation, request);
+                    return invokeContract(operation, request);
                 };
             if (operation.Operation.IsOneWay)
             {
@@ -71,7 +71,7 @@ namespace NDceRpc.ServiceModel
             }
         }
 
-        private Message InvokeContract(OperationDispatchBase operation, MessageRequest request)
+        private Message invokeContract(OperationDispatchBase operation, MessageRequest request)
         {
             var args = deserializeMessageArguments(request, operation);
             if (operation is AsyncOperationDispatch)
@@ -188,7 +188,7 @@ namespace NDceRpc.ServiceModel
         public byte[] Invoke(IRpcCallInfo call, Type contractType, byte[] arg)
         {
             var messageRequest = (MessageRequest)_encoder.ReadObject(new MemoryStream(arg), typeof(MessageRequest));
-            Message response = InvokeContract(call, messageRequest, contractType);
+            Message response = invokeContract(call, messageRequest, contractType);
             var stream = new MemoryStream();
             _encoder.WriteObject(stream, response);
             return stream.ToArray();

@@ -89,7 +89,7 @@ namespace NDceRpc.ServiceModel.Core.Tests
     {
         public void ProvideFault(Exception error, NDceRpc.ServiceModel.Channels.MessageVersion version, ref NDceRpc.ServiceModel.Channels.Message fault)
         {
-            if (error is FaultException)
+            if (!HandleError(error))
             {
                 return;
             }
@@ -98,12 +98,12 @@ namespace NDceRpc.ServiceModel.Core.Tests
             serializer.Serialize(stream, error);
             stream.Position = 0;
             fault.Fault.Detail = stream.ToArray();
-
         }
 
         public bool HandleError(Exception error)
         {
-            return !(error is FaultException);
+            // uses string instead of equality to handle with pure WCF faults
+            return !(error.GetType().FullName.Contains("ServiceModel.FaultException"));
         }
     }
 

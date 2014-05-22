@@ -1,0 +1,22 @@
+!include <win32.mak>
+LIBMBA=..\libmba-0.8.10
+cflags=$(cflags) /I$(LIBMBA)\src /MDd /GZ /Gm /ZI /Od /D_DEBUG /DWIN32 /D_UNICODE /DUNICODE /D_WINDOWS /D_USRDLL
+lflags=/nologo /debug /pdbtype:sept
+objs=src\idlc.obj src\tok.obj src\parse.obj src\sym.obj src\preprocw.obj src\emit_stub_java.obj
+
+idlc.exe: $(objs)
+	$(link) $(lflags) /out:$@ $(objs) $(LIBMBA)/libmba.lib
+
+.c.obj:
+	$(cc) $(cflags) /Fo$@ $*.c
+
+idltest.h idltest_c.c idltest_s.c: idltest.idl idltest.acf
+    midl /client stub /Os /oldtlb /no_format_opt idltest.idl
+
+clean:
+	-del idlc.exe
+	-del src\*.obj
+	-del *.ilk
+	-del *.pdb
+	-del *.idb
+

@@ -1,0 +1,18 @@
+interface tmp
+{
+	import "foo.idl";
+
+	typedef int i32;
+
+	struct estr {
+		int i;
+		i32 j;
+		f0 st;
+	};
+
+	typedef struct {
+		int i;
+		i32 j;
+		f0 st;
+	} fstr;
+}

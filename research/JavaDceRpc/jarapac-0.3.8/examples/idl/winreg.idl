@@ -1,0 +1,37 @@
+[
+	uuid(338cd001-2244-31f1-aaaa-900038001003),
+	version(1.0)
+]
+interface winreg
+{
+	import "rpc.idl";
+
+	typedef struct {
+		uint16_t unknown0;
+		uint16_t unknown1;
+	} RegOpenUnknown;
+
+	[op(0x02)]
+	int RegOpenHKLM([in,unique] RegOpenUnknown *unknown,
+			[in] uint32_t access_mask,
+			[out] policy_handle *handle);
+
+	[op(0x0f)]
+	int RegOpenKey([in] policy_handle *key,
+			[in] unicode_string *sub_key,
+			[in] uint32_t options, /* Reserved; must be zero */
+			[in] uint32_t desired,            /* Access mask */
+			[out] policy_handle *result);
+
+	[op(0x05)]
+	int RegCloseKey([in,out] policy_handle *handle);
+
+	[op(0x11)]
+	int RegQueryValue([in] policy_handle *handle,
+			[in] unicode_string *value_name,
+			[in,out,unique] uint32_t *type,
+			[in,out,size_is(*size),length_is(*length),unique] uint8_t *data,
+			[in,out,unique] uint32_t *size,
+			[in,out,unique] uint32_t *length);
+
+}

@@ -1,0 +1,129 @@
+[
+  uuid("60a15ec5-4de8-11d7-a637-005056a20182"),
+  endpoint("ncacn_np:[\\pipe\\rpcecho]", "ncacn_ip_tcp:", "ncalrpc:"),
+  version(1.0),
+  helpstring("Simple echo pipe")
+]
+interface rpcecho
+{
+	typedef unsigned char char_t;
+	typedef unsigned char uint8;
+	typedef unsigned short uint16;
+	typedef unsigned int uint32;
+	typedef unsigned long long HYPER_T;
+
+	typedef struct {
+		uint32 v;
+	} NTSTATUS;
+
+	/* Add one to an integer */
+	void echo_AddOne(
+		[in,out] uint32 *v
+	);
+	/* Echo an array of bytes back at the caller */
+	void echo_EchoData(
+		[in] uint32 len,
+		[in] [size_is(len)] uint8 *in_data,
+		[out] [size_is(len)] uint8 out_data[]
+	);
+	/* Sink data to the server */
+	void echo_SinkData(
+		[in] uint32 len,
+		[in,size_is(len)] uint8 *data
+	);
+	/* Source data from server */
+	void echo_SourceData(
+		[in] uint32 len,
+		[out,size_is(len)] uint8 *data
+	);
+
+
+	/* test strings */
+ 	void echo_TestCall (
+		[in,string,unique] wchar_t *s1,
+		[out,string,unique] wchar_t *s2
+    /* Note an [out] only string will not compile with MIDL. */
+ 		);
+
+
+	/* test some alignment issues */
+	typedef struct {
+		uint8 v;
+	} echo_info1;
+
+	typedef struct {
+		uint16 v;
+	} echo_info2;
+
+	typedef struct {
+		uint32 v;
+	} echo_info3;
+
+	typedef struct {
+		HYPER_T v;
+	} echo_info4;
+
+	typedef struct {
+		uint8 v1;
+		HYPER_T v2;
+	} echo_info5;
+
+	typedef struct {
+		uint8 v1;
+		echo_info1 info1;
+	} echo_info6;
+
+	typedef union {
+		[case(1)]  echo_info1 info1;
+	} echo_XXX;
+
+	typedef struct {
+		uint8 v1;
+		echo_info4 info4;
+	} echo_info7;
+
+	typedef union {
+		[case(1)]  echo_info1 info1;
+		[case(2)]  echo_info2 info2;
+		[case(3)]  echo_info3 info3;
+		[case(4)]  echo_info4 info4;
+		[case(5)]  echo_info5 info5;
+		[case(6)]  echo_info6 info6;
+		[case(7)]  echo_info7 info7;
+	} echo_Info;
+
+	NTSTATUS echo_TestCall2 (
+		     [in]                    uint16 level,
+		     [out,unique,switch_is(level)]  echo_Info *info
+		);
+
+	uint32 echo_TestSleep(
+		[in] uint32 seconds
+		);
+
+	typedef enum {
+		ECHO_ENUM1 = 1,
+		ECHO_ENUM2 = 2
+	} echo_Enum1;
+
+	typedef [v1_enum] enum {
+		ECHO_ENUM1_32 = 1,
+		ECHO_ENUM2_32 = 2
+	} echo_Enum1_32;
+
+	typedef struct {
+		echo_Enum1 e1;
+		echo_Enum1_32 e2;
+	} echo_Enum2;
+
+	typedef union {
+		[case(ECHO_ENUM1)] echo_Enum1 e1;
+		[case(ECHO_ENUM2)] echo_Enum2 e2;
+	} echo_Enum3;
+
+	void echo_TestEnum(
+		[in,out] echo_Enum1 *foo1,
+		[in,out] echo_Enum2 *foo2,
+		[in,out,switch_is(*foo1)] echo_Enum3 *foo3
+		);
+}

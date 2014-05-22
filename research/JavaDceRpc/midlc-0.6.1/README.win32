@@ -1,0 +1,5 @@
+The preprocw.c file is not implemented so there's no preprocessing.
+
+Also, _DATADIR needs to be defined to point to the directory containing
+the primative symbol table. This should be easy to hack around but not
+today :-(

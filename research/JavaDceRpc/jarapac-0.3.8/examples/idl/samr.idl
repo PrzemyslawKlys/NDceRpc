@@ -1,0 +1,61 @@
+[
+	uuid(12345778-1234-abcd-ef00-0123456789ac),
+	version(1.0)
+]
+interface samr
+{
+	import "rpc.idl";
+	import "lsarpc.idl";
+
+	[op(0x01)]
+	int SamrCloseHandle([in] policy_handle *handle);
+
+	[op(0x39)]
+	int SamrConnect2([in,string,unique] wchar_t *system_name,
+			[in] uint32_t access_mask,
+			[out] policy_handle *handle);
+
+	[op(0x3e)]
+	int SamrConnect4([in,string,unique] wchar_t *system_name,
+		[in] uint32_t unknown,
+		[in] uint32_t access_mask,
+		[out] policy_handle *handle);
+
+	[op(0x07)]
+	int SamrOpenDomain([in] policy_handle *handle,
+			[in] uint32_t access_mask,
+			[in] sid_t *sid,
+			[out] policy_handle *domain_handle);
+
+	[op(0x22)]
+	int SamrOpenUser([in] policy_handle *handle,
+			[in] uint32_t access_mask,
+			[in] uint32_t rid,
+			[out] policy_handle *user_handle);
+
+	typedef struct {
+		uint32_t rid;
+		uint32_t type;
+	} TypedRid;
+
+	typedef struct {
+		int count;
+		[size_is(count)] TypedRid *groups;
+	} TypedRidArray;
+
+	[op(0x27)]
+	int SamrGetGroupsForUser([in] policy_handle *handle,
+			[out,unique] TypedRidArray *groups);
+
+	typedef struct {
+		int count;
+		[size_is(count)] uint32_t *rids;
+	} IntArray;
+
+	[op(0x11)]
+	int SamrLookupNamesInDomain([in] policy_handle *handle,
+			[in] int count,
+			[in,size_is(1000),length_is(count)] unicode_string *names,
+			[out] IntArray *rids,
+			[out] IntArray *types);
+}

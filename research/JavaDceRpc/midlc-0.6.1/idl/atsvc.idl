@@ -1,0 +1,21 @@
+[
+	uuid(1ff70682-0a51-30e8-076d-740be8cee98b),
+	version(1.0)
+]
+interface atsvc
+{
+	import "rpc.idl";
+
+	typedef struct {
+		uint32_t job_time;
+		uint32_t days_of_month;
+		uint8_t days_of_week;
+		uint8_t flags;
+		[string,unique] wchar_t *command;
+	} AtInfo;
+
+	[op(0x00)]
+	int ScheduleJobAdd([in,string,unique] wchar_t *servername,
+		[in] AtInfo *job_info,
+		[out] uint32_t *job_id);
+}

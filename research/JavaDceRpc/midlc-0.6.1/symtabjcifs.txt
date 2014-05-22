@@ -1,0 +1,27 @@
+# idlc primative type symbol table
+# fields are as follows separated by tabs:
+#   idl type (e.g. unsigned long long)
+#   out type (e.g. long)
+#   ndr type (e.g. hyper)
+#   ndr size (e.g. 8)
+
+char	byte	small	1
+byte	byte	small	1
+small	byte	small	1
+unsigned char	byte	small	1
+unsigned small	byte	small	1
+
+short	short	short	2
+unsigned short	short	short	2
+
+int	int	long	4
+unsigned int	int	long	4
+long	int	long	4
+unsigned long	int	long	4
+
+long long	long	hyper	8
+unsigned long long	long	hyper	8
+
+void	Object	void	0
+wchar_t	short	short	2
+

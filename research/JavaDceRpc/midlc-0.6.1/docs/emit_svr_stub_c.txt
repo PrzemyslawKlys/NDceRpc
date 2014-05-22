@@ -1,0 +1,57 @@
+The C server stub generator is coming along very nicely. It's much better
+than the Java client stub generator at the moment. There is quite a bit
+remaining to do however.
+
+Only the encoder functions have been implemented. I strongly recommend
+that the encoder routines be fleshed out as much as possible as the
+decoder routines are largely a mirror of the encoder ones. At some point
+one can just copy the encoder routines and largely replace enc with dec
+and so on.
+
+When the decoder functions are impelemented it can be determined how
+objects will be allocated. That criteria might then be applied to the
+encoder to determine how things should be freed.
+
+The NDR primative {enc,dec}_ndr_* routines need to be implemented. There
+should be two functions for every distinct primative type in
+symtabc.txt. Also note, the bulk of aligment can be handled in these
+routines as it is in the Java emitter.
+
+There's lots of little easy stuff to do like enums, constants, length_is,
+...
+
+The parser will need to be modified to represent import statements in
+the parse tree somehow as the server stubs will need to insert #include
+statements for things.
+
+The general technique of deferred pointers may not be right.  The only
+way to really check that is to just look at the encodings but the stubs
+are not at a point where that can happen.  But if it is wrong I'm very
+confident that it's close. Meaning some pointer indirection might be
+off but the general organization is right.
+
+The details of the call glue needs to be worked out. For example the
+struct ndr type is totally undefined right now but we know it's needed
+(e.g. it will need to maintain the map of DCE pointers).
+
+It would be nice to detect unused parameters and (void)them; at the end
+of the function.
+
+Some awkard code will be needed to prefix functions with local variable
+declarations. Meaning you cannot declare int _arrays = obj->count after
+function calls -- you must prefix the block with int _arrays; and use
+_arrays = obj->count instead;
+
+The tricker things that need to be folded in are fixed and embedded
+conformat arrays.
+
+At this point I think the key is being vary careful not to let
+the cases expand unnecessarily. Note that unions are emitted in one
+place. Primatives and strings are emitted in only two places. To do this,
+the main function (emit_encoder_fragment) is modal and parameterizes
+attributes of objects that change depending on where they're emitted. I
+cannot emphisize this enough. If chunks of code starts getting copied
+you know there's a problem. One step at a time. Note the emitter is only
+260 lines for a reason.
+
+Otherwise if I had to guess I'd say the emitter is >50% of the way there.

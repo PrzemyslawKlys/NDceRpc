@@ -1,0 +1,98 @@
+PLEASE NOTE THIS DOCUMENT WAS WRITTEN WHEN 0.0.1 WAS RELEASED AND DOES
+NOT ILLUSTRATE THE TECHNIQUE USED BY IDLC STUBS BECAUSE IT IS NOT ADEQUATE
+IN CERTAIN CASES. HOWEVER THE FUNDAMENTAL PRICIPLES ARE SOUND.
+
+--8<--
+
+Idlc will generate NDR encoding and decoding functions for each object
+represented in the source idl. These functions follow two forms. One is
+for primative NDR types short, long, etc where the other is for complex
+objects (structures). Sample prototypes follow [1]:
+
+int enc_ndr_long(uint32_t i, unsigned char **dst);
+int enc_ndr_test4_foo(test4_foo *obj, unsigned char **dst, unsigned char **deferred);
+
+Notice the double pointers. The dst pointer is the location at which obj
+is to be encoded and is advanced by the encoder so that the encoding
+makes progress. It would have been possible to return the number
+of bytes encoded and have the caller advance dst but that would be
+less convienient. The deferred parameter is a double pointer not for
+convienience but for a very important reason descibed in a moment. Below
+is a listing of an idl structure definition followed by the generated
+NDR function that encodes it:
+
+struct test4_info1 {
+	int type;
+	test4_foo *foo;
+	[string] char_t *comment;
+};
+
+int
+enc_ndr_struct_test4_info1(struct test4_info1 *obj,
+		unsigned char **dst,
+		unsigned char **deferred)
+{
+    enc_ndr_long(obj->type, dst);
+1   enc_ndr_long(obj->foo, dst);
+2   if (obj->foo) {
+3       unsigned char *d = *deferred;
+4       *deferred += 12;
+5       enc_ndr_test4_foo(obj->foo, &d, deferred);
+    }
+    enc_ndr_long(obj->comment, dst);
+    if (obj->comment) {
+        enc_ndr_string(obj->comment, dst);
+    }
+    return 0;
+}
+
+The three members of this structure are encoded using NDR encoding
+functions enc_ndr_long, enc_ndr_test4_foo, and enc_ndr_string. The
+function itself follows the second generic form. Thus only the object
+type name is needed to generate a code fragment that encodes an object of
+that type. Generic programming is used for an important reason described
+in a moment.
+
+Consider the encoding of the test4_foo * member. Line numbers have been
+added to this code fragment. Line 1 shows the first enc_ndr_long call
+just encodes the pointer (or referent as it's called in NDR terminology)
+at the current location. If the pointer is not null, the object it points
+to is encoded at a deferred location represented by the deferred pointer
+using an encoding function corresponding to the member's type. So the
+current position and the deferred position are encoded at the same time
+but are largely independent of one another.
+
+To explain this further it is necessary to make a few seemingly
+unrelated points:
+
+1) The NDR format dictates that the deferred location is not necessarily
+adjecent to the object currently being encoded such that it can only be computed
+at runtime.
+2) Because each member contains only primative types and referents
+to objects encoded elsewhere, the size of the current object can be
+computed by the idl compiler before generating the code fragment that
+encodes that object.
+
+So it follows from the first point that the deferred pointer must
+always be passed around as a double pointer so that it behaves like a
+global variable. If a sub-encoder three levels deep advances the deferred
+pointer it will effect where all non-primative members are encoded after
+that call.
+
+So line 3 starts by making a copy of the deferred location so that the copy
+passed to the sub-encoder as the new dst will not effect the deferred
+pointer. Also the deferred pointer can be advanced by the size computed
+for the sub-object being encoded (line 4).
+
+The key to encoding (and decoding) NDR is managing this deferred pointer
+through generic functions that can recursively encode objects of arbitrary
+complexity. In fact I suspect it would considerably more difficult to
+do it any other way [2].
+
+[1] The primative encoder is just a sub-case of the second type but
+the generated code would awkward because 1) it would be necessary to
+always pass primative types as pointers and 2) the deferred pointer is
+not required to encode primative objects.
+[2] MS uses some kind of format descriptors. The benifit to doing so is
+primarily to reduce code size but the technique is also more complicated
+and slighly slower.

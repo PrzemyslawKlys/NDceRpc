@@ -1,3 +1,5 @@
+### 0.2.1.0 - May 23 2014
+*  made more compatible with WCF attributes
 ### 0.2.0.0 - May 23 2014
 *  modularization
 ### 0.1.0.0 

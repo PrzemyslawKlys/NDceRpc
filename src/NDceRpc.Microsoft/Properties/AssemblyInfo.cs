@@ -4,10 +4,10 @@ using System.Reflection;
 [assembly: AssemblyTitleAttribute("NDceRpc.Microsoft")]
 [assembly: AssemblyProductAttribute("NDceRpc.Microsoft")]
 [assembly: AssemblyDescriptionAttribute("Library for interop of managed code with DCE RPC runtime")]
-[assembly: AssemblyVersionAttribute("0.2.0.0")]
-[assembly: AssemblyFileVersionAttribute("0.2.0.0")]
+[assembly: AssemblyVersionAttribute("0.2.1.0")]
+[assembly: AssemblyFileVersionAttribute("0.2.1.0")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "0.2.0.0";
+        internal const string Version = "0.2.1.0";
     }
 }

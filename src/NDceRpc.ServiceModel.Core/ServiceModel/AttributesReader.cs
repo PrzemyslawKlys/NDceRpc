@@ -7,7 +7,10 @@ using System.Runtime.CompilerServices;
 
 namespace NDceRpc.ServiceModel
 {
-    internal class AttributesReader
+    /// <summary>
+    /// Allows using <see cref="NDceRpc.ServiceModel"/> attributes, but fallback to <see cref="System.ServiceModel"/> when necessary.
+    /// </summary>
+    public class AttributesReader
     {
 
         private static string wcfNs = "System.ServiceModel.";
@@ -16,12 +19,40 @@ namespace NDceRpc.ServiceModel
         private static string wcfCallbackBehavior = wcfNs + "CallbackBehavior";
         private static string wcfOperation = wcfNs + "OperationContract";
 
-        
+
 
         public static ServiceContractAttribute GetServiceContract(Type contractType)
         {
             return getAttr<ServiceContractAttribute>(contractType, wcfService, wcfServiceToCustom);
         }
+
+
+        public static CallbackBehaviorAttribute GetCallbackBehavior(Type type)
+        {
+            return getAttr<CallbackBehaviorAttribute>(type, wcfCallbackBehavior, wcfCallbackBehaviorToCustom);
+        }
+
+        public static OperationContractAttribute GetOperationContract(MethodInfo info)
+        {
+            return getAttr<OperationContractAttribute>(info, wcfOperation, wcfOperationToCustom);
+        }
+
+        public static ServiceBehaviorAttribute GetServiceBehavior(object service)
+        {
+            return getAttr<ServiceBehaviorAttribute>(service.GetType(), wcfServiceBehavior, wcfServiceBehaviorToCustom);
+        }
+
+        internal static T GetCustomAttribute<T>(MethodBase methodInfo)
+        {
+            return (T)(methodInfo.GetCustomAttributes(typeof(T), false).SingleOrDefault());
+        }
+
+        internal static bool IsOperationContract(MethodInfo x)
+        {
+            return GetOperationContract(x) != null;
+        }
+
+
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static ServiceContractAttribute wcfServiceToCustom(object attr)
@@ -37,12 +68,6 @@ namespace NDceRpc.ServiceModel
                 SessionMode = (SessionMode)wcf.SessionMode
 
             };
-        }
-
-
-        public static OperationContractAttribute GetOperationContract(MethodInfo info)
-        {
-            return getAttr<OperationContractAttribute>(info, wcfOperation, wcfOperationToCustom);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -63,12 +88,7 @@ namespace NDceRpc.ServiceModel
             };
         }
 
-
-
-        public static ServiceBehaviorAttribute GetServiceBehavior(object service)
-        {
-            return getAttr<ServiceBehaviorAttribute>(service.GetType(), wcfServiceBehavior, wcfServiceBehaviorToCustom);
-        }
+   
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static ServiceBehaviorAttribute wcfServiceBehaviorToCustom(object attr)
@@ -95,10 +115,6 @@ namespace NDceRpc.ServiceModel
             };
         }
 
-        public static CallbackBehaviorAttribute GetCallbackBehavior(Type type)
-        {
-            return getAttr<CallbackBehaviorAttribute>(type, wcfCallbackBehavior, wcfCallbackBehaviorToCustom);
-        }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static CallbackBehaviorAttribute wcfCallbackBehaviorToCustom(object attr)
@@ -118,15 +134,6 @@ namespace NDceRpc.ServiceModel
             };
         }
 
-        public static T GetCustomAttribute<T>(MethodBase methodInfo)
-        {
-            return (T)(methodInfo.GetCustomAttributes(typeof(T), false).SingleOrDefault());
-        }
-
-        public static bool IsOperationContract(MethodInfo x)
-        {
-            return GetOperationContract(x) != null;
-        }
 
         private static T getAttr<T>(ICustomAttributeProvider provider, string wcfFallback, Func<object, T> map)
            where T : class

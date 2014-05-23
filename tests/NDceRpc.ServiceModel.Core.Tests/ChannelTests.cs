@@ -10,46 +10,43 @@ namespace NDceRpc.ServiceModel.Core.Tests
     public class ChannelTests
     {
 
-   
+        [Test]
+        [ExpectedException(typeof(System.ObjectDisposedException))]
+        public void DisposedChannelFactory_call()
+        {
+            var address = @"net.pipe://127.0.0.1/" + Guid.NewGuid().ToString("N");
+            var serv = new SimpleService();
+            var b = new NetNamedPipeBinding();
 
-
-        //[Test]
-        //public void SingleTransportRuoting()
-        //{
-
-        //    TransportFactory.Transport = Transports.SingleRpcRouting;
-        //    TransportFactory.SingleTransportServerUuid = new Guid("CD38A084-35B1-4701-90AA-72C908030A24");
-        //    TransportFactory.SingleTransportClientUuid = new Guid("CD38A084-35B1-4701-90AA-72C908030A24");
-        //    var address = "\\pipe\\testtest" + MethodBase.GetCurrentMethod().Name;
-        //    var serv = new Service(null);
-        //    var host = new ServiceHost(serv, address);
-        //    var b = new NetNamedPipeBinding();
-        //    host.AddServiceEndpoint(typeof(IService), b, address);
-        //    host.Open();
-        //    var f = new ChannelFactory<IService>(b);
-        //    var c = f.CreateChannel(new EndpointAddress(address));
-        //    var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
-        //    Assert.AreEqual(2, result.d1);
-        //    host.Dispose();
-
-        //    TransportFactory.Transport = Transports.Rpc;
-
-        //}
+            using (var host = new ServiceHost(serv, new Uri[] { new Uri(address), }))
+            {
+                host.AddServiceEndpoint(typeof(ISimpleService), b, address);
+                host.Open();
+                var f = new ChannelFactory<ISimpleService>(b);
+                var c = f.CreateChannel(new EndpointAddress(address));
+                using (f) { }
+                c.Do();
+            }
+        }
 
         [Test]
         public void Local()
         {
-            var address = @"ipc:///test"+MethodBase.GetCurrentMethod().Name;
+            var address = @"ipc:///test" + MethodBase.GetCurrentMethod().Name;
             var serv = new Service(null);
-            var host = new ServiceHost(serv, new Uri(address));
-            var b = new LocalBinding();
-            host.AddServiceEndpoint(typeof(IService), b, address);
-            host.Open();
-            var f = new ChannelFactory<IService>(b);
-            var c = f.CreateChannel(new EndpointAddress(address));
-            var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
-            Assert.AreEqual(2, result.d1);
-            host.Dispose();
+            using (var host = new ServiceHost(serv, new Uri(address)))
+            {
+                var b = new LocalBinding();
+                host.AddServiceEndpoint(typeof(IService), b, address);
+                host.Open();
+                
+                using (var f = new ChannelFactory<IService>(b))
+                {
+                    var c = f.CreateChannel(new EndpointAddress(address));
+                    var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
+                    Assert.AreEqual(2, result.d1);
+                }
+            }
         }
 
         [Test]
@@ -171,7 +168,7 @@ namespace NDceRpc.ServiceModel.Core.Tests
             host.Open();
             var f = new ChannelFactory<IService>(b);
             var c = f.CreateChannel(new EndpointAddress(address));
-   
+
             var result = c.DoWithParamsAndResult(":)", Guid.NewGuid());
             Assert.AreEqual(2, result.d1);
             host.Dispose();
@@ -259,13 +256,13 @@ namespace NDceRpc.ServiceModel.Core.Tests
         {
             var address = @"net.pipe://127.0.0.1/" + this.GetType().Name + "_" + MethodBase.GetCurrentMethod().Name;
             var binding = new NetNamedPipeBinding();
-            using (var server = new ServiceHost(new SimplesService(), new Uri(address)))
+            using (var server = new ServiceHost(new SimpleService(), new Uri(address)))
             {
 
-                server.AddServiceEndpoint(typeof(ISimplesService), binding, address);
+                server.AddServiceEndpoint(typeof(ISimpleService), binding, address);
                 server.Open();
                 Thread.Sleep(100);
-                using (var channelFactory = new ChannelFactory<ISimplesService>(binding))
+                using (var channelFactory = new ChannelFactory<ISimpleService>(binding))
                 {
                     var client = channelFactory.CreateChannel(new EndpointAddress(address));
                     var contextChannel = client as IContextChannel;

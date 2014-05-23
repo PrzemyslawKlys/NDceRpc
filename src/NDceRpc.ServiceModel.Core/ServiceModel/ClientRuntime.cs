@@ -23,24 +23,25 @@ namespace NDceRpc.ServiceModel
 {
     public class ClientRuntime : IDisposable
     {
-        private object _service;
-        private IExplicitBytesClient _client;
-        private object _remote;
-        private DispatchTable _operations = new DispatchTable();
-        private string _session;
-        private BinaryObjectSerializer _serializer;
-        private Type _typeOfService;
-        private InstanceContext _context;
-        private readonly Type _generatedProxyType;
-        private bool _disposed;
-        private string _address;
-        private ManualResetEvent _operationPending = new ManualResetEvent(true);
-        private Binding _binding;
-        private Guid _uuid;
-        private SynchronizationContext _syncContext;
-        private ServiceEndpoint _endpoint;
-        private IList<IClientMessageInspector> _messageInspectors = new List<IClientMessageInspector>();
-        private NDceRpc.ServiceModel.Channels.MessageEncoder _encoder = new ProtobufMessageEncodingBindingElement();
+        int _disposeSignaled;
+        object _service;
+        IExplicitBytesClient _client;
+        object _remote;
+        DispatchTable _operations = new DispatchTable();
+        string _session;
+        BinaryObjectSerializer _serializer;
+        Type _typeOfService;
+        InstanceContext _context;
+        readonly Type _generatedProxyType;
+        bool _disposed;
+        string _address;
+        ManualResetEvent _operationPending = new ManualResetEvent(true);
+        Binding _binding;
+        Guid _uuid;
+        SynchronizationContext _syncContext;
+        ServiceEndpoint _endpoint;
+        IList<IClientMessageInspector> _messageInspectors = new List<IClientMessageInspector>();
+        NDceRpc.ServiceModel.Channels.MessageEncoder _encoder = new ProtobufMessageEncodingBindingElement();
 
         //TODO: split RpcProxyRouter and RpcCallbackProxy
         public ClientRuntime(string address, ServiceEndpoint endpoint, bool callback = false, InstanceContext context = null, Guid customUuid = default(Guid), Type generatedProxyType = null)
@@ -74,7 +75,7 @@ namespace NDceRpc.ServiceModel
                 _session = Guid.NewGuid().ToString();
             }
             //TODO: allow to be initialized with pregenerated proxy
-            var realProxy = new RpcRealProxy(_typeOfService, this, _endpoint,_encoder);
+            var realProxy = new RpcRealProxy(_typeOfService, this, _endpoint, _encoder);
             _remote = realProxy.GetTransparentProxy();
             _client = RpcRequestReplyChannelFactory.CreateClient(_binding, _uuid, _address);
             foreach (var behavior in _endpoint.Behaviors)
@@ -104,7 +105,7 @@ namespace NDceRpc.ServiceModel
             private CommunicationState _state = CommunicationState.Created;
             private TimeSpan _operationTimeout = TimeSpan.FromSeconds(60);
 
-            public RpcRealProxy(Type service, ClientRuntime router, ServiceEndpoint endpoint,NDceRpc.ServiceModel.Channels.MessageEncoder encoder)
+            public RpcRealProxy(Type service, ClientRuntime router, ServiceEndpoint endpoint, NDceRpc.ServiceModel.Channels.MessageEncoder encoder)
                 : base(service)
             {
                 _service = service;
@@ -257,7 +258,7 @@ namespace NDceRpc.ServiceModel
                         }
                         catch (Exception ex)
                         {
-                                throw;
+                            throw;
                         }
                         finally
                         {
@@ -337,8 +338,8 @@ namespace NDceRpc.ServiceModel
                 //TODO: identify how to handle any CommunicationException
                 if (
                     //TODO: optimize this comparison
-                    fault.Name == "System.ServiceModel.ActionNotSupportedException" || 
-                    fault.Name == "NDceRpc.ServiceModel.ActionNotSupportedException" 
+                    fault.Name == "System.ServiceModel.ActionNotSupportedException" ||
+                    fault.Name == "NDceRpc.ServiceModel.ActionNotSupportedException"
                     )
                 {
                     throw new NDceRpc.ServiceModel.ActionNotSupportedException(exceptionData.ToString());
@@ -363,6 +364,7 @@ namespace NDceRpc.ServiceModel
 
             private byte[] ExecuteRequest(MemoryStream rData)
             {
+                _router.throwIfDisposed();
                 var result = _router._client.Execute(rData.ToArray());
                 setState(CommunicationState.Opened);
                 return result;
@@ -512,9 +514,21 @@ namespace NDceRpc.ServiceModel
 
         }
 
+        private void throwIfDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(this.ToString());
+            }
+        }
 
         public void Close(TimeSpan closeTimeout)
         {
+            if (Interlocked.Exchange(ref _disposeSignaled, 1) != 0)
+            {
+                return;
+            }
+            _disposed = true;
             _operationPending.WaitOne(closeTimeout);
             if (_context != null)
             {

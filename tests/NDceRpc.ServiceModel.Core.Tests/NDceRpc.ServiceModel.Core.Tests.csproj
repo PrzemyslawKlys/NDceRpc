@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="AsyncTests.cs" />
     <Compile Include="AsyncTestClasses.cs" />
+    <Compile Include="AttributesReaderTests.cs" />
     <Compile Include="ChannelTests.cs">
       <SubType>Code</SubType>
     </Compile>

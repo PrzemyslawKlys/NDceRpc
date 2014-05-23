@@ -27,7 +27,7 @@ namespace NDceRpc.ServiceModel
         }
         public static MethodInfo[] GetAllServiceImplementations(Type t)
         {
-            return GetAllImplementations(t).Where(AttributesReader.IsOperation).ToArray();
+            return GetAllImplementations(t).Where(AttributesReader.IsOperationContract).ToArray();
         }
 
    

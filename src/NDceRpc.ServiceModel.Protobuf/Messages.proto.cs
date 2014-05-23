@@ -45,7 +45,6 @@ namespace NDceRpc.ServiceModel.Channels
       get { return _Reason; }
       set { _Reason = value; }
     }
-
     private byte[] _Detail = null;
     [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"Detail", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
@@ -56,7 +55,6 @@ namespace NDceRpc.ServiceModel.Channels
       get { return _Detail; }
       set { _Detail = value; }
     }
-
     private string _Node = "";
     [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"Node", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue("")]
@@ -87,7 +85,6 @@ namespace NDceRpc.ServiceModel.Channels
       get { return _Data; }
       set { _Data = value; }
     }
-
     private FaultData _Fault = null;
     [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"Fault", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue(null)]
@@ -156,7 +153,6 @@ namespace NDceRpc.ServiceModel.Channels
       get { return _Data; }
     }
   
-
     private string _Session = "";
     [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"Session", DataFormat = global::ProtoBuf.DataFormat.Default)]
     [global::System.ComponentModel.DefaultValue("")]

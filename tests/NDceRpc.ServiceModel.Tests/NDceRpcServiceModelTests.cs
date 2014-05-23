@@ -26,6 +26,22 @@ namespace NDceRpc.ServiceModel.Tests
         }
 
         [Test]
+        public void ServiceBehavior_create_defaultsAreEqual()
+        {
+            NDceRpc.ServiceModel.ServiceBehaviorAttribute my = new NDceRpc.ServiceModel.ServiceBehaviorAttribute();
+            System.ServiceModel.ServiceBehaviorAttribute wcf = new System.ServiceModel.ServiceBehaviorAttribute();
+
+            Assert.AreEqual((int)my.AddressFilterMode, (int)wcf.AddressFilterMode);
+            Assert.AreEqual(my.AutomaticSessionShutdown, wcf.AutomaticSessionShutdown);
+            Assert.AreEqual((int)my.ConcurrencyMode, (int)wcf.ConcurrencyMode);
+            Assert.AreEqual(my.IncludeExceptionDetailInFaults, wcf.IncludeExceptionDetailInFaults);
+            Assert.AreEqual((int)my.InstanceContextMode, (int)wcf.InstanceContextMode);
+            Assert.AreEqual(my.UseSynchronizationContext, wcf.UseSynchronizationContext);
+
+            Assert.AreEqual(my.IsDefaultAttribute(), wcf.IsDefaultAttribute());
+        }
+
+        [Test]
         public void OperationContract_create_defaultsAreEqual()
         {
             NDceRpc.ServiceModel.OperationContractAttribute my = new NDceRpc.ServiceModel.OperationContractAttribute();

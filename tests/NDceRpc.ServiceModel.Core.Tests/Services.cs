@@ -33,14 +33,51 @@ namespace NDceRpc.ServiceModel.Core.Tests
     }
 
 
+
+    [System.ServiceModel.ServiceContract]
+    public interface IWcfSimpleService
+    {
+        [System.ServiceModel.OperationContract(IsOneWay = false)]
+        void Do();
+    }
+    [System.ServiceModel.ServiceBehavior(InstanceContextMode = System.ServiceModel.InstanceContextMode.Single)]
+    public class WcfSimpleService : IWcfSimpleService
+    {
+        public void Do()
+        {
+
+        }
+    }
+
     [ServiceContract]
-    public interface ISimplesService
+    public interface INoOperationsService
+    {
+        void Do();
+    }
+
+
+    public interface INotService
+    {
+        void Do();
+    }
+
+
+    public class NoAttrSimpleService : ISimpleService
+    {
+        public void Do()
+        {
+
+        }
+    }
+
+    [ServiceContract]
+    public interface ISimpleService
     {
         [OperationContract(IsOneWay = false)]
         void Do();
     }
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class SimplesService : ISimplesService
+    public class SimpleService : ISimpleService
     {
         public void Do()
         {

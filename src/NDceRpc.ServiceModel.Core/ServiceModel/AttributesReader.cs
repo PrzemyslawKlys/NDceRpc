@@ -10,24 +10,24 @@ namespace NDceRpc.ServiceModel
     {
         public static ServiceContractAttribute GetServiceContract(Type contractType)
         {
-            return contractType.GetCustomAttributes(typeof(ServiceContractAttribute), false).SingleOrDefault() as ServiceContractAttribute;
+            return (ServiceContractAttribute)contractType.GetCustomAttributes(typeof(ServiceContractAttribute), false).SingleOrDefault();
         }
 
 
         public static OperationContractAttribute GetOperationContract(MethodInfo info)
         {
-            return (OperationContractAttribute)info.GetCustomAttributes(typeof(OperationContractAttribute), false).Single();
+            return (OperationContractAttribute)info.GetCustomAttributes(typeof(OperationContractAttribute), false).SingleOrDefault();
         }
 
         public static ServiceBehaviorAttribute GetServiceBehavior(object service)
         {
-            return service.GetType().GetCustomAttributes(typeof(ServiceBehaviorAttribute), false).SingleOrDefault() as ServiceBehaviorAttribute;
+            return (ServiceBehaviorAttribute)service.GetType().GetCustomAttributes(typeof(ServiceBehaviorAttribute), false).SingleOrDefault();
         }
 
 
         public static CallbackBehaviorAttribute GetCallbackBehavior(Type type)
         {
-            return type.GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault() as CallbackBehaviorAttribute;
+            return (CallbackBehaviorAttribute)type.GetCustomAttributes(typeof(CallbackBehaviorAttribute), false).SingleOrDefault();
         }
 
         public static T GetCustomAttribute<T>(MethodBase methodInfo)
@@ -35,7 +35,7 @@ namespace NDceRpc.ServiceModel
             return (T)(methodInfo.GetCustomAttributes(typeof(T), false).SingleOrDefault());
         }
 
-        public static bool IsOperation(MethodInfo x)
+        public static bool IsOperationContract(MethodInfo x)
         {
             return x.GetCustomAttributes(typeof(OperationContractAttribute), true).Length != 0;
         }

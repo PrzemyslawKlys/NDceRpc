@@ -12,13 +12,13 @@ namespace WCF.Tests
 {
 
     [ServiceContract]
-    public interface ISimplesService
+    public interface ISimpleService
     {
         [OperationContract(IsOneWay = false)]
         void Do();
     }
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class SimplesService : ISimplesService
+    public class SimpleService : ISimpleService
     {
         public void Do()
         {

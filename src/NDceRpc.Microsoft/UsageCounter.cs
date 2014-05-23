@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace NDceRpc
 {
+    //TODO: make this process wide via shared memory
     public class UsageCounter
     {
         private const int MaxCount = int.MaxValue;

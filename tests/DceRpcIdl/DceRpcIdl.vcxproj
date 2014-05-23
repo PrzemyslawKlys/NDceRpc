@@ -41,7 +41,7 @@
     <OutDir>$(SolutionDir)bin\Samples\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)..\bin\Samples\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)bin\Samples\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)..\bin\Samples\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)bin\Samples\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\bin\Samples\$(Configuration)\</OutDir>

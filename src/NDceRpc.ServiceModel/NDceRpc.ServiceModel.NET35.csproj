@@ -66,6 +66,7 @@
     <Compile Include="ServiceModel\IExtensibleObject.cs" />
     <Compile Include="ServiceModel\OperationContractAttribute.cs" />
     <Compile Include="ServiceModel\ServiceContractAttribute.cs" />
+    <Compile Include="ServiceModel\TransferMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\NDceRpc.snk">

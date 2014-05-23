@@ -53,6 +53,7 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ServiceModel\TransferMode.cs" />
     <Compile Include="ServiceModel\Exceptions.cs" />
     <Compile Include="ServiceModel\IDefaultCommunicationTimeouts.cs" />
     <Compile Include="ServiceModel\ServiceContractAttribute.cs" />

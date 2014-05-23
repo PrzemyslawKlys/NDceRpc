@@ -5,14 +5,17 @@
 
 `GetCustomAttributesData` forces loading dll and is not usable. There are 2 ways of prevent loading dll:
 
-1. IL parsing via tool
+1. IL parsing via tool:
+- leads to dependency on parsing dll
+- does not solves problem of exceptions type loading
+- allows multi attribute markers
+- WCF attributes has only WCF specific parts
+- e.g. `ServiceBehaviorAttribute' implements `IServiceBehavior` which is tightly coupled to WCF.
+- e.g. some attributes and enumerations are related to XML, e.g. `XmlSerializerFormatAttribute`
+
 2. Copy and paste attributes into code.
+- need custom WCF `ChannelFactory` and `ServiceHost` if want multiple attributes on interfaces
+- can copy and use exceptions and interfaces without WCF dependency
 
-First will lead to dependency on parsing dll, and will not delay issues that WCF attributes pertain only WCF specific parts for later. Examples:
-
-- `ServiceBehaviorAttribute' implements `IServiceBehavior` which is tightly coupled to WCF.
-- some attributes and enumerations are related to XML, e.g. `XmlSerializerFormatAttribute`
-
-So going second path is one to choose.
 
 [1]: https://gitorious.org/asdandrizzo/windows/source/7991cc9e2837feb9432014c7ff27456b788bd73a:research-dll-memory

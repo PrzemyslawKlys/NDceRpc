@@ -127,11 +127,12 @@ namespace NDceRpc
             var types = new [] { RPC_C_AUTHN.RPC_C_AUTHN_GSS_NEGOTIATE, RPC_C_AUTHN.RPC_C_AUTHN_WINNT };
             var protect = RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_PKT_PRIVACY;
 
-            bool isAnon = (credentials != null && credentials.UserName == Anonymous.UserName && credentials.Domain == Anonymous.Domain);
-            if (isAnon)
+            bool isAnonymous = (credentials != null && credentials.UserName == Anonymous.UserName && credentials.Domain == Anonymous.Domain);
+            if (isAnonymous)
             {
                 protect = RPC_C_AUTHN_LEVEL.RPC_C_AUTHN_LEVEL_DEFAULT;
                 types = new RPC_C_AUTHN[] { RPC_C_AUTHN.RPC_C_AUTHN_NONE };
+                credentials = null;
             }
 
             AuthenticateAs(serverPrincipalName, credentials, protect, types);

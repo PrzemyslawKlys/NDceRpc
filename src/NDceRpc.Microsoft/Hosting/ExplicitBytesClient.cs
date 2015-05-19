@@ -48,7 +48,7 @@ namespace NDceRpc.ExplicitBytes
                 pStub =
                     handle.CreatePtr(new MIDL_STUB_DESC(handle, handle.Pin(ClientInterfaceFactory.CreatExplicitBytesClient(iid)),
                                                         RpcRuntime.TYPE_FORMAT,
-                                                        true));
+                                                        false));
             }
             int szResponse = 0;
             IntPtr response, result;

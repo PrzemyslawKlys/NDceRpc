@@ -44,6 +44,9 @@
     <None Include="ErrorHandling.acf">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="ExplicitBytes.acf">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exports.h">

@@ -8,7 +8,7 @@ namespace NDceRpc.Microsoft.Interop
         //where T : Delegate
         where T : class, ICloneable, ISerializable
     {
-        private T _delegate;
+        internal T _delegate;
         public IntPtr Handle;
 
         public FunctionPtr(T data)

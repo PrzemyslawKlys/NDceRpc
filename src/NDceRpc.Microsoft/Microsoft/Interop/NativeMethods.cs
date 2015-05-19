@@ -219,9 +219,11 @@ CharSet = CharSet.Unicode, SetLastError = true)]
         ///MaxCalls: unsigned int     
         ///MaxRpcSize: unsigned int     
         ///IfCallbackFn: RPC_IF_CALLBACK_FN*     
-        [DllImport("rpcrt4.dll", EntryPoint = "RpcServerRegisterIf2", CallingConvention = CallingConvention.StdCall)]
-        public static extern RPC_STATUS RpcServerRegisterIf2(IntPtr IfSpec, ref Guid MgrTypeUuid, IntPtr MgrEpv, uint Flags, uint MaxCalls, uint MaxRpcSize, ref RPC_IF_CALLBACK_FN IfCallbackFn);
+        [DllImport("rpcrt4.dll", EntryPoint = "RpcServerRegisterIf2", CallingConvention = CallingConvention.StdCall,SetLastError = true)]
+        public static extern RPC_STATUS RpcServerRegisterIf2_Marshaled(IntPtr IfSpec, ref Guid MgrTypeUuid, IntPtr MgrEpv, InterfacRegistrationFlags Flags, int MaxCalls, int MaxRpcSize, RPC_IF_CALLBACK_FN IfCallbackFn);
 
+        [DllImport("rpcrt4.dll", EntryPoint = "RpcServerRegisterIf2", CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        public static extern RPC_STATUS RpcServerRegisterIf2(IntPtr IfSpec, IntPtr MgrTypeUuid, IntPtr MgrEpv, InterfacRegistrationFlags Flags, int MaxCalls, int MaxRpcSize, IntPtr IfCallbackFn);
 
         ///<summary>
         /// The  function returns the message text for a status code.
@@ -240,7 +242,7 @@ CharSet = CharSet.Unicode, SetLastError = true)]
 
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcServerUseProtseqEpW", CallingConvention = CallingConvention.StdCall,
             CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern RPC_STATUS RpcServerUseProtseqEp(String Protseq, uint MaxCalls, String Endpoint,
+        public static extern RPC_STATUS RpcServerUseProtseqEp(String Protseq, int MaxCalls, String Endpoint,
                                                             IntPtr SecurityDescriptor);
 
         [DllImport("Rpcrt4.dll", EntryPoint = "NdrServerCall2", CallingConvention = CallingConvention.StdCall,
@@ -268,7 +270,7 @@ CharSet = CharSet.Unicode, SetLastError = true)]
 
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcServerListen", CallingConvention = CallingConvention.StdCall,
     CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern RPC_STATUS RpcServerListen(uint MinimumCallThreads, uint MaxCalls, uint DontWait);
+        public static extern RPC_STATUS RpcServerListen(uint MinimumCallThreads, int MaxCalls, uint DontWait);
 
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcMgmtStopServerListening",
      CallingConvention = CallingConvention.StdCall,

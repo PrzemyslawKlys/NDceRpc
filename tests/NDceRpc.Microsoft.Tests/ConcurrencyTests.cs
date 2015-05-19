@@ -20,7 +20,7 @@ namespace NDceRpc.Test
             var tasks = new List<Task>();
             int counter = 0;
             var servers = 10;
-            uint clientsPerServer = 10;
+            int clientsPerServer = 10;
             for (int i = 0; i < servers; i++)
             {
                 var task = new Task(() =>
@@ -69,7 +69,7 @@ namespace NDceRpc.Test
             var tasks = new List<Task>();
             int counter = 0;
             var servers = 10;
-            uint clientsPerServer = 10;
+            int clientsPerServer = 10;
             for (int i = 0; i < servers; i++)
             {
                 var task = new Task(() =>

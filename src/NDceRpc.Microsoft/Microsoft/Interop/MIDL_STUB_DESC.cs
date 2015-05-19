@@ -50,7 +50,7 @@ namespace NDceRpc.Microsoft.Interop
             fCheckBounds = 1;
             Version = 0x50002u;
             pMallocFreeStruct = new IntPtr();
-            MIDLVersion = 0x6000169;
+            MIDLVersion = 0x70001f4;
             CommFaultOffsets = serverSide
                                    ? IntPtr.Zero
                                    : handle.Pin(new COMM_FAULT_OFFSETS() {CommOffset = -1, FaultOffset = -1});

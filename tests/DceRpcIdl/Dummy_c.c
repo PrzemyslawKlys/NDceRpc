@@ -3,11 +3,11 @@
 /* this ALWAYS GENERATED file contains the RPC client stubs */
 
 
- /* File created by MIDL compiler version 7.00.0555 */
-/* at Fri May 23 15:57:36 2014
+ /* File created by MIDL compiler version 8.00.0603 */
+/* at Tue May 19 20:23:53 2015
  */
 /* Compiler settings for Dummy.idl:
-    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 7.00.0555 
+    Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.00.0603 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
     VC __declspec() decoration level: 
@@ -16,7 +16,7 @@
 */
 /* @@MIDL_FILE_HEADING(  ) */
 
-#if !defined(_M_IA64) && !defined(_M_AMD64)
+#if defined(_M_AMD64)
 
 
 #pragma warning( disable: 4049 )  /* more than 64k source lines */
@@ -27,16 +27,13 @@
 #pragma warning( disable: 4211 )  /* redefine extern to static */
 #pragma warning( disable: 4232 )  /* dllimport identity*/
 #pragma warning( disable: 4024 )  /* array to pointer mapping*/
-#pragma warning( disable: 4100 ) /* unreferenced arguments in x86 call */
-
-#pragma optimize("", off ) 
 
 #include <string.h>
 
 #include "Dummy_h.h"
 
 #define TYPE_FORMAT_STRING_SIZE   3                                 
-#define PROC_FORMAT_STRING_SIZE   29                                
+#define PROC_FORMAT_STRING_SIZE   31                                
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   0            
@@ -102,22 +99,14 @@ void Do(
     NdrClientCall2(
                   ( PMIDL_STUB_DESC  )&Dummy_StubDesc,
                   (PFORMAT_STRING) &Dummy__MIDL_ProcFormatString.Format[0],
-                  ( unsigned char * )&hBinding);
+                  hBinding);
     
 }
 
 
-#if !defined(__RPC_WIN32__)
+#if !defined(__RPC_WIN64__)
 #error  Invalid build platform for this stub.
 #endif
-
-#if !(TARGET_IS_NT50_OR_LATER)
-#error You need Windows 2000 or later to run this stub because it uses these features:
-#error   /robust command line switch.
-#error However, your C/C++ compilation flags indicate you intend to run this app on earlier systems.
-#error This app will fail with the RPC_X_WRONG_STUB_VERSION error.
-#endif
-
 
 static const Dummy_MIDL_PROC_FORMAT_STRING Dummy__MIDL_ProcFormatString =
     {
@@ -130,19 +119,20 @@ static const Dummy_MIDL_PROC_FORMAT_STRING Dummy__MIDL_ProcFormatString =
 			0x48,		/* Old Flags:  */
 /*  2 */	NdrFcLong( 0x0 ),	/* 0 */
 /*  6 */	NdrFcShort( 0x0 ),	/* 0 */
-/*  8 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/*  8 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
 /* 10 */	0x32,		/* FC_BIND_PRIMITIVE */
 			0x0,		/* 0 */
-/* 12 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
+/* 12 */	NdrFcShort( 0x0 ),	/* X64 Stack size/offset = 0 */
 /* 14 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 16 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 18 */	0x40,		/* Oi2 Flags:  has ext, */
 			0x0,		/* 0 */
-/* 20 */	0x8,		/* 8 */
+/* 20 */	0xa,		/* 10 */
 			0x1,		/* Ext Flags:  new corr desc, */
 /* 22 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 24 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 26 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 28 */	NdrFcShort( 0x0 ),	/* 0 */
 
 			0x0
         }
@@ -178,7 +168,7 @@ static const MIDL_STUB_DESC Dummy_StubDesc =
     1, /* -error bounds_check flag */
     0x50002, /* Ndr library version */
     0,
-    0x700022b, /* MIDL Version 7.0.555 */
+    0x800025b, /* MIDL Version 8.0.603 */
     0,
     0,
     0,  /* notify & notify_flag routine table */
@@ -187,11 +177,10 @@ static const MIDL_STUB_DESC Dummy_StubDesc =
     0,   /* proxy/server info */
     0
     };
-#pragma optimize("", on )
 #if _MSC_VER >= 1200
 #pragma warning(pop)
 #endif
 
 
-#endif /* !defined(_M_IA64) && !defined(_M_AMD64)*/
+#endif /* defined(_M_AMD64)*/
 

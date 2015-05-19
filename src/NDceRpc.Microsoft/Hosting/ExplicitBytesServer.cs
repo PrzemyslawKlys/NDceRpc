@@ -27,20 +27,34 @@ namespace NDceRpc.ExplicitBytes
             base.Dispose();
         }
 
+        public ExplicitBytesServer(Guid iid, int maxCalls, int maxRequestBytes, bool allowAnonymousCallbacks)
+        {
+            IID = iid;
+            RpcTrace.Verbose("ServerRegisterInterface({0})", iid);
+            // Guid.Empty to avoid registration of any interface allowing access to AddProtocol/AddAuthentication
+            if (Guid.Empty != iid)
+            {
+                Ptr<RPC_SERVER_INTERFACE> sIf = ServerInterfaceFactory.Create(_handle, iid, RpcRuntime.TYPE_FORMAT, RpcRuntime.FUNC_FORMAT,
+                                                                        RpcEntryPoint);
+                this.serverRegisterInterface(sIf, maxCalls, maxRequestBytes, allowAnonymousCallbacks);
+                  
+            }
+        }
+
+
         /// <summary>
         /// Constructs an RPC server for the given interface guid, the guid is used to identify multiple rpc
         /// servers/services within a single process.
         /// </summary>
         public ExplicitBytesServer(Guid iid)
+            : this(iid, MAX_CALL_LIMIT, DEFAULT_REQUEST_LIMIT, false)
         {
-            IID = iid;
-            RpcTrace.Verbose("ServerRegisterInterface({0})", iid);
-            Ptr<RPC_SERVER_INTERFACE> sIf = ServerInterfaceFactory.Create(_handle, iid, RpcRuntime.TYPE_FORMAT, RpcRuntime.FUNC_FORMAT,
-                                                                    RpcEntryPoint);
-            base.ServerRegisterInterface(sIf.Handle,_handle);
+ 
         }
+        
 
  
+
        
 
         private uint RpcEntryPoint(IntPtr clientHandle, uint szInput, IntPtr input, out uint szOutput, out IntPtr output)

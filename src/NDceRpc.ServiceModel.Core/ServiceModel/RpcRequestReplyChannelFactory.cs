@@ -42,7 +42,7 @@ namespace NDceRpc.ServiceModel
             var host = new ExplicitBytesServer(uuid);
             var endpointBinding = EndpointMapper.WcfToRpc(address);
             string endPoint = CanonizeEndpoint(endpointBinding);
-            host.AddProtocol(binding.ProtocolTransport, endPoint, (uint)binding.MaxConnections);
+            host.AddProtocol(binding.ProtocolTransport, endPoint, binding.MaxConnections);
             host.AddAuthentication(binding.Authentication);
             return host;
         }

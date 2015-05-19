@@ -5,13 +5,18 @@ namespace NDceRpc
 {
     public class Server : IDisposable
     {
+
+
         /// <summary> The max limit of in-flight calls </summary>
         public const int MAX_CALL_LIMIT = 255;
+
+
+        public const int DEFAULT_REQUEST_LIMIT = -1;
 
         protected readonly RpcHandle _handle;
         protected static readonly UsageCounter _listenerCount = new UsageCounter("RpcRuntime.Listener.{0}", System.Diagnostics.Process.GetCurrentProcess().Id);
         protected bool _isListening;
-        protected uint _maxCalls;
+        protected int _maxCalls;
 
         public Server()
         {
@@ -52,14 +57,37 @@ namespace NDceRpc
             // Guard.Assert(NativeMethods.RpcServerRegisterIfEx(sIf.Handle, IntPtr.Zero, IntPtr.Zero,  InterfacRegistrationFlags.RPC_IF_AUTOLISTEN, MAX_CALL_LIMIT, ref security));
             handle.Handle = sIfHandle;
         }
+        protected readonly FunctionPtr<RPC_IF_CALLBACK_FN> _authCallback = new FunctionPtr<RPC_IF_CALLBACK_FN>(AuthCallback);
+        protected void serverRegisterInterface(Ptr<RPC_SERVER_INTERFACE> sIf,  int maxCalls, int maxRequestBytes, bool allowAnonymousCallback)
+        {
+
+            var flags = InterfacRegistrationFlags.Standard_interface_semantics;
+            IntPtr fnAuth = IntPtr.Zero;
+            if (allowAnonymousCallback)
+            {
+                flags = InterfacRegistrationFlags.RPC_IF_ALLOW_CALLBACKS_WITH_NO_AUTH;
+                fnAuth = _authCallback.Handle;
+            }
+
+            if (!allowAnonymousCallback && maxRequestBytes < 0)
+                Guard.Assert(NativeMethods.RpcServerRegisterIf(sIf.Handle, IntPtr.Zero, IntPtr.Zero));
+            else
+            {
+                Guard.Assert(NativeMethods.RpcServerRegisterIf2(sIf.Handle, IntPtr.Zero, IntPtr.Zero, flags,
+                 maxCalls <= 0 ? MAX_CALL_LIMIT : maxCalls,
+                 maxRequestBytes <= 0 ? 80 * 1024 : maxRequestBytes, _authCallback.Handle));
+            }
+            _handle.Handle = sIf.Handle; 
+        }
         
         /// <summary>
         /// Used to ensure that the server is listening with a specific protocol type.  
         /// </summary>
-        public void AddProtocol(RpcProtseq protocol, string endpoint, uint maxCalls)
+        public bool AddProtocol(RpcProtseq protocol, string endpoint, int maxCalls)
         {
-            serverUseProtseqEp(protocol, maxCalls, endpoint);
             _maxCalls = Math.Max(_maxCalls, maxCalls);
+            return serverUseProtseqEp(protocol, maxCalls, endpoint);
+       
         }
 
         /// <summary>
@@ -100,7 +128,7 @@ namespace NDceRpc
         }
 
 
-        private static void serverUseProtseqEp(RpcProtseq protocol, uint maxCalls, String endpoint)
+        private static bool serverUseProtseqEp(RpcProtseq protocol, int maxCalls, String endpoint)
         {
             RpcTrace.Verbose("serverUseProtseqEp({0})", protocol);
             // all RPC servers within the process will be available on that protocol
@@ -109,8 +137,13 @@ namespace NDceRpc
             RPC_STATUS err = NativeMethods.RpcServerUseProtseqEp(protocol.ToString(), maxCalls, endpoint, IntPtr.Zero);
             if (err != RPC_STATUS.RPC_S_DUPLICATE_ENDPOINT)
                 Guard.Assert(err);
+            return err == RPC_STATUS.RPC_S_OK;
         }
 
+        protected static RPC_STATUS AuthCallback(IntPtr Interface, IntPtr Context)
+        {
+            return RPC_STATUS.RPC_S_OK;
+        }
 
         private static bool serverRegisterAuthInfo(RPC_C_AUTHN auth, string serverPrincName)
         {
@@ -124,7 +157,8 @@ namespace NDceRpc
             return true;
         }
 
-        private static void serverListen(uint maxCalls)
+ 
+        private static void serverListen(int maxCalls)
         {
             RpcTrace.Verbose("Begin Server Listening");
             // starts listening all server in process on registered protocols

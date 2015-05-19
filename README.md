@@ -1,7 +1,13 @@
 NDceRpc (.NET Distributed Computing Environment Remote Procedure Call)
 =======
 
-Currently there is no good managed RPC for local IPC(Inter Process Communication) on Windows. Dce/Rpc works out of box only for native code. WCF works for managed only out of box, and has features which makes it slower then IPC could be. COM was not designed to current multithreaded, isolated, XCOPY environments not integrated with Windows Message Pump.
+Currently there is no good managed RPC for local IPC(Inter Process Communication) on Windows. 
+Dce/Rpc works out of box only for native code. 
+WCF works for managed only out of box, and has features which makes it slower then IPC could be. 
+COM was not designed to current multithreaded, isolated, XCOPY environments not integrated with Windows Message Pump.
+
+
+
 
 This project is trying to close this gap on Windows.
 

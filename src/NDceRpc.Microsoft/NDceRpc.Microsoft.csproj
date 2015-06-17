@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{399E67C2-A18D-4C5C-9FCF-8BEA884EC8D2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -33,11 +33,11 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Optimize>False</Optimize>
-    <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <OutputPath>..\..\bin\Debug\NET40</OutputPath>
     <DocumentationFile>..\..\bin\Debug\NET40\NDceRpc.Microsoft.xml</DocumentationFile>
     <DefineConstants>TRACE;NET40</DefineConstants>
+    <IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Optimize>True</Optimize>
@@ -46,6 +46,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DefineConstants>TRACE;NET40</DefineConstants>
+    <IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
@@ -119,6 +120,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RpcTrace.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="Microsoft\Interop\RpcBindingOptions.cs" />
+    <Compile Include="Microsoft\Interop\RPC_C_OPT_COOKIE_AUTH_DESCRIPTOR.cs" />
+    <Compile Include="Microsoft\Interop\RPC_C_SECURITY_CALLBACK.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ErrorMessages.resx">

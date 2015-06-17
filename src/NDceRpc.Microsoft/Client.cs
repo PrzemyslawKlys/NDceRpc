@@ -17,6 +17,11 @@ namespace NDceRpc
         private readonly string _binding;
         protected readonly RpcHandle _handle;
 
+		public IntPtr Handle
+		{
+			get { return _handle.Handle; }
+		}
+
         public Client(EndpointBindingInfo endpointBindingInfo)
         {
             _handle = new RpcClientHandle();
@@ -24,7 +29,7 @@ namespace NDceRpc
             _binding = stringBindingCompose(endpointBindingInfo, null);
             RpcTrace.Verbose("Client('{0}:{1}')", endpointBindingInfo.NetworkAddr, endpointBindingInfo.EndPoint);
 
-            connect();
+			bindingFromStringBinding(_handle, _binding);
         }
 
         // Creates a string binding handle.
@@ -77,20 +82,13 @@ namespace NDceRpc
             get { return _protocol; }
         }
 
-        /// <summary>
-        /// Connects the client; however, this is a soft-connection and validation of 
-        /// the connection will not take place until the first call is attempted.
-        /// </summary>
-        private void connect()
-        {
-            bindingFromStringBinding(_handle, _binding);
-            RpcTrace.Verbose("RpcClient.connect({0} = {1})", _handle.Handle, _binding);
-        }
+
 
         private static void bindingFromStringBinding(RpcHandle handle, String bindingString)
         {
             RPC_STATUS result = NativeMethods.RpcBindingFromStringBinding(bindingString, out handle.Handle);
             Guard.Assert(result);
+			RpcTrace.Verbose("RpcClient.bindingFromStringBinding({0} = {1})", handle.Handle, bindingString);
         }
 
         /// <summary>

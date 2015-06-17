@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{197601FB-7E62-47DA-8E48-B56C9AD5DF20}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -45,18 +45,22 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile />
+    <DocumentationFile>
+    </DocumentationFile>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <Optimize>True</Optimize>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile />
+    <DocumentationFile>
+    </DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IntermediateOutputPath>$(OutputPath)obj\$(AssemblyName)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -70,16 +74,10 @@
       <HintPath>..\..\Depend\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data">
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NativeMethodsTests.cs" />
@@ -91,6 +89,7 @@
     <Compile Include="ExplicitBytesServerTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OptionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

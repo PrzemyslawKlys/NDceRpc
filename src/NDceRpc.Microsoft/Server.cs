@@ -57,6 +57,7 @@ namespace NDceRpc
             // Guard.Assert(NativeMethods.RpcServerRegisterIfEx(sIf.Handle, IntPtr.Zero, IntPtr.Zero,  InterfacRegistrationFlags.RPC_IF_AUTOLISTEN, MAX_CALL_LIMIT, ref security));
             handle.Handle = sIfHandle;
         }
+
         protected readonly FunctionPtr<RPC_IF_CALLBACK_FN> _authCallback = new FunctionPtr<RPC_IF_CALLBACK_FN>(AuthCallback);
         protected void serverRegisterInterface(Ptr<RPC_SERVER_INTERFACE> sIf,  int maxCalls, int maxRequestBytes, bool allowAnonymousCallback)
         {

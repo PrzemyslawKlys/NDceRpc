@@ -17,7 +17,7 @@ namespace NDceRpc.Microsoft.Interop
         internal IntPtr PinFunction<T>(T data)
             where T : class, ICloneable, ISerializable
         {
-            FunctionPtr<T> instance = new FunctionPtr<T>(data);
+            var instance = new FunctionPtr<T>(data);
             lock (_pinnedAddresses)
             {
                 _pinnedAddresses.Add(instance);

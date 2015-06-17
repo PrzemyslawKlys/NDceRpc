@@ -201,12 +201,14 @@ namespace NDceRpc.Microsoft.Interop
         [Description("The byte count is too small.")] RPC_X_BYTE_COUNT_TOO_SMALL = 1782,
         [Description("The stub received bad data.")] RPC_X_BAD_STUB_DATA = 1783,
 
-
+		[Description("HTTP proxy server rejected the connection because the cookie authentication failed.")]
+		RPC_S_COOKIE_AUTH_FAILED = 1833, //0x729
         /// <summary>
         /// The object universal unique identifier (UUID) is the nil UUID.
         /// </summary>
         RPC_S_INVALID_OBJECT = 1900,
-                [Description("Unspecified failure.")]
+
+        [Description("Unspecified failure.")]
         RPC_E_FAIL = 0x80004005u
     }
 }

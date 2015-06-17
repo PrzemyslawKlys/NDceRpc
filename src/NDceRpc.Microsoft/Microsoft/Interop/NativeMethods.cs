@@ -12,7 +12,6 @@ namespace NDceRpc.Microsoft.Interop
     {
 
 
-
         ///<seealso href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa375771.aspx"/>
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcMgmtSetCancelTimeout", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcMgmtSetCancelTimeout(int Seconds);
@@ -21,6 +20,20 @@ namespace NDceRpc.Microsoft.Interop
         [DllImport("Rpcrt4.dll", EntryPoint = "RpcMgmtInqComTimeout", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcMgmtInqComTimeout(IntPtr Binding, out uint Timeout);
 
+		///<seealso href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa375611.aspx"/>
+		[DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingSetOption", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+		public static extern RPC_STATUS RpcBindingSetOption(IntPtr Binding, uint Option,IntPtr OptionValue);
+
+		///<summary>
+		/// RPC client processes use RpcBindingInqOption to determine current values of the binding options for a given binding handle.
+		/// </summary>
+		///<seealso href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa375600.aspx"/>
+		[DllImport("Rpcrt4.dll", EntryPoint = "RpcBindingInqOption", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+		public static extern RPC_STATUS RpcBindingInqOption(IntPtr Binding, uint Option,out IntPtr OptionValue);
+
+		// undocumented
+		[DllImport("Rpcrt4.dll", EntryPoint = "I_RpcBindingInqSecurityContext", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+		public static extern  RPC_STATUS  I_RpcBindingInqSecurityContext(IntPtr Binding,out IntPtr SecurityContextHandle);
 
         ///<summary>
         /// This option is ignored for <seealso cref="RpcProtseq.ncalrpc"/>
@@ -140,7 +153,6 @@ CharSet = CharSet.Unicode, SetLastError = true)]
             CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern RPC_STATUS RpcBindingInqAuthClient(
             IntPtr ClientBinding,
-
             ref IntPtr Privs,
             StringBuilder ServerPrincName,
             ref RPC_C_AUTHN_LEVEL AuthnLevel,

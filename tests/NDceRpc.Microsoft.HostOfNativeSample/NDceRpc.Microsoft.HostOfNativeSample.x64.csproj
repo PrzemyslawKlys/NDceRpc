@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NDceRpc.Microsoft.HostOfNativeSample</RootNamespace>
     <AssemblyName>NDceRpc.Microsoft.HostOfNativeSample.x64</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -54,9 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NDceRpc.Microsoft\NDceRpc.Microsoft.NET35.csproj">
+    <ProjectReference Include="..\..\src\NDceRpc.Microsoft\NDceRpc.Microsoft.csproj">
       <Project>{4F3BBC28-023C-4F6F-8DB5-4F9F92249ACA}</Project>
-      <Name>NDceRpc.Microsoft.NET35</Name>
+      <Name>NDceRpc.Microsoft</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

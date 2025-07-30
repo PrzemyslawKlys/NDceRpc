@@ -47,21 +47,30 @@ namespace NDceRpc.Test
             }
         }
 
-        [Test, ExpectedException(typeof(RpcException))]
+        [Test]
         public void TestClientCannotConnect()
         {
-            var endpoingBinding = new EndpointBindingInfo(RpcProtseq.ncalrpc, null, "lrpc-endpoint-doesnt-exist");
-            using (ExplicitBytesClient client = new ExplicitBytesClient(Guid.NewGuid(), endpoingBinding))
-                client.Execute(new byte[0]);
+            Assert.Throws<RpcException>(() =>
+            {
+                var endpoingBinding = new EndpointBindingInfo(RpcProtseq.ncalrpc, null, "lrpc-endpoint-doesnt-exist");
+                using (ExplicitBytesClient client = new ExplicitBytesClient(Guid.NewGuid(), endpoingBinding))
+                    client.Execute(new byte[0]);
+            });
         }
 
-        [Test, ExpectedException(typeof(RpcException), ExpectedMessage = "TEST_MESSAGE")]
+        [Test]
         public void TestExceptionExplicitMessage()
-        { throw new RpcException("TEST_MESSAGE"); }
+        {
+            var ex = Assert.Throws<RpcException>(() => { throw new RpcException("TEST_MESSAGE"); });
+            Assert.That(ex.Message, Is.EqualTo("TEST_MESSAGE"));
+        }
 
-        [Test, ExpectedException(typeof(RpcException), ExpectedMessage = "Unspecified rpc error")]
+        [Test]
         public void TestExceptionDefaultMessage()
-        { throw new RpcException(); }
+        {
+            var ex = Assert.Throws<RpcException>(() => { throw new RpcException(); });
+            Assert.That(ex.Message, Is.EqualTo("Unspecified rpc error"));
+        }
 
     }
 }

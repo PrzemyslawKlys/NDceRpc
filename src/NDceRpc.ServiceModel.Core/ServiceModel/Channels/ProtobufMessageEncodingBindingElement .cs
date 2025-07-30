@@ -1,20 +1,23 @@
 ﻿using System;
 using System.IO;
+using ProtoBuf.Meta;
 
 namespace NDceRpc.ServiceModel.Channels
 {
     public class ProtobufMessageEncodingBindingElement : MessageEncoder
     {
-        private static Messages _proto;
-
+        private static RuntimeTypeModel _proto;
 
         static ProtobufMessageEncodingBindingElement()
         {
             //TODO: use http://blogs.msdn.com/b/microsoft_press/archive/2010/02/03/jeffrey-richter-excerpt-2-from-clr-via-c-third-edition.aspx
             //TODO: or http://research.microsoft.com/en-us/people/mbarnett/ilmerge.aspx
-            //NOTE: used compiled messages to save start uo time
-            _proto = new Messages();
-
+            //NOTE: used compiled messages to save start up time
+            _proto = RuntimeTypeModel.Create();
+            _proto.AutoCompile = true;
+            _proto.AutoAddMissingTypes = true;
+            
+            // Known message types will be added dynamically
         }
 
         public override void WriteObject(Stream stream, object graph)

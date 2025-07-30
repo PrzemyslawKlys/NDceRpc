@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
-    <RootNamespace>NDceRpc.Microsoft.Tests</RootNamespace>
-    <AssemblyName>NDceRpc.Microsoft.Tests</AssemblyName>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>NDceRpc.ServiceModel.Tests</RootNamespace>
+    <AssemblyName>NDceRpc.ServiceModel.Tests</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\NDceRpc.snk</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -27,7 +26,7 @@
 
   <!-- Project references -->
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NDceRpc.Microsoft\NDceRpc.Microsoft.csproj" />
+    <ProjectReference Include="..\..\src\NDceRpc.ServiceModel\NDceRpc.ServiceModel.csproj" />
   </ItemGroup>
 
 </Project>

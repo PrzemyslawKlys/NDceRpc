@@ -16,20 +16,18 @@
     <tags>@tags@</tags>
 	
 	<dependencies>
-	  <group targetFramework="NET40">
+	  <group targetFramework="net472">
 		<dependency id="protobuf-net" />
       </group>
-	  <group targetFramework="NET35">
-	    <dependency id="protobuf-net"/>
-	    <dependency id="TaskParallelLibrary"/>
-		<dependency id="CodeContracts.Unofficial"/>
+	  <group targetFramework="net8.0">
+		<dependency id="protobuf-net" />
       </group>
     </dependencies>
   </metadata>
     	<files>		
 
-	  <file src="..\bin\Release\NET40\@project@.*" target="lib\NET40\" />
-	  <file src="..\bin\Release\NET35\@project@.*" target="lib\NET35\" />
+	  <file src="..\bin\Release\net472\@project@.*" target="lib\net472\" />
+	  <file src="..\bin\Release\net8.0\@project@.*" target="lib\net8.0\" />
 
 	</files>
 </package>

@@ -11,7 +11,7 @@ namespace NDceRpc.Serialization
 
         public ProtobufObjectSerializer()
         {
-            _proto = TypeModel.Create();
+            _proto = RuntimeTypeModel.Create();
             _proto.AutoCompile = true;
             _proto.AutoAddMissingTypes = true;
         }

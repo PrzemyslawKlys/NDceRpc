@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 
 using System.Runtime.InteropServices;
+#if NET472 || NET48
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
+#endif
 
 using System.Threading;
 using System.Threading.Tasks;

@@ -12,30 +12,30 @@ namespace NDceRpc.Test
     {
 
         [Test]
-        [ExpectedException((typeof(RpcException)))]
         public void TestServerWithDiblicateUuid()
         {
-            Guid iid = Guid.NewGuid();
-
-             ExplicitBytesServer server1 = new ExplicitBytesServer(iid);
-            try
+            Assert.Throws<RpcException>(() =>
             {
-               
+                Guid iid = Guid.NewGuid();
 
-                server1.AddProtocol(RpcProtseq.ncalrpc, "lrpctest1", 5);
-                server1.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
-                server1.StartListening();
+                ExplicitBytesServer server1 = new ExplicitBytesServer(iid);
+                try
+                {
+                    server1.AddProtocol(RpcProtseq.ncalrpc, "lrpctest1", 5);
+                    server1.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
+                    server1.StartListening();
 
-                ExplicitBytesServer server2 = new ExplicitBytesServer(iid);
+                    ExplicitBytesServer server2 = new ExplicitBytesServer(iid);
 
-                server2.AddProtocol(RpcProtseq.ncalrpc, "lrpctest2", 5);
-                server2.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
-                server2.StartListening();
-            }
-            finally
-            {
-               server1.Dispose();
-            }
+                    server2.AddProtocol(RpcProtseq.ncalrpc, "lrpctest2", 5);
+                    server2.AddAuthentication(RPC_C_AUTHN.RPC_C_AUTHN_WINNT);
+                    server2.StartListening();
+                }
+                finally
+                {
+                    server1.Dispose();
+                }
+            });
 
 
 
@@ -74,8 +74,7 @@ namespace NDceRpc.Test
         }
 
         [Test]
-        [ExpectedException(typeof(OverflowException))]
-        [Ignore]
+        [Ignore("Test for infinite recursive calls")]
         public void TestInfiniteRecursiveCalls()
         {
             Guid iid = Guid.NewGuid();

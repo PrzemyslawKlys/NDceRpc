@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
-    <RootNamespace>NDceRpc.Microsoft.Tests</RootNamespace>
-    <AssemblyName>NDceRpc.Microsoft.Tests</AssemblyName>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>NDceRpc.ServiceModel.Core.Tests</RootNamespace>
+    <AssemblyName>NDceRpc.ServiceModel.Core.Tests</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\NDceRpc.snk</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -23,11 +22,22 @@
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="protobuf-net" Version="3.2.30" />
   </ItemGroup>
 
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\..\src\NDceRpc.Microsoft\NDceRpc.Microsoft.csproj" />
+    <ProjectReference Include="..\..\src\NDceRpc.ServiceModel\NDceRpc.ServiceModel.csproj" />
+    <ProjectReference Include="..\..\src\NDceRpc.ServiceModel.Core\NDceRpc.ServiceModel.Core.csproj" />
+    <ProjectReference Include="..\..\src\NDceRpc.ServiceModel.Protobuf\NDceRpc.ServiceModel.Protobuf.csproj" />
+  </ItemGroup>
+
+  <!-- .NET Framework specific references -->
+  <ItemGroup>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
 
 </Project>

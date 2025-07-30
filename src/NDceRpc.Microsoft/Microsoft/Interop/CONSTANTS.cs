@@ -26,8 +26,6 @@ namespace NDceRpc.Microsoft.Interop
 
         public const int RPC_C_LISTEN_MAX_CALLS_DEFAULT = 1234;
         public const int RPC_C_PROTSEQ_MAX_REQS_DEFAULT = 10;
-#if !NET35
         public static  UIntPtr RPC_C_NO_CREDENTIALS = UIntPtr.Subtract(UIntPtr.Zero,1);
-#endif
     }
 }

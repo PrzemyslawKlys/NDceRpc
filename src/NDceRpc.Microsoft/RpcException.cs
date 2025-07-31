@@ -1,10 +1,8 @@
-﻿
 using System;
 using NDceRpc.Microsoft.Interop;
 
 namespace NDceRpc
 {
-
     /// <summary>
     /// Exception class: RpcException : System.ComponentModel.Win32Exception
     /// Unspecified rpc error
@@ -12,6 +10,8 @@ namespace NDceRpc
     [Serializable()]
     public class RpcException : System.ComponentModel.Win32Exception
     {
+        private const string DefaultError = "Unspecified RPC error";
+
         /// <summary>
         /// Serialization constructor
         /// </summary>
@@ -24,16 +24,18 @@ namespace NDceRpc
         /// Unspecified rpc error
         /// </summary>
         public RpcException()
-            : base(ErrorMessages.RpcDefaultError)
+            : base(DefaultError)
         {
         }
+
         /// <summary>
         /// Unspecified rpc error
         /// </summary>
         public RpcException(Exception innerException)
-            : base(ErrorMessages.RpcDefaultError, innerException)
+            : base(DefaultError, innerException)
         {
         }
+
         /// <summary>
         /// if(condition == false) throws Unspecified rpc error
         /// </summary>
@@ -41,21 +43,21 @@ namespace NDceRpc
         {
             if (!condition) throw new RpcException();
         }
+
         /// <summary>
         /// </summary>
         public RpcException(String message)
             : base(message)
         {
         }
+
         /// <summary>
         /// 
         /// </summary>
         public RpcException(String message, Exception innerException)
-            : base(String.Format(ErrorMessages.RpcDefaultError, message), innerException)
+            : base(message, innerException)
         {
         }
-
-
 
         /// <summary>
         /// Exception class: RpcException : System.ComponentModel.Win32Exception
@@ -64,8 +66,8 @@ namespace NDceRpc
         public RpcException(RPC_STATUS errorsCode)
             : base(unchecked((int)errorsCode))
         {
-
         }
+
         /// <summary>
         /// Returns the RPC Error as an enumeration
         /// </summary>
@@ -73,7 +75,5 @@ namespace NDceRpc
         {
             get { return (RPC_STATUS)NativeErrorCode; }
         }
-
-
     }
 }

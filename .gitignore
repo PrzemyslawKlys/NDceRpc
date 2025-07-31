@@ -19,3 +19,8 @@ Release
 test-results
 TestResutlts
 packages
+.vs/*
+.claude/*
+.nuget/*
+nul
+.gitignore

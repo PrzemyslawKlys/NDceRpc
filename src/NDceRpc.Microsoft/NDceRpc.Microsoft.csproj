@@ -33,16 +33,4 @@
     <None Include="..\..\NDceRpc.snk" Link="NDceRpc.snk" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="ErrorMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Update="ErrorMessages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ErrorMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
 </Project>

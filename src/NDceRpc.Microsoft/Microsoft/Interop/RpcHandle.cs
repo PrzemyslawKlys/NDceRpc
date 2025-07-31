@@ -1,62 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+using System;
 
 namespace NDceRpc.Microsoft.Interop
 {
     /// <summary>
-    /// Is thread safe.
+    /// Base class for RPC handles
     /// </summary>
     [System.Diagnostics.DebuggerDisplay("{Handle}")]
     public abstract class RpcHandle : IDisposable
     {
         internal IntPtr Handle;
-        private readonly List<IDisposable> _pinnedAddresses = new List<IDisposable>();
-
-
-        internal IntPtr PinFunction<T>(T data)
-            where T : class, ICloneable, ISerializable
-        {
-            var instance = new FunctionPtr<T>(data);
-            lock (_pinnedAddresses)
-            {
-                _pinnedAddresses.Add(instance);
-            }
-          
-            return instance.Handle;
-        }
-
-        internal IntPtr Pin<T>(T data)
-        {
-            return CreatePtr(data).Handle;
-        }
-
-        internal bool GetPtr<T>(out T value)
-        {
-            lock (_pinnedAddresses)
-            {
-                foreach (object o in _pinnedAddresses)
-                {
-                    if (o is T)
-                    {
-                        value = (T) o;
-                        return true;
-                    }
-                }
-                value = default(T);
-                return false;
-            }
-        }
-
-        internal Ptr<T> CreatePtr<T>(T data)
-        {
-            Ptr<T> ptr = new Ptr<T>(data);
-            lock (_pinnedAddresses)
-            {
-                _pinnedAddresses.Add(ptr);
-            }
-            return ptr;
-        }
 
         ~RpcHandle()
         {
@@ -77,14 +29,6 @@ namespace NDceRpc.Microsoft.Interop
                 if (Handle != IntPtr.Zero)
                 {
                     DisposeHandle(ref Handle);
-                }
-                lock (_pinnedAddresses)
-                {
-                    for (int i = _pinnedAddresses.Count - 1; i >= 0; i--)
-                    {
-                        _pinnedAddresses[i].Dispose();
-                    }
-                    _pinnedAddresses.Clear();
                 }
             }
             finally
@@ -109,7 +53,7 @@ namespace NDceRpc.Microsoft.Interop
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            if (Handle == IntPtr.Zero) return false;// if handle not initialized we cannot state equality, better state unequlity
+            if (Handle == IntPtr.Zero) return false;
             return Equals((RpcHandle) obj);
         }
 

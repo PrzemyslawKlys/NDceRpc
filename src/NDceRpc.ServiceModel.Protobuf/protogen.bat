@@ -1,1 +1,0 @@
-﻿"$(ProjectDir)..\..\tools\protobuf-net\ProtoGen\protogen.exe" -i:"Messages.proto" -o:"Messages.proto.cs" -p:datacontract -ns:"NDceRpc.ServiceModel.Channels"

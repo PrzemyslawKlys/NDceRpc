@@ -1,9 +1,0 @@
-interface foo
-{
-	typedef int i12;
-
-	typedef struct {
-		int o;
-		i12 j;
-	} f0;
-}
